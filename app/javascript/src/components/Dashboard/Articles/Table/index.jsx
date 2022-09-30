@@ -4,15 +4,11 @@ import { Table as NeetoUITable } from "neetoui";
 
 import { buildArticleTableColumnData } from "./utils";
 
-import { ARTICLE_DETAILS_DATA } from "../constants";
-
-const Table = () => (
+const Table = ({ articles }) => (
   <div className="w-full">
     <NeetoUITable
-      columnData={buildArticleTableColumnData}
-      rowData={ARTICLE_DETAILS_DATA}
-      onRowClick={() => {}}
-      onRowSelect={() => {}}
+      columnData={buildArticleTableColumnData()}
+      rowData={articles}
     />
   </div>
 );

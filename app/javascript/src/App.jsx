@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
+import "lib/dayjs"; // eslint-disable-line
+
 import { setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 
