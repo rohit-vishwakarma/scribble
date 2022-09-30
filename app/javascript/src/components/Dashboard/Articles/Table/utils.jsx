@@ -1,61 +1,97 @@
 import React from "react";
 
+import dayjs from "dayjs";
+import { Delete, Edit } from "neetoicons";
 import { Typography } from "neetoui";
 
-export const buildArticleTableColumnData = [
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-    width: "20%",
-    render: title => (
-      <Typography className="text-indigo-500" lineHeight="loose" style="h5">
-        {title}
-      </Typography>
+import { ColumnsListItems } from "../constants";
+
+export const formatCreatedTimeToDate = dateTime =>
+  dayjs(dateTime).format("MMMM Do, YYYY");
+
+export const buildArticleTableColumnData = () => {
+  const ArticleColumnsData = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      width: "25%",
+      render: title => (
+        <Typography className="text-indigo-500" lineHeight="loose" style="h5">
+          {title}
+        </Typography>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: "20%",
+      render: created_at => (
+        <Typography className="text-gray-800" style="h5">
+          {formatCreatedTimeToDate(created_at)}
+        </Typography>
+      ),
+    },
+    {
+      title: "Author",
+      dataIndex: "author",
+      key: "author",
+      width: "20%",
+      render: () => (
+        <Typography className="text-gray-600" style="h5">
+          Oliver Smith
+        </Typography>
+      ),
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      width: "20%",
+      render: category => (
+        <Typography className="text-gray-600" style="h5">
+          {category || "hello"}
+        </Typography>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: "15%",
+      render: status => (
+        <Typography className="text-gray-600" style="h5">
+          {status}
+        </Typography>
+      ),
+    },
+  ];
+
+  const optionColumn = {
+    title: "",
+    dataIndex: "option",
+    key: "option",
+    width: "10%",
+    render: () => (
+      <div className="flex items-end gap-x-3">
+        <Delete size={13} />
+        <Edit size={13} />
+      </div>
     ),
-  },
-  {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
-    width: "20%",
-    render: date => (
-      <Typography className="text-gray-800" style="h5">
-        {date}
-      </Typography>
-    ),
-  },
-  {
-    title: "Author",
-    dataIndex: "author",
-    key: "author",
-    width: "20%",
-    render: author => (
-      <Typography className="text-gray-600" style="h5">
-        {author}
-      </Typography>
-    ),
-  },
-  {
-    title: "Category",
-    dataIndex: "category",
-    key: "category",
-    width: "20%",
-    render: category => (
-      <Typography className="text-gray-600" style="h5">
-        {category}
-      </Typography>
-    ),
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    width: "20%",
-    render: status => (
-      <Typography className="text-gray-600" style="h5">
-        {status}
-      </Typography>
-    ),
-  },
-];
+  };
+
+  const checkedColumnsList = ColumnsListItems.filter(
+    ele => ele.checked === true
+  ).map(ele => ele.dataIndex);
+
+  const filteredColumnData = ArticleColumnsData.filter(ele =>
+    checkedColumnsList.includes(ele.dataIndex)
+  );
+
+  if (filteredColumnData.length > 0) {
+    filteredColumnData.push(optionColumn);
+  }
+
+  return filteredColumnData;
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Plus, Search, Close, Check } from "neetoicons";
 import { Typography, Input } from "neetoui";
@@ -6,14 +6,28 @@ import { MenuBar } from "neetoui/layouts";
 
 import { MenuBarBlocks } from "./constants";
 
-const Menu = () => {
+const Menu = ({ categories }) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
-  const [value, setValue] = useState("");
+  const [addValue, setAddValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [categoriesList, setCategoriesList] = useState([]);
+
+  useEffect(() => {
+    if (searchValue === "") {
+      setCategoriesList(categories);
+
+      return;
+    }
+    const searchedCategoriesList = categories.filter(category =>
+      category.name.toLowerCase().includes(searchValue)
+    );
+    setCategoriesList(searchedCategoriesList);
+  }, [searchValue]);
 
   return (
     <MenuBar showMenu title="Articles">
-      {MenuBarBlocks.main.map(menuBarBlock => (
+      {MenuBarBlocks.map(menuBarBlock => (
         <MenuBar.Block
           active={menuBarBlock.active}
           count={menuBarBlock.count}
@@ -26,15 +40,17 @@ const Menu = () => {
           {
             icon: Search,
             onClick: () => {
-              setIsSearchCollapsed(isSearchCollapsed => !isSearchCollapsed);
               setIsAddCollapsed(true);
+              setAddValue("");
+              setIsSearchCollapsed(isSearchCollapsed => !isSearchCollapsed);
             },
           },
           {
             icon: isAddCollapsed ? Plus : Close,
             onClick: () => {
-              setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
               setIsSearchCollapsed(true);
+              setSearchValue("");
+              setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
             },
           },
         ]}
@@ -50,27 +66,27 @@ const Menu = () => {
       </MenuBar.SubTitle>
       <MenuBar.Search
         collapse={isSearchCollapsed}
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
         onCollapse={() => setIsSearchCollapsed(true)}
       />
       {!isAddCollapsed && (
         <Input
-          value={value}
+          value={addValue}
           suffix={
             <Check
+              className="cursor-pointer"
               onClick={() => {
                 setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
+                setAddValue("");
               }}
             />
           }
-          onChange={e => setValue(e.target.value)}
+          onChange={e => setAddValue(e.target.value)}
         />
       )}
-      {MenuBarBlocks.categories.map(menuBarBlock => (
-        <MenuBar.Block
-          count={menuBarBlock.count}
-          key={menuBarBlock.label}
-          label={menuBarBlock.label}
-        />
+      {categoriesList.map(category => (
+        <MenuBar.Block count={10} key={category.id} label={category.name} />
       ))}
     </MenuBar>
   );
