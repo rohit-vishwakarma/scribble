@@ -20,7 +20,10 @@ const Menu = ({ categories }) => {
       return;
     }
     const searchedCategoriesList = categories.filter(category =>
-      category.name.toLowerCase().includes(searchValue)
+      category.name
+        .toLowerCase()
+        .replaceAll(" ", "")
+        .includes(searchValue.toLowerCase().replaceAll(" ", ""))
     );
     setCategoriesList(searchedCategoriesList);
   }, [searchValue]);

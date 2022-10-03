@@ -21,10 +21,13 @@ const ArticleHeader = ({
 
       return;
     }
-    const searchedCategoriesList = articles.filter(article =>
-      article.title.toLowerCase().includes(searchTerm)
+    const searchedArticlesList = searchArticles.filter(article =>
+      article.title
+        .toLowerCase()
+        .replaceAll(" ", "")
+        .includes(searchTerm.toLowerCase().replaceAll(" ", ""))
     );
-    setArticles(searchedCategoriesList);
+    setArticles(searchedArticlesList);
   }, [searchTerm]);
 
   return (

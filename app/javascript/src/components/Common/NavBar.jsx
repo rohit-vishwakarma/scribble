@@ -19,7 +19,7 @@ const NavBar = () => (
             Scribble
           </Typography>
           <NavLink className="text-base text-indigo-700" to="/">
-            Article
+            Articles
           </NavLink>
           <NavLink className="text-base text-gray-400" to="/">
             Settings

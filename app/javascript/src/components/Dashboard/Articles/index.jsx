@@ -44,10 +44,13 @@ const Articles = () => {
 
   const fetchCategories = async () => {
     try {
+      setLoading(true);
       const { data } = await categoriesApi.fetch();
       setCategories(data.categories);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
