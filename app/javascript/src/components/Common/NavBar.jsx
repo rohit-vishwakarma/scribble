@@ -3,7 +3,8 @@ import React from "react";
 import { ExternalLink } from "neetoicons";
 import { Button, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
-import { NavLink } from "react-router-dom";
+
+import { DASHBOARD_PATH } from "../routeConstants";
 
 const NavBar = () => (
   <>
@@ -18,12 +19,26 @@ const NavBar = () => (
           <Typography className="pl-6 text-gray-800" style="h4">
             Scribble
           </Typography>
-          <NavLink className="text-base text-indigo-700" to="/">
-            Articles
-          </NavLink>
-          <NavLink className="text-base text-gray-400" to="/">
-            Settings
-          </NavLink>
+          <div className="flex gap-6 text-base">
+            <Button
+              style="link"
+              to={DASHBOARD_PATH}
+              label={
+                <Typography className="text-base text-indigo-700">
+                  Articles
+                </Typography>
+              }
+            />
+            <Button
+              style="link"
+              to="/"
+              label={
+                <Typography className="text-base text-gray-400">
+                  Settings
+                </Typography>
+              }
+            />
+          </div>
         </div>
       }
     />

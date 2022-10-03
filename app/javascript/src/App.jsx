@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-
 import "lib/dayjs"; // eslint-disable-line
+import { ToastContainer } from "react-toastify";
 
 import { setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
@@ -23,12 +21,10 @@ const App = () => {
   }
 
   return (
-    <Router>
+    <>
       <ToastContainer />
-      <Switch>
-        <Route exact component={Dashboard} path="/" />
-      </Switch>
-    </Router>
+      <Dashboard />
+    </>
   );
 };
 

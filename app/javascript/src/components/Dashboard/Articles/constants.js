@@ -1,3 +1,37 @@
+import * as yup from "yup";
+
+export const SELECTED_CATEGORY = [
+  { label: "Getting Started", value: "gettingStarted" },
+  { label: "Apps & Integration", value: "appsIntegration" },
+  { label: "Security & Privacy", value: "securityPrivacy" },
+  { label: "Misc", value: "misc" },
+];
+
+export const ARTICLES_FORM_INITIAL_VALUES = {
+  title: "",
+  description: "",
+  category_id: null,
+};
+
+export const ARTICLES_FORM_VALIDATION_SCHEMA = yup.object().shape({
+  title: yup.string().required("Title is required. Please Enter the Title"),
+  description: yup
+    .string()
+    .required("Description is required. Please Enter the Description"),
+  category_id: yup
+    .object()
+    .nullable()
+    .shape({
+      label: yup
+        .string()
+        .oneOf(SELECTED_CATEGORY.map(category => category.label)),
+      value: yup
+        .string()
+        .oneOf(SELECTED_CATEGORY.map(category => category.value)),
+    })
+    .required("Category is required."),
+});
+
 export const MenuBarBlocks = [
   {
     label: "All",
