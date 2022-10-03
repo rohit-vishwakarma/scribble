@@ -4,6 +4,8 @@ import { AddCircle } from "neetoicons";
 import { Button, ActionDropdown, Checkbox, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
 
+import { ARTICLE_FORM_PATH } from "../../routeConstants";
+
 const ArticleHeader = ({
   columnsList,
   handleChecked,
@@ -59,7 +61,11 @@ const ArticleHeader = ({
               ))}
             </Menu>
           </ActionDropdown>
-          <Button icon={AddCircle} label="Add New Article" onClick={() => {}} />
+          <Button
+            icon={AddCircle}
+            label="Add New Article"
+            to={ARTICLE_FORM_PATH}
+          />
         </div>
       }
       searchProps={{
