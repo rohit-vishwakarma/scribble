@@ -4,27 +4,45 @@ import { Formik, Form } from "formik";
 import { Dropdown, Button } from "neetoui";
 import { Select, Input, Textarea } from "neetoui/formik";
 
+import articlesApi from "apis/articles";
+
 import {
-  SELECTED_CATEGORY,
   ARTICLES_FORM_INITIAL_VALUES,
   ARTICLES_FORM_VALIDATION_SCHEMA,
 } from "./constants";
 
-const ArticleForm = () => {
+const ArticleForm = ({ categories, refetch, setShowArticlesPage }) => {
   const [submitted, setSubmitted] = useState(false);
   const [status, setStatus] = useState("Save Draft");
   const { Menu, MenuItem } = Dropdown;
   const statusListItems = ["Save Draft", "Publish"];
+
+  const SELECTED_CATEGORY = categories.map(category => ({
+    label: category.name,
+    value: category.id,
+  }));
+
+  const handleSubmit = async values => {
+    try {
+      const newCategoryData = { ...values };
+      newCategoryData.category_id = values.category_id.value;
+      await articlesApi.create(newCategoryData);
+      setShowArticlesPage(true);
+      refetch();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   return (
     <Formik
       initialValues={ARTICLES_FORM_INITIAL_VALUES}
       validateOnBlur={submitted}
       validateOnChange={submitted}
-      validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA}
-      onSubmit={() => {}}
+      validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(SELECTED_CATEGORY)}
+      onSubmit={handleSubmit}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, setFieldValue }) => (
         <Form className="mx-auto mt-8 w-6/12">
           <div className="my-5 flex gap-x-4">
             <Input
@@ -67,14 +85,28 @@ const ArticleForm = () => {
               <Dropdown>
                 <Menu>
                   {statusListItems.map((item, idx) => (
-                    <MenuItem.Button key={idx} onClick={() => setStatus(item)}>
+                    <MenuItem.Button
+                      key={idx}
+                      onClick={() => {
+                        setFieldValue(
+                          "status",
+                          item !== "Save Draft" ? "Published" : "Draft"
+                        );
+                        setStatus(item);
+                      }}
+                    >
                       {item}
                     </MenuItem.Button>
                   ))}
                 </Menu>
               </Dropdown>
             </div>
-            <Button label="Cancel" style="text" type="reset" />
+            <Button
+              label="Cancel"
+              style="text"
+              type="reset"
+              onClick={() => setShowArticlesPage(true)}
+            />
           </div>
         </Form>
       )}

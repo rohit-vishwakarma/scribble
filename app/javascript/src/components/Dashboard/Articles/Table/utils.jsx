@@ -24,8 +24,8 @@ export const buildArticleTableColumnData = () => {
     },
     {
       title: "Date",
-      dataIndex: "created_at",
-      key: "created_at",
+      dataIndex: "updated_at",
+      key: "updated_at",
       width: "20%",
       render: created_at => (
         <Typography className="text-gray-800" style="h5">
@@ -46,12 +46,12 @@ export const buildArticleTableColumnData = () => {
     },
     {
       title: "Category",
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "category_name",
+      key: "category_name",
       width: "20%",
       render: category => (
         <Typography className="text-gray-600" style="h5">
-          {category || "hello"}
+          {category}
         </Typography>
       ),
     },
