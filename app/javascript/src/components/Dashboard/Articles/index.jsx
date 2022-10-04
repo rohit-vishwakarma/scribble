@@ -8,6 +8,7 @@ import categoriesApi from "apis/categories";
 
 import { ColumnsListItems } from "./constants";
 import EmptyState from "./EmptyState";
+import Form from "./Form";
 import Header from "./Header";
 import MenuBar from "./Menu";
 import Table from "./Table";
@@ -17,6 +18,7 @@ const Articles = () => {
   const [articles, setArticles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [columnsList, setColumnsList] = useState(ColumnsListItems);
+  const [showArticlesPage, setShowArticlesPage] = useState(true);
 
   const handleChecked = selectedIdx => {
     const items = ColumnsListItems;
@@ -26,27 +28,16 @@ const Articles = () => {
   };
 
   useEffect(() => {
-    fetchArticles();
-    fetchCategories();
+    fetchArticlesAndCategories();
   }, []);
 
-  const fetchArticles = async () => {
+  const fetchArticlesAndCategories = async () => {
     try {
       setLoading(true);
-      const { data } = await articlesApi.fetch();
-      setArticles(data.articles);
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const { data } = await categoriesApi.fetch();
-      setCategories(data.categories);
+      const fetchedArticles = await articlesApi.fetch();
+      setArticles(fetchedArticles.data.articles);
+      const fetchedCategories = await categoriesApi.fetch();
+      setCategories(fetchedCategories.data.categories);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -60,30 +51,44 @@ const Articles = () => {
 
   return (
     <div className="flex">
-      <MenuBar categories={categories} />
-      <Container>
-        <Header
-          articles={articles}
-          columnsList={columnsList}
-          handleChecked={handleChecked}
-          setArticles={setArticles}
-        />
-        <Typography className="pb-6" style="h4">
-          {articles.length}&nbsp;Articles
-        </Typography>
-        {articles.length ? (
-          <div className="flex w-full flex-col">
-            <Table articles={articles} />
-          </div>
-        ) : (
-          <EmptyState
-            primaryAction={() => {}}
-            primaryActionLabel="Add New Article"
-            subtitle="Add some articles"
-            title="Looks like you don't have any articles!"
+      {showArticlesPage ? (
+        <>
+          <MenuBar
+            categories={categories}
+            refetch={fetchArticlesAndCategories}
           />
-        )}
-      </Container>
+          <Container>
+            <Header
+              articles={articles}
+              columnsList={columnsList}
+              handleChecked={handleChecked}
+              setArticles={setArticles}
+              setShowArticlesPage={setShowArticlesPage}
+            />
+            <Typography className="pb-6" style="h4">
+              {articles.length}&nbsp;Articles
+            </Typography>
+            {articles.length ? (
+              <div className="flex w-full flex-col">
+                <Table articles={articles} />
+              </div>
+            ) : (
+              <EmptyState
+                primaryAction={() => setShowArticlesPage(false)}
+                primaryActionLabel="Add New Article"
+                subtitle="Add some articles"
+                title="Looks like you don't have any articles!"
+              />
+            )}
+          </Container>
+        </>
+      ) : (
+        <Form
+          categories={categories}
+          refetch={fetchArticlesAndCategories}
+          setShowArticlesPage={setShowArticlesPage}
+        />
+      )}
     </div>
   );
 };

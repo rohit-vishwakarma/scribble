@@ -4,9 +4,11 @@ import { Plus, Search, Close, Check } from "neetoicons";
 import { Typography, Input } from "neetoui";
 import { MenuBar } from "neetoui/layouts";
 
+import categoriesApi from "apis/categories";
+
 import { MenuBarBlocks } from "./constants";
 
-const Menu = ({ categories }) => {
+const Menu = ({ categories, refetch }) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
   const [addValue, setAddValue] = useState("");
@@ -27,6 +29,18 @@ const Menu = ({ categories }) => {
     );
     setCategoriesList(searchedCategoriesList);
   }, [searchValue]);
+
+  const handleClick = async () => {
+    try {
+      setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
+      if (addValue === "") return;
+      await categoriesApi.create({ name: addValue });
+      setAddValue("");
+      refetch();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   return (
     <MenuBar showMenu title="Articles">
@@ -75,21 +89,17 @@ const Menu = ({ categories }) => {
       />
       {!isAddCollapsed && (
         <Input
+          suffix={<Check className="cursor-pointer" onClick={handleClick} />}
           value={addValue}
-          suffix={
-            <Check
-              className="cursor-pointer"
-              onClick={() => {
-                setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
-                setAddValue("");
-              }}
-            />
-          }
           onChange={e => setAddValue(e.target.value)}
         />
       )}
       {categoriesList.map(category => (
-        <MenuBar.Block count={10} key={category.id} label={category.name} />
+        <MenuBar.Block
+          count={category.count}
+          key={category.id}
+          label={category.name}
+        />
       ))}
     </MenuBar>
   );
