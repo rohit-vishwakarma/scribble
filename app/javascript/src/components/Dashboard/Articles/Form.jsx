@@ -10,8 +10,15 @@ import {
   ARTICLES_FORM_INITIAL_VALUES,
   ARTICLES_FORM_VALIDATION_SCHEMA,
 } from "./constants";
+import { convertArticleToFormFormat } from "./utils";
 
-const ArticleForm = ({ categories, refetch, setShowArticlesPage }) => {
+const ArticleForm = ({
+  isEdit,
+  selectedEditArticle,
+  categories,
+  refetch,
+  setShowArticlesPage,
+}) => {
   const [submitted, setSubmitted] = useState(false);
   const [status, setStatus] = useState("Save Draft");
   const { Menu, MenuItem } = Dropdown;
@@ -22,11 +29,19 @@ const ArticleForm = ({ categories, refetch, setShowArticlesPage }) => {
     value: category.id,
   }));
 
+  const initialFormValues = isEdit
+    ? convertArticleToFormFormat(selectedEditArticle)
+    : ARTICLES_FORM_INITIAL_VALUES;
+
   const handleSubmit = async values => {
     try {
       const newCategoryData = { ...values };
       newCategoryData.category_id = values.category_id.value;
-      await articlesApi.create(newCategoryData);
+      if (isEdit) {
+        await articlesApi.update(selectedEditArticle.id, newCategoryData);
+      } else {
+        await articlesApi.create(newCategoryData);
+      }
       setShowArticlesPage(true);
       refetch();
     } catch (error) {
@@ -36,7 +51,7 @@ const ArticleForm = ({ categories, refetch, setShowArticlesPage }) => {
 
   return (
     <Formik
-      initialValues={ARTICLES_FORM_INITIAL_VALUES}
+      initialValues={initialFormValues}
       validateOnBlur={submitted}
       validateOnChange={submitted}
       validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(SELECTED_CATEGORY)}

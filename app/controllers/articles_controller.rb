@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class ArticlesController < ApplicationController
-  before_action :load_article!, only: :destroy
+  before_action :load_article!, only: [:destroy, :update]
 
   def index
     articles = Category.joins(:articles)
-      .select("articles.id, articles.title, articles.updated_at, categories.name as category_name, articles.status")
+      .select("articles.id, articles.title, articles.updated_at,
+         articles.description, articles.category_id, categories.name as category_name, articles.status")
     render status: :ok, json: { articles: articles }
   end
 
@@ -13,6 +14,11 @@ class ArticlesController < ApplicationController
     article = Article.new(article_params)
     article.save!
     render status: :ok, json: { notice: "Your article is saved." }
+  end
+
+  def update
+    @article.update!(article_params)
+    render status: :ok, json: { message: "Your article is updated successfully." }
   end
 
   def destroy

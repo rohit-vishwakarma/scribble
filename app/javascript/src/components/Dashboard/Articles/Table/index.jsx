@@ -6,7 +6,7 @@ import { buildArticleTableColumnData } from "./utils";
 
 import DeleteAlert from "../DeleteAlert";
 
-const Table = ({ articles, refetch }) => {
+const Table = ({ articles, refetch, handleEdit }) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedDeleteArticle, setSelectedDeleteArticle] = useState({});
 
@@ -18,7 +18,7 @@ const Table = ({ articles, refetch }) => {
   return (
     <div className="w-full">
       <NeetoUITable
-        columnData={buildArticleTableColumnData(handleDelete)}
+        columnData={buildArticleTableColumnData(handleDelete, handleEdit)}
         rowData={articles}
       />
       {showDeleteAlert && (
