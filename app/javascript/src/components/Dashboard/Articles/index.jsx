@@ -70,7 +70,10 @@ const Articles = () => {
             </Typography>
             {articles.length ? (
               <div className="flex w-full flex-col">
-                <Table articles={articles} />
+                <Table
+                  articles={articles}
+                  refetch={fetchArticlesAndCategories}
+                />
               </div>
             ) : (
               <EmptyState
