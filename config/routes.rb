@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
 
-  resources :articles, only: %i[index create destroy]
+  resources :articles, only: %i[index create destroy update]
   resources :categories, only: %i[index create]
 
   root "home#index"

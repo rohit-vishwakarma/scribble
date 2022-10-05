@@ -9,7 +9,7 @@ import { ColumnsListItems } from "../constants";
 export const formatCreatedTimeToDate = dateTime =>
   dayjs(dateTime).format("MMMM Do, YYYY");
 
-export const buildArticleTableColumnData = handleDelete => {
+export const buildArticleTableColumnData = (handleDelete, handleEdit) => {
   const ArticleColumnsData = [
     {
       title: "Title",
@@ -78,10 +78,15 @@ export const buildArticleTableColumnData = handleDelete => {
     dataIndex: "id",
     key: "option",
     width: "10%",
-    render: (id, { title }) => (
+    render: (id, { title, description, category_id, status }) => (
       <div className="flex items-end gap-x-3">
         <Delete size={13} onClick={() => handleDelete({ id, title })} />
-        <Edit size={13} />
+        <Edit
+          size={13}
+          onClick={() =>
+            handleEdit({ id, title, description, category_id, status })
+          }
+        />
       </div>
     ),
   };

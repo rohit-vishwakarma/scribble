@@ -19,6 +19,8 @@ const Articles = () => {
   const [categories, setCategories] = useState([]);
   const [columnsList, setColumnsList] = useState(ColumnsListItems);
   const [showArticlesPage, setShowArticlesPage] = useState(true);
+  const [selectedEditArticle, setSelectedEditArticle] = useState({});
+  const [formEdit, setFormEdit] = useState(false);
 
   const handleChecked = selectedIdx => {
     const items = ColumnsListItems;
@@ -43,6 +45,11 @@ const Articles = () => {
     } finally {
       setLoading(false);
     }
+  };
+  const handleEdit = selectedArticle => {
+    setSelectedEditArticle(selectedArticle);
+    setFormEdit(prevState => !prevState);
+    setShowArticlesPage(prevState => !prevState);
   };
 
   if (loading) {
@@ -72,7 +79,9 @@ const Articles = () => {
               <div className="flex w-full flex-col">
                 <Table
                   articles={articles}
+                  handleEdit={handleEdit}
                   refetch={fetchArticlesAndCategories}
+                  setShowArticlesPage={setShowArticlesPage}
                 />
               </div>
             ) : (
@@ -88,7 +97,9 @@ const Articles = () => {
       ) : (
         <Form
           categories={categories}
+          isEdit={formEdit}
           refetch={fetchArticlesAndCategories}
+          selectedEditArticle={selectedEditArticle}
           setShowArticlesPage={setShowArticlesPage}
         />
       )}
