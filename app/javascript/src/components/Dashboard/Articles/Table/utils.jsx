@@ -9,7 +9,7 @@ import { ColumnsListItems } from "../constants";
 export const formatCreatedTimeToDate = dateTime =>
   dayjs(dateTime).format("MMMM Do, YYYY");
 
-export const buildArticleTableColumnData = () => {
+export const buildArticleTableColumnData = handleDelete => {
   const ArticleColumnsData = [
     {
       title: "Title",
@@ -27,11 +27,16 @@ export const buildArticleTableColumnData = () => {
       dataIndex: "updated_at",
       key: "updated_at",
       width: "20%",
-      render: created_at => (
-        <Typography className="text-gray-800" style="h5">
-          {formatCreatedTimeToDate(created_at)}
-        </Typography>
-      ),
+      render: (created_at, { status }) =>
+        status === "Draft" ? (
+          <Typography className="text-gray-500" style="h5">
+            ----------
+          </Typography>
+        ) : (
+          <Typography className="text-gray-800" style="h5">
+            {formatCreatedTimeToDate(created_at)}
+          </Typography>
+        ),
     },
     {
       title: "Author",
@@ -70,12 +75,12 @@ export const buildArticleTableColumnData = () => {
 
   const optionColumn = {
     title: "",
-    dataIndex: "option",
+    dataIndex: "id",
     key: "option",
     width: "10%",
-    render: () => (
+    render: (id, { title }) => (
       <div className="flex items-end gap-x-3">
-        <Delete size={13} />
+        <Delete size={13} onClick={() => handleDelete({ id, title })} />
         <Edit size={13} />
       </div>
     ),
