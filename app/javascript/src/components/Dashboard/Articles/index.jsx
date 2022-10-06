@@ -21,6 +21,7 @@ const Articles = () => {
   const [showArticlesPage, setShowArticlesPage] = useState(true);
   const [selectedEditArticle, setSelectedEditArticle] = useState({});
   const [formEdit, setFormEdit] = useState(false);
+  const [articlesCount, setArticlesCount] = useState({});
 
   const handleChecked = selectedIdx => {
     const items = ColumnsListItems;
@@ -36,9 +37,13 @@ const Articles = () => {
   const fetchArticlesAndCategories = async () => {
     try {
       setLoading(true);
-      const fetchedArticles = await articlesApi.fetch();
-      setArticles(fetchedArticles.data);
+      await categoriesApi.fetch();
+      const {
+        data: { articles, draft, published },
+      } = await articlesApi.fetch();
       const fetchedCategories = await categoriesApi.fetch();
+      setArticles(articles);
+      setArticlesCount({ all: draft + published, draft, published });
       setCategories(fetchedCategories.data);
     } catch (error) {
       logger.error(error);
@@ -61,8 +66,11 @@ const Articles = () => {
       {showArticlesPage ? (
         <>
           <MenuBar
+            articles={articles}
+            articlesCount={articlesCount}
             categories={categories}
             refetch={fetchArticlesAndCategories}
+            setArticles={setArticles}
           />
           <Container>
             <Header

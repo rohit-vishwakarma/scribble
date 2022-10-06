@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { Plus, Search, Close, Check } from "neetoicons";
 import { Typography, Input } from "neetoui";
@@ -6,14 +6,38 @@ import { MenuBar } from "neetoui/layouts";
 
 import categoriesApi from "apis/categories";
 
-import { MenuBarBlocks } from "./constants";
-
-const Menu = ({ categories, refetch }) => {
+const Menu = ({
+  categories,
+  refetch,
+  articlesCount,
+  articles,
+  setArticles,
+}) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
   const [addValue, setAddValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [categoriesList, setCategoriesList] = useState([]);
+  const [activeStatus, setActiveStatus] = useState("All");
+  const selectedArticles = useMemo(() => articles, []);
+
+  const MenuBarBlocks = [
+    {
+      label: "All",
+      count: articlesCount.all,
+      active: true,
+    },
+    {
+      label: "Draft",
+      count: articlesCount.draft,
+      active: false,
+    },
+    {
+      label: "Published",
+      count: articlesCount.published,
+      active: false,
+    },
+  ];
 
   useEffect(() => {
     if (searchValue === "") {
@@ -42,14 +66,29 @@ const Menu = ({ categories, refetch }) => {
     }
   };
 
+  const handleActiveBlock = dataLabel => {
+    if (dataLabel === "All") {
+      setArticles(selectedArticles);
+      setActiveStatus(dataLabel);
+
+      return;
+    }
+    const filterSelectedArticles = selectedArticles.filter(
+      article => article.status === dataLabel
+    );
+    setArticles(filterSelectedArticles);
+    setActiveStatus(dataLabel);
+  };
+
   return (
     <MenuBar showMenu title="Articles">
       {MenuBarBlocks.map(menuBarBlock => (
         <MenuBar.Block
-          active={menuBarBlock.active}
+          active={menuBarBlock.label === activeStatus}
           count={menuBarBlock.count}
           key={menuBarBlock.label}
           label={menuBarBlock.label}
+          onClick={() => handleActiveBlock(menuBarBlock.label)}
         />
       ))}
       <MenuBar.SubTitle
