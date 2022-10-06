@@ -2,9 +2,8 @@
 
 class CategoriesController < ApplicationController
   def index
-    categories = Category.left_joins(:articles)
-      .select("categories.id, categories.name, COUNT(articles.category_id) as count").group("categories.id")
-    render status: :ok, json: { categories: categories }
+    @categories = Category.all
+    render
   end
 
   def create

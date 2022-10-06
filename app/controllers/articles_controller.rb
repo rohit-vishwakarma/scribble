@@ -4,10 +4,8 @@ class ArticlesController < ApplicationController
   before_action :load_article!, only: [:destroy, :update]
 
   def index
-    articles = Category.joins(:articles)
-      .select("articles.id, articles.title, articles.updated_at,
-         articles.description, articles.category_id, categories.name as category_name, articles.status")
-    render status: :ok, json: { articles: articles }
+    @articles = Article.all
+    render
   end
 
   def create
