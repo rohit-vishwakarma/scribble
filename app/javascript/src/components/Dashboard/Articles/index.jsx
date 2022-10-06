@@ -37,9 +37,9 @@ const Articles = () => {
     try {
       setLoading(true);
       const fetchedArticles = await articlesApi.fetch();
-      setArticles(fetchedArticles.data.articles);
+      setArticles(fetchedArticles.data);
       const fetchedCategories = await categoriesApi.fetch();
-      setCategories(fetchedCategories.data.categories);
+      setCategories(fetchedCategories.data);
     } catch (error) {
       logger.error(error);
     } finally {

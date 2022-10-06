@@ -51,12 +51,12 @@ export const buildArticleTableColumnData = (handleDelete, handleEdit) => {
     },
     {
       title: "Category",
-      dataIndex: "category_name",
-      key: "category_name",
+      dataIndex: "category",
+      key: "category",
       width: "20%",
       render: category => (
         <Typography className="text-gray-600" style="h5">
-          {category}
+          {category.name}
         </Typography>
       ),
     },

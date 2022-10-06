@@ -7,7 +7,7 @@ export const ARTICLES_FORM_INITIAL_VALUES = {
   status: "Draft",
 };
 
-export const ARTICLES_FORM_VALIDATION_SCHEMA = SELECTED_CATEGORY =>
+export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
   yup.object().shape({
     title: yup.string().required("Title is required. Please Enter the Title"),
     description: yup
@@ -19,10 +19,10 @@ export const ARTICLES_FORM_VALIDATION_SCHEMA = SELECTED_CATEGORY =>
       .shape({
         label: yup
           .string()
-          .oneOf(SELECTED_CATEGORY.map(category => category.label)),
+          .oneOf(CATEGORY_OPTIONS.map(category => category.label)),
         value: yup
           .number()
-          .oneOf(SELECTED_CATEGORY.map(category => category.value)),
+          .oneOf(CATEGORY_OPTIONS.map(category => category.value)),
       })
       .required("Category is required."),
   });
@@ -66,7 +66,7 @@ export const ColumnsListItems = [
   },
   {
     name: "Category",
-    dataIndex: "category_name",
+    dataIndex: "category",
     checked: true,
     value: 3,
   },

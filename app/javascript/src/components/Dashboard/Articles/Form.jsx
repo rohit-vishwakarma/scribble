@@ -24,7 +24,7 @@ const ArticleForm = ({
   const { Menu, MenuItem } = Dropdown;
   const statusListItems = ["Save Draft", "Publish"];
 
-  const SELECTED_CATEGORY = categories.map(category => ({
+  const CATEGORY_OPTIONS = categories.map(category => ({
     label: category.name,
     value: category.id,
   }));
@@ -54,7 +54,7 @@ const ArticleForm = ({
       initialValues={initialFormValues}
       validateOnBlur={submitted}
       validateOnChange={submitted}
-      validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(SELECTED_CATEGORY)}
+      validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(CATEGORY_OPTIONS)}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, setFieldValue }) => (
@@ -73,7 +73,7 @@ const ArticleForm = ({
               className="w-56"
               label="Select Category"
               name="category_id"
-              options={SELECTED_CATEGORY}
+              options={CATEGORY_OPTIONS}
               placeholder="Select Category"
             />
           </div>
