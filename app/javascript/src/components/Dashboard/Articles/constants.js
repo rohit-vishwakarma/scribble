@@ -27,24 +27,6 @@ export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
       .required("Category is required."),
   });
 
-export const MenuBarBlocks = [
-  {
-    label: "All",
-    count: 67,
-    active: true,
-  },
-  {
-    label: "Draft",
-    count: 15,
-    active: false,
-  },
-  {
-    label: "Published",
-    count: 52,
-    active: false,
-  },
-];
-
 export const ColumnsListItems = [
   {
     name: "Title",
