@@ -4,7 +4,7 @@ import { ExternalLink } from "neetoicons";
 import { Button, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
 
-import { DASHBOARD_PATH } from "../routeConstants";
+import { DASHBOARD_PATH, SETTINGS_PATH } from "../routeConstants";
 
 const NavBar = () => (
   <>
@@ -31,7 +31,7 @@ const NavBar = () => (
             />
             <Button
               style="link"
-              to="/"
+              to={SETTINGS_PATH}
               label={
                 <Typography className="text-base text-gray-400">
                   Settings
