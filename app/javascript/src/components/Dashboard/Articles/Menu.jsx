@@ -19,6 +19,7 @@ const Menu = ({
   const [searchValue, setSearchValue] = useState("");
   const [categoriesList, setCategoriesList] = useState([]);
   const [activeStatus, setActiveStatus] = useState("All");
+  const [activeCategory, setActiveCategory] = useState(null);
   const selectedArticles = useMemo(() => articles, []);
 
   const MenuBarBlocks = [
@@ -69,15 +70,23 @@ const Menu = ({
   const handleActiveBlock = dataLabel => {
     if (dataLabel === "All") {
       setArticles(selectedArticles);
-      setActiveStatus(dataLabel);
-
-      return;
+    } else {
+      const filterSelectedArticles = selectedArticles.filter(
+        article => article.status === dataLabel
+      );
+      setArticles(filterSelectedArticles);
     }
-    const filterSelectedArticles = selectedArticles.filter(
-      article => article.status === dataLabel
-    );
-    setArticles(filterSelectedArticles);
     setActiveStatus(dataLabel);
+    setActiveCategory(null);
+  };
+
+  const handleActiveCategory = categoryId => {
+    const filterSelectedCategory = selectedArticles.filter(
+      article => article.category_id === categoryId
+    );
+    setArticles(filterSelectedCategory);
+    setActiveCategory(categoryId);
+    setActiveStatus("All");
   };
 
   return (
@@ -135,9 +144,11 @@ const Menu = ({
       )}
       {categoriesList.map(category => (
         <MenuBar.Block
+          active={category.id === activeCategory}
           count={category.count}
           key={category.id}
           label={category.name}
+          onClick={() => handleActiveCategory(category.id)}
         />
       ))}
     </MenuBar>
