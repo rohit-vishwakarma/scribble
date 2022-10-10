@@ -15,7 +15,7 @@ const DeleteAlert = ({
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await articlesApi.destroy(selectedDeleteArticle.id);
+      await articlesApi.destroy(selectedDeleteArticle.slug);
       onClose();
       setSelectedDeleteArticle({});
       refetch();
