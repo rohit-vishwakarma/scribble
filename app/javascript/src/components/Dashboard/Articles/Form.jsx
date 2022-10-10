@@ -17,6 +17,7 @@ const ArticleForm = ({
   selectedEditArticle,
   categories,
   refetch,
+  setFormEdit,
   setShowArticlesPage,
 }) => {
   const [submitted, setSubmitted] = useState(false);
@@ -38,7 +39,7 @@ const ArticleForm = ({
       const newCategoryData = { ...values };
       newCategoryData.category_id = values.category_id.value;
       if (isEdit) {
-        await articlesApi.update(selectedEditArticle.id, newCategoryData);
+        await articlesApi.update(selectedEditArticle.slug, newCategoryData);
       } else {
         await articlesApi.create(newCategoryData);
       }
@@ -47,6 +48,12 @@ const ArticleForm = ({
     } catch (error) {
       logger.error(error);
     }
+  };
+
+  const handleCancel = () => {
+    setFormEdit(false);
+    refetch();
+    setShowArticlesPage(true);
   };
 
   return (
@@ -120,7 +127,7 @@ const ArticleForm = ({
               label="Cancel"
               style="text"
               type="reset"
-              onClick={() => setShowArticlesPage(true)}
+              onClick={handleCancel}
             />
           </div>
         </Form>

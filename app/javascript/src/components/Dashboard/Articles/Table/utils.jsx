@@ -75,16 +75,16 @@ export const buildArticleTableColumnData = (handleDelete, handleEdit) => {
 
   const optionColumn = {
     title: "",
-    dataIndex: "id",
+    dataIndex: "slug",
     key: "option",
     width: "10%",
-    render: (id, { title, description, category_id, status }) => (
+    render: (_, { slug, title, description, category_id, status }) => (
       <div className="flex items-end gap-x-3">
-        <Delete size={13} onClick={() => handleDelete({ id, title })} />
+        <Delete size={13} onClick={() => handleDelete({ title, slug })} />
         <Edit
           size={13}
           onClick={() =>
-            handleEdit({ id, title, description, category_id, status })
+            handleEdit({ slug, title, description, category_id, status })
           }
         />
       </div>

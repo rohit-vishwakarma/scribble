@@ -53,7 +53,7 @@ const Articles = () => {
   };
   const handleEdit = selectedArticle => {
     setSelectedEditArticle(selectedArticle);
-    setFormEdit(prevState => !prevState);
+    setFormEdit(true);
     setShowArticlesPage(prevState => !prevState);
   };
 
@@ -108,6 +108,7 @@ const Articles = () => {
           isEdit={formEdit}
           refetch={fetchArticlesAndCategories}
           selectedEditArticle={selectedEditArticle}
+          setFormEdit={setFormEdit}
           setShowArticlesPage={setShowArticlesPage}
         />
       )}
