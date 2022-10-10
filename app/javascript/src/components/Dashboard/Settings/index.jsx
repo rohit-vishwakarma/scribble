@@ -1,40 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { Button } from "neetoui";
-import { MenuBar } from "neetoui/layouts";
-import { Route } from "react-router-dom";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 
-import { SETTINGS_OPTIONS } from "./constants";
+import General from "./General";
+import ManageCategories from "./ManageCategories";
+import Redirection from "./Redirection";
+import Sidebar from "./Sidebar";
 
 const Settings = () => {
-  const [activeSetting, setActiveSetting] = useState("General");
+  const { path } = useRouteMatch();
 
   return (
     <div className="flex">
-      <MenuBar showMenu>
-        {SETTINGS_OPTIONS.map((settingsOption, idx) => (
-          <div className="flex" key={idx}>
-            <div className="w-96 flex">
-              <Button icon={settingsOption.icon} style="text" />
-              <MenuBar.Item
-                active={settingsOption.label === activeSetting}
-                description={settingsOption.description}
-                label={settingsOption.label}
-                onClick={() => setActiveSetting(settingsOption.label)}
-              />
-            </div>
-          </div>
-        ))}
-      </MenuBar>
-      {SETTINGS_OPTIONS.map(
-        settingsOption =>
-          settingsOption.label === activeSetting && (
-            <Route
-              component={settingsOption.component}
-              key={settingsOption.label}
-            />
-          )
-      )}
+      <Sidebar />
+      <Switch>
+        <Route component={General} path={`${path}/general`} />
+        <Route component={Redirection} path={`${path}/redirection`} />
+        <Route component={ManageCategories} path={`${path}/managecategories`} />
+      </Switch>
     </div>
   );
 };
