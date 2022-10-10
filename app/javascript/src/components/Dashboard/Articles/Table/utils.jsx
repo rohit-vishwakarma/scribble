@@ -2,14 +2,14 @@ import React from "react";
 
 import dayjs from "dayjs";
 import { Delete, Edit } from "neetoicons";
-import { Typography } from "neetoui";
+import { Typography, Button } from "neetoui";
 
 import { ColumnsListItems } from "../constants";
 
 export const formatCreatedTimeToDate = dateTime =>
   dayjs(dateTime).format("MMMM Do, YYYY");
 
-export const buildArticleTableColumnData = (handleDelete, handleEdit) => {
+export const buildArticleTableColumnData = handleDelete => {
   const ArticleColumnsData = [
     {
       title: "Title",
@@ -78,14 +78,19 @@ export const buildArticleTableColumnData = (handleDelete, handleEdit) => {
     dataIndex: "slug",
     key: "option",
     width: "10%",
-    render: (_, { slug, title, description, category_id, status }) => (
-      <div className="flex items-end gap-x-3">
-        <Delete size={13} onClick={() => handleDelete({ title, slug })} />
-        <Edit
+    render: (_, { slug, title }) => (
+      <div className="flex items-end">
+        <Button
+          icon={Delete}
           size={13}
-          onClick={() =>
-            handleEdit({ slug, title, description, category_id, status })
-          }
+          style="text"
+          onClick={() => handleDelete({ title, slug })}
+        />
+        <Button
+          icon={Edit}
+          size={13}
+          style="text"
+          to={`/article/${slug}/edit`}
         />
       </div>
     ),

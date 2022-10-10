@@ -3,7 +3,9 @@ import React from "react";
 import { AddCircle } from "neetoicons";
 import { Button } from "neetoui";
 
-const EmptyState = ({ title, subtitle, primaryAction, primaryActionLabel }) => (
+import { ARTICLE_CREATE_PATH } from "../../routeConstants";
+
+const EmptyState = ({ title, subtitle, primaryActionLabel }) => (
   <div className="flex h-full w-full flex-row items-start justify-start">
     <div className="m-auto w-3/5">
       <h2 className="mb-4 text-center text-2xl font-medium">{title}</h2>
@@ -11,14 +13,12 @@ const EmptyState = ({ title, subtitle, primaryAction, primaryActionLabel }) => (
         {subtitle}
       </p>
       <div className="flex flex-row items-center justify-center">
-        {primaryAction && (
-          <Button
-            icon={AddCircle}
-            label={primaryActionLabel}
-            type="primary"
-            onClick={primaryAction}
-          />
-        )}
+        <Button
+          icon={AddCircle}
+          label={primaryActionLabel}
+          to={ARTICLE_CREATE_PATH}
+          type="primary"
+        />
       </div>
     </div>
   </div>

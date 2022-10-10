@@ -2,6 +2,8 @@ import axios from "axios";
 
 const fetch = () => axios.get("/articles");
 
+const show = slug => axios.get(`/articles/${slug}`);
+
 const create = payload => {
   axios.post("/articles", payload);
 };
@@ -16,6 +18,7 @@ const update = (slug, payload) => {
 
 const articlesApi = {
   fetch,
+  show,
   create,
   destroy,
   update,

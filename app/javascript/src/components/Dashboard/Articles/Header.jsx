@@ -4,12 +4,13 @@ import { AddCircle } from "neetoicons";
 import { Button, ActionDropdown, Checkbox, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
 
+import { ARTICLE_CREATE_PATH } from "../../routeConstants";
+
 const ArticleHeader = ({
   columnsList,
-  handleChecked,
+  handleCheckedColumns,
   articles,
   setArticles,
-  setShowArticlesPage,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const searchArticles = useMemo(() => articles, []);
@@ -51,7 +52,7 @@ const ArticleHeader = ({
                     <Checkbox
                       checked={item.checked}
                       id={item.value}
-                      onChange={() => handleChecked(idx)}
+                      onChange={() => handleCheckedColumns(idx)}
                     />
                   }
                 >
@@ -63,7 +64,7 @@ const ArticleHeader = ({
           <Button
             icon={AddCircle}
             label="Add New Article"
-            onClick={() => setShowArticlesPage(false)}
+            to={ARTICLE_CREATE_PATH}
           />
         </div>
       }

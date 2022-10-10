@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ArticlesController < ApplicationController
-  before_action :load_article!, only: [:destroy, :update]
+  before_action :load_article!, only: [:destroy, :update, :show]
 
   def index
     @articles = Article.all
@@ -22,6 +22,10 @@ class ArticlesController < ApplicationController
   def destroy
     @article.destroy!
     render status: :ok, json: { message: "Your article is deleted successfully." }
+  end
+
+  def show
+    render
   end
 
   private
