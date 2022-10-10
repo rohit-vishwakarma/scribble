@@ -4,7 +4,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 import General from "./General";
 import ManageCategories from "./ManageCategories";
-import Redirection from "./Redirection";
+import Redirection from "./Redirections";
 import Sidebar from "./Sidebar";
 
 const Settings = () => {
@@ -15,7 +15,7 @@ const Settings = () => {
       <Sidebar />
       <Switch>
         <Route component={General} path={`${path}/general`} />
-        <Route component={Redirection} path={`${path}/redirection`} />
+        <Route component={Redirection} path={`${path}/redirections`} />
         <Route component={ManageCategories} path={`${path}/managecategories`} />
       </Switch>
     </div>

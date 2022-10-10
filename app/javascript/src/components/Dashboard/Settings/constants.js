@@ -2,7 +2,7 @@ import { Settings, Repeat, Seo } from "neetoicons";
 
 import General from "./General";
 import Manage from "./ManageCategories";
-import Redirection from "./Redirection";
+import Redirection from "./Redirections";
 
 export const SETTINGS_OPTIONS = [
   {
@@ -15,7 +15,7 @@ export const SETTINGS_OPTIONS = [
   {
     label: "Redirections",
     description: "Create & configure redirection rules",
-    to: "/redirection",
+    to: "/redirections",
     icon: Repeat,
     component: Redirection,
   },
