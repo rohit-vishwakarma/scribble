@@ -1,64 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Formik, Form } from "formik";
-import { Dropdown, Button } from "neetoui";
+import { Dropdown, Button, PageLoader } from "neetoui";
 import { Select, Input, Textarea } from "neetoui/formik";
+import { useHistory } from "react-router-dom";
 
-import articlesApi from "apis/articles";
+import categoriesApi from "apis/categories";
 
-import {
-  ARTICLES_FORM_INITIAL_VALUES,
-  ARTICLES_FORM_VALIDATION_SCHEMA,
-} from "./constants";
-import { convertArticleToFormFormat } from "./utils";
+import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 
-const ArticleForm = ({
-  isEdit,
-  selectedEditArticle,
-  categories,
-  refetch,
-  setFormEdit,
-  setShowArticlesPage,
-}) => {
+const ArticleForm = ({ selectedArticle, handleSubmit }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("Save Draft");
+  const [categories, setCategories] = useState([]);
+  const history = useHistory();
   const { Menu, MenuItem } = Dropdown;
   const statusListItems = ["Save Draft", "Publish"];
+
+  useEffect(() => {
+    fetchCategories();
+    if (selectedArticle.status === "Published") {
+      setStatus("Published");
+    }
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const fetchedCategories = await categoriesApi.fetch();
+      setCategories(fetchedCategories.data);
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <PageLoader />;
+  }
 
   const CATEGORY_OPTIONS = categories.map(category => ({
     label: category.name,
     value: category.id,
   }));
 
-  const initialFormValues = isEdit
-    ? convertArticleToFormFormat(selectedEditArticle)
-    : ARTICLES_FORM_INITIAL_VALUES;
-
-  const handleSubmit = async values => {
-    try {
-      const newCategoryData = { ...values };
-      newCategoryData.category_id = values.category_id.value;
-      if (isEdit) {
-        await articlesApi.update(selectedEditArticle.slug, newCategoryData);
-      } else {
-        await articlesApi.create(newCategoryData);
-      }
-      setShowArticlesPage(true);
-      refetch();
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const handleCancel = () => {
-    setFormEdit(false);
-    refetch();
-    setShowArticlesPage(true);
-  };
-
   return (
     <Formik
-      initialValues={initialFormValues}
+      initialValues={selectedArticle}
       validateOnBlur={submitted}
       validateOnChange={submitted}
       validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(CATEGORY_OPTIONS)}
@@ -127,7 +117,7 @@ const ArticleForm = ({
               label="Cancel"
               style="text"
               type="reset"
-              onClick={handleCancel}
+              onClick={() => history.push("/")}
             />
           </div>
         </Form>
