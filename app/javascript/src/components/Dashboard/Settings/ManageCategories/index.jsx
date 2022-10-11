@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { Plus, AddCircle, Delete, Edit } from "neetoicons";
-import { Typography, Button, PageLoader } from "neetoui";
+import { Typography, PageLoader } from "neetoui";
 
 import categoriesApi from "apis/categories";
+
+import Add from "./Add";
+import Row from "./Row";
 
 const Manage = () => {
   const [categories, setCategories] = useState([]);
@@ -30,7 +32,7 @@ const Manage = () => {
   }
 
   return (
-    <div className="mx-auto mt-8 w-6/12">
+    <div className="mx-auto mt-8 w-5/12">
       <Typography className="h-10" style="h2">
         Manage Categories
       </Typography>
@@ -38,29 +40,12 @@ const Manage = () => {
         Create and configure the categories inside your scribble.
       </Typography>
       <div className="mt-8">
-        <Button
-          icon={Plus}
-          iconPosition="left"
-          label="Add New Redirection"
-          style="link"
-          onClick={() => {}}
-        />
+        <Add refetch={fetchCategories} />
       </div>
-      {categories.map((category, idx) => (
-        <div key={idx}>
+      {categories.map(category => (
+        <div key={category.id}>
           <hr />
-          <div className="flex h-12 justify-between">
-            <div className="flex">
-              <AddCircle className="my-auto" size={13} />
-              <Typography className="my-auto ml-2 text-gray-700" style="h4">
-                {category.name}
-              </Typography>
-            </div>
-            <div className="my-auto flex items-end gap-x-3">
-              <Delete size={13} onClick={() => {}} />
-              <Edit size={13} onClick={() => {}} />
-            </div>
-          </div>
+          <Row category={category} refetch={fetchCategories} />
         </div>
       ))}
     </div>
