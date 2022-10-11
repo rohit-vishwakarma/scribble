@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :load_category!, only: :update
+  before_action :load_category!, only: [:update, :destroy]
 
   def index
     @categories = Category.all
@@ -17,6 +17,11 @@ class CategoriesController < ApplicationController
   def update
     @category.update!(category_params)
     render status: :ok, json: { message: "Your category is updated successfully." }
+  end
+
+  def destroy
+    @category.destroy!
+    render status: :ok, json: { message: "Category is deleted successfully." }
   end
 
   private

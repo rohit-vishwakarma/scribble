@@ -2,6 +2,7 @@
 
 class ArticlesController < ApplicationController
   before_action :load_article!, only: [:destroy, :update, :show]
+  before_action :load_articles!, only: :bulk_update
 
   def index
     @articles = Article.all
@@ -28,6 +29,11 @@ class ArticlesController < ApplicationController
     render
   end
 
+  def bulk_update
+    @articles.update(category_id: params[:update_id])
+    render status: :ok, json: { message: "Articles are updated successfully." }
+  end
+
   private
 
     def article_params
@@ -36,5 +42,9 @@ class ArticlesController < ApplicationController
 
     def load_article!
       @article = Article.find_by!(slug: params[:slug])
+    end
+
+    def load_articles!
+      @articles = Article.all.where(category_id: params[:delete_id])
     end
 end

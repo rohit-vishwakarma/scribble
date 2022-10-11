@@ -5,11 +5,15 @@ import { Button, Typography, Input } from "neetoui";
 
 import categoriesApi from "apis/categories";
 
+import DeleteAlert from "./DeleteAlert";
+
 const Row = ({ category, refetch }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editName, setEditName] = useState(category.name);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [selectedDeleteCategory, setSelectedDeleteCategory] = useState({});
 
-  const handleClick = async () => {
+  const handleEdit = async () => {
     try {
       setIsEdit(prevState => !prevState);
       if (editName === "" || editName === category.name) return;
@@ -21,6 +25,11 @@ const Row = ({ category, refetch }) => {
     refetch();
   };
 
+  const handleDelete = selectedCategory => {
+    setSelectedDeleteCategory(selectedCategory);
+    setShowDeleteAlert(prevState => !prevState);
+  };
+
   return (
     <>
       {isEdit ? (
@@ -28,7 +37,7 @@ const Row = ({ category, refetch }) => {
           <AddCircle className="my-auto" size={16} />
           <Input
             className="my-2"
-            suffix={<Check className="cursor-pointer" onClick={handleClick} />}
+            suffix={<Check className="cursor-pointer" onClick={handleEdit} />}
             value={editName}
             onChange={e => setEditName(e.target.value)}
           />
@@ -42,7 +51,12 @@ const Row = ({ category, refetch }) => {
             </Typography>
           </div>
           <div className="my-auto flex items-end">
-            <Button icon={Delete} size={13} style="text" onClick={() => {}} />
+            <Button
+              icon={Delete}
+              size={13}
+              style="text"
+              onClick={() => handleDelete(category)}
+            />
             <Button
               icon={Edit}
               size={13}
@@ -51,6 +65,14 @@ const Row = ({ category, refetch }) => {
             />
           </div>
         </div>
+      )}
+      {showDeleteAlert && (
+        <DeleteAlert
+          refetch={refetch}
+          selectedDeleteCategory={selectedDeleteCategory}
+          setSelectedDeleteCategory={setSelectedDeleteCategory}
+          onClose={() => setShowDeleteAlert(false)}
+        />
       )}
     </>
   );
