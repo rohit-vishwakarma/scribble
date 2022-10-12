@@ -4,20 +4,20 @@ const fetch = () => axios.get("/articles");
 
 const show = slug => axios.get(`/articles/${slug}`);
 
-const create = payload => {
-  axios.post("/articles", payload);
+const create = async payload => {
+  await axios.post("/articles", payload);
 };
 
-const destroy = slug => {
-  axios.delete(`/articles/${slug}`);
+const destroy = async slug => {
+  await axios.delete(`/articles/${slug}`);
 };
 
-const update = (slug, payload) => {
-  axios.put(`/articles/${slug}`, payload);
+const update = async (slug, payload) => {
+  await axios.put(`/articles/${slug}`, payload);
 };
 
-const bulkUpdate = payload => {
-  axios.put("/articles/bulk_update", payload);
+const bulkUpdate = async payload => {
+  await axios.put("/articles/bulk_update", payload);
 };
 
 const articlesApi = {

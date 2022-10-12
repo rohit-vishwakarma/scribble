@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   constraints(lambda { |req| req.format == :json }) do
     resources :articles, only: %i[index create destroy show], param: :slug
-    resources :articles, only: :update do
+    resources :articles, only: :update, param: :slug do
       collection do
         put "bulk_update"
       end
