@@ -2,17 +2,17 @@ import * as yup from "yup";
 
 export const ARTICLES_FORM_INITIAL_VALUES = {
   title: "",
-  description: "",
+  body: "",
   category_id: null,
   status: "Draft",
 };
 
 export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
   yup.object().shape({
-    title: yup.string().required("Title is required. Please Enter the Title"),
-    description: yup
+    title: yup.string().required("Title is required. Please Enter the Title."),
+    body: yup
       .string()
-      .required("Description is required. Please Enter the Description"),
+      .required("Body is required. Please Enter the Body of the Article."),
     category_id: yup
       .object()
       .nullable()

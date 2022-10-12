@@ -77,7 +77,7 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
           <Textarea
             required
             label="Article Body"
-            name="description"
+            name="body"
             placeholder="Enter text"
             rows={30}
           />

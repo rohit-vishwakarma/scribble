@@ -5,5 +5,5 @@ class Category < ApplicationRecord
 
   has_many :articles
 
-  validates :name, presence: true, length: { maximum: MAX_CATEGORY_LENGTH }
+  validates :name, presence: true, uniqueness: true, length: { maximum: MAX_CATEGORY_LENGTH }
 end

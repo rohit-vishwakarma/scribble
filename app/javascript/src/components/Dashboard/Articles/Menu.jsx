@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 
 import { Plus, Search, Close, Check } from "neetoicons";
-import { Typography, Input } from "neetoui";
+import { Typography, Input, Toastr } from "neetoui";
 import { MenuBar } from "neetoui/layouts";
 
 import categoriesApi from "apis/categories";
@@ -63,6 +63,7 @@ const Menu = ({
       setAddValue("");
       refetch();
     } catch (error) {
+      Toastr.warning("Category already exist.");
       logger.error(error);
     }
   };
