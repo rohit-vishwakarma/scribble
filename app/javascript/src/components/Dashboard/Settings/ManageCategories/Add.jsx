@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Plus, Check } from "neetoicons";
-import { Button, Input } from "neetoui";
+import { Button, Input, Toastr } from "neetoui";
 
 import categoriesApi from "apis/categories";
 
@@ -18,6 +18,7 @@ const Add = ({ refetch }) => {
       setAddValue("");
       refetch();
     } catch (error) {
+      Toastr.warning("Category already exist.");
       logger.error(error);
     }
   };
