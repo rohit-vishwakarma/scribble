@@ -27,14 +27,14 @@ export const buildArticleTableColumnData = handleDelete => {
       dataIndex: "updated_at",
       key: "updated_at",
       width: "20%",
-      render: (created_at, { status }) =>
+      render: (updated_at, { status }) =>
         status === "Draft" ? (
           <Typography className="text-gray-500" style="h5">
             ----------
           </Typography>
         ) : (
           <Typography className="text-gray-800" style="h5">
-            {formatCreatedTimeToDate(created_at)}
+            {formatCreatedTimeToDate(updated_at)}
           </Typography>
         ),
     },
