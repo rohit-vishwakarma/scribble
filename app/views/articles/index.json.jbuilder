@@ -1,5 +1,5 @@
 json.articles @articles do | article |
-  json.extract! article, :id, :title, :body, :status, :category_id, :slug
+  json.extract! article, :id, :title, :body, :status, :category_id, :slug, :updated_at
   json.category article.category, :id, :name
   json.author article.user, :name
 end
