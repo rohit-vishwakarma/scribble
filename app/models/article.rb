@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class Article < ApplicationRecord
-  belongs_to :category
+  MAX_TITLE_LENGTH = 50
 
+  belongs_to :category
+  belongs_to :user
+
+  validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
   validates :title, :status, :body, presence: true
   validates :slug, uniqueness: true
   validate :slug_not_changed

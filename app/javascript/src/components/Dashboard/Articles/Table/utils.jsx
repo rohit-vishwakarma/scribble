@@ -43,9 +43,9 @@ export const buildArticleTableColumnData = handleDelete => {
       dataIndex: "author",
       key: "author",
       width: "20%",
-      render: () => (
+      render: author => (
         <Typography className="text-gray-600" style="h5">
-          Oliver Smith
+          {author.name}
         </Typography>
       ),
     },
