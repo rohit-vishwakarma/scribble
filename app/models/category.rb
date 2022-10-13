@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class Category < ApplicationRecord
-  MAX_CATEGORY_LENGTH = 60
+  MAX_NAME_LENGTH = 60
 
   has_many :articles
 
-  validates :name, presence: true, uniqueness: true, length: { maximum: MAX_CATEGORY_LENGTH }
+  validates :name, presence: true, uniqueness: true, length: { maximum: MAX_NAME_LENGTH }
 
   before_create :set_position
 
