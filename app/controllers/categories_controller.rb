@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :load_category!, only: [:update, :destroy]
+  before_action :load_category!, only: %i[update destroy position_update]
 
   def index
-    @categories = Category.all
+    @categories = Category.all.order("position ASC")
     render
   end
 
@@ -25,6 +25,10 @@ class CategoriesController < ApplicationController
   def destroy
     @category.destroy!
     render status: :ok, json: { message: "Category is deleted successfully." }
+  end
+
+  def position_update
+    @category.update!(position: params[:position])
   end
 
   private

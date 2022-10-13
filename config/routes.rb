@@ -9,7 +9,12 @@ Rails.application.routes.draw do
         put "bulk_update"
       end
     end
-    resources :categories, only: %i[index create update destroy]
+    resources :categories, only: %i[index create destroy]
+    resources :categories, only: :update do
+      member do
+        put "position_update"
+      end
+    end
   end
 
   root "home#index"

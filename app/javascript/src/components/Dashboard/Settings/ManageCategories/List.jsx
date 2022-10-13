@@ -2,6 +2,8 @@ import React from "react";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
+import categoriesApi from "apis/categories";
+
 import Row from "./Row";
 
 const List = ({ categories, setCategories, refetch }) => {
@@ -22,6 +24,13 @@ const List = ({ categories, setCategories, refetch }) => {
       endPosition.destination.index
     );
     setCategories(reorderedCategories);
+    reorderedCategories.forEach(async (category, idx) => {
+      try {
+        await categoriesApi.positionUpdate(category.id, idx);
+      } catch (error) {
+        logger.error(error);
+      }
+    });
   };
 
   return (
