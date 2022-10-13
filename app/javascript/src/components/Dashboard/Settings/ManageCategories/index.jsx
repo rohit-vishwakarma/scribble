@@ -5,7 +5,7 @@ import { Typography, PageLoader } from "neetoui";
 import categoriesApi from "apis/categories";
 
 import Add from "./Add";
-import Row from "./Row";
+import List from "./List";
 
 const Manage = () => {
   const [categories, setCategories] = useState([]);
@@ -42,12 +42,11 @@ const Manage = () => {
       <div className="mt-8">
         <Add refetch={fetchCategories} />
       </div>
-      {categories.map(category => (
-        <div key={category.id}>
-          <hr />
-          <Row category={category} refetch={fetchCategories} />
-        </div>
-      ))}
+      <List
+        categories={categories}
+        refetch={fetchCategories}
+        setCategories={setCategories}
+      />
     </div>
   );
 };
