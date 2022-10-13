@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_004030) do
+ActiveRecord::Schema.define(version: 2022_10_13_150552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2022_10_13_004030) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "category_id"
     t.string "slug", null: false
+    t.integer "user_id", default: 1
     t.index ["slug"], name: "index_articles_on_slug", unique: true
   end
 
@@ -36,5 +37,13 @@ ActiveRecord::Schema.define(version: 2022_10_13_004030) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "articles", "categories"
+  add_foreign_key "articles", "users"
 end
