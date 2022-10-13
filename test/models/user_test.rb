@@ -6,4 +6,38 @@ class UserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
+  def setup
+    @user = create(:user)
+  end
+
+  def test_user_should_be_valid
+    assert @user.valid?
+  end
+
+  def test_name_should_be_of_valid_length
+    @user.name = "a" * (User::MAX_NAME_LENGTH + 1)
+    assert_not @user.valid?
+  end
+
+  def test_user_should_not_be_valid_and_save_without_name
+    @user.name = ""
+    assert_not @user.valid?
+  end
+
+  def test_user_should_not_be_valid_and_saved_without_email
+    @user.email = ""
+    assert_not @user.valid?
+
+    @user.save
+    assert_includes @user.errors.full_messages, "Email can't be blank", "Email is invalid"
+  end
+
+  def test_user_should_not_be_valid_and_saved_if_email_not_unique
+    @user.save!
+
+    test_user = @user.dup
+    assert_not test_user.valid?
+
+    assert_includes test_user.errors.full_messages, "Email has already been taken"
+  end
 end

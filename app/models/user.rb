@@ -6,5 +6,5 @@ class User < ApplicationRecord
   has_many :articles
 
   validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: true
 end
