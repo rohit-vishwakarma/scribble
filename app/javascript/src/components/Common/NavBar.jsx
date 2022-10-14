@@ -2,48 +2,30 @@ import React from "react";
 
 import { ExternalLink } from "neetoicons";
 import { Button, Typography } from "neetoui";
-import { Header } from "neetoui/layouts";
-
-import { DASHBOARD_PATH, SETTINGS_PATH } from "../routeConstants";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => (
-  <>
-    <Header
-      actionBlock={
-        <div className="pr-6">
-          <Button icon={ExternalLink} label="Preview" style="secondary" />
-        </div>
-      }
-      title={
-        <div className="flex h-6 w-16 gap-6">
-          <Typography className="pl-6 text-gray-800" style="h4">
-            Scribble
-          </Typography>
-          <div className="flex gap-6 text-base">
-            <Button
-              style="link"
-              to={DASHBOARD_PATH}
-              label={
-                <Typography className="text-base text-indigo-700">
-                  Articles
-                </Typography>
-              }
-            />
-            <Button
-              style="link"
-              to={SETTINGS_PATH}
-              label={
-                <Typography className="text-base text-gray-400">
-                  Settings
-                </Typography>
-              }
-            />
-          </div>
-        </div>
-      }
-    />
-    <hr />
-  </>
+  <nav className="flex h-16 w-full items-center justify-between border-b-2 bg-white px-6">
+    <div className="flex">
+      <Typography style="h4">Scribble</Typography>
+      <NavLink
+        exact
+        activeClassName="neeto-ui-text-primary-500 mx-6"
+        className="neeto-ui-text-gray-500 mx-6"
+        to="/"
+      >
+        <Typography style="h4">Articles</Typography>
+      </NavLink>
+      <NavLink
+        activeClassName="neeto-ui-text-primary-500"
+        className="neeto-ui-text-gray-500"
+        to="/settings"
+      >
+        <Typography style="h4">Settings</Typography>
+      </NavLink>
+    </div>
+    <Button icon={ExternalLink} label="preview" style="secondary" />
+  </nav>
 );
 
 export default NavBar;
