@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 
 import { Warning } from "neetoicons";
-import { PageLoader, Alert, Select, Typography, Callout } from "neetoui";
+import {
+  PageLoader,
+  Modal,
+  Button,
+  Select,
+  Typography,
+  Callout,
+  Toastr,
+} from "neetoui";
 
 import articlesApi from "apis/articles";
 import categoriesApi from "apis/categories";
@@ -14,7 +22,6 @@ const DeleteAlert = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [deleting, setDeleting] = useState(false);
   const [moveToCategory, setMoveToCategory] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
 
@@ -41,7 +48,6 @@ const DeleteAlert = ({
       return;
     }
     try {
-      setDeleting(true);
       if (categories.length === 1) {
         await categoriesApi.update(selectedDeleteCategory.id, {
           name: "General",
@@ -53,6 +59,7 @@ const DeleteAlert = ({
         });
         await categoriesApi.destroy(selectedDeleteCategory.id);
       }
+      Toastr.success("Category is deleted successfully.");
       setSelectedDeleteCategory({});
       refetch();
     } catch (error) {
@@ -78,45 +85,46 @@ const DeleteAlert = ({
       : [{ label: "General", value: 0 }];
 
   return (
-    <Alert
-      isOpen
-      isSubmitting={deleting}
-      submitButtonLabel="Proceed"
-      title="Delete Category"
-      message={
-        <>
-          <Typography className="mb-3" style="h5">
-            You are permanently deleting the "{selectedDeleteCategory.name}"
-            category. This action cannot be undone. Are you sure you wish to
-            continue?
-          </Typography>
-          <Callout className="mb-3" icon={Warning} style="danger">
-            Category "{selectedDeleteCategory.name}" has&nbsp;
-            {selectedDeleteCategory.count} articles. Before this category can be
-            deleted, these articles needs to be moved to another category.
+    <Modal isOpen onClose={onClose}>
+      <Modal.Header>
+        <Typography id="dialog1Title" style="h2">
+          Delete Category
+        </Typography>
+      </Modal.Header>
+      <Modal.Body className="space-y-2">
+        <Typography className="mb-3" style="h5">
+          You are permanently deleting the "{selectedDeleteCategory.name}"
+          category. This action cannot be undone. Are you sure you wish to
+          continue?
+        </Typography>
+        <Callout className="mb-3" icon={Warning} style="danger">
+          Category "{selectedDeleteCategory.name}" has&nbsp;
+          {selectedDeleteCategory.count} articles. Before this category can be
+          deleted, these articles needs to be moved to another category.
+        </Callout>
+        <Select
+          isSearchable
+          required
+          label="Select a category to move these articles into"
+          name="category_id"
+          options={CATEGORY_OPTIONS}
+          placeholder="Select Category"
+          onChange={e => {
+            setShowWarning(false);
+            setMoveToCategory(e);
+          }}
+        />
+        {showWarning && (
+          <Callout className="mt-3" icon={Warning} style="warning">
+            Please select a category first to move the articles.
           </Callout>
-          <Select
-            isSearchable
-            required
-            label="Select a category to move these articles into"
-            name="category_id"
-            options={CATEGORY_OPTIONS}
-            placeholder="Select Category"
-            onChange={e => {
-              setShowWarning(false);
-              setMoveToCategory(e);
-            }}
-          />
-          {showWarning && (
-            <Callout className="mt-3" icon={Warning} style="warning">
-              Please select a category first to move the articles.
-            </Callout>
-          )}
-        </>
-      }
-      onClose={onClose}
-      onSubmit={handleDelete}
-    />
+        )}
+      </Modal.Body>
+      <Modal.Footer className="space-x-2">
+        <Button label="Continue" style="danger" onClick={handleDelete} />
+        <Button label="Cancel" style="text" onClick={onClose} />
+      </Modal.Footer>
+    </Modal>
   );
 };
 
