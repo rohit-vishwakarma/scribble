@@ -1,4 +1,5 @@
 import { Settings, Repeat, Seo } from "neetoicons";
+import * as yup from "yup";
 
 import General from "./General";
 import Manage from "./ManageCategories";
@@ -27,3 +28,7 @@ export const SETTINGS_OPTIONS = [
     component: Manage,
   },
 ];
+
+export const GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA = yup.object().shape({
+  sitename: yup.string().required("SiteName cannot be empty."),
+});

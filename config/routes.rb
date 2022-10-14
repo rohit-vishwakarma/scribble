@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         put "position_update"
       end
     end
+    resources :sites, only: %i[index update]
   end
 
   root "home#index"
