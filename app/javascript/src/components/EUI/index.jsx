@@ -5,10 +5,12 @@ import { PageLoader } from "neetoui";
 import sitesApi from "apis/sites";
 
 import Header from "./Header";
+import Login from "./Login";
 
 const EUI = () => {
   const [siteData, setSiteData] = useState({});
   const [loading, setLoading] = useState({});
+  const [showLoginPage, setShowLoginPage] = useState(true);
 
   useEffect(() => {
     fetchSiteDetails();
@@ -21,6 +23,7 @@ const EUI = () => {
         data: { site },
       } = await sitesApi.fetch();
       setSiteData(site);
+      setShowLoginPage(site.password !== null);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -36,7 +39,14 @@ const EUI = () => {
     );
   }
 
-  return <Header siteName={siteData.name} />;
+  return (
+    <>
+      <Header siteName={siteData.name} />
+      {showLoginPage && (
+        <Login setShowLoginPage={setShowLoginPage} siteData={siteData} />
+      )}
+    </>
+  );
 };
 
 export default EUI;
