@@ -29,8 +29,9 @@ const Edit = () => {
     }
   };
 
-  const handleSubmit = async values => {
+  const handleSubmit = async (values, { resetForm }) => {
     try {
+      resetForm();
       const newCategoryData = { ...values };
       newCategoryData.category_id = values.category_id.value;
       await articlesApi.update(article.slug, newCategoryData);
