@@ -6,6 +6,7 @@ import sitesApi from "apis/sites";
 
 import Header from "./Header";
 import Login from "./Login";
+import Sidebar from "./Sidebar";
 
 const EUI = () => {
   const [siteData, setSiteData] = useState({});
@@ -42,8 +43,10 @@ const EUI = () => {
   return (
     <>
       <Header siteName={siteData.name} />
-      {showLoginPage && (
+      {showLoginPage ? (
         <Login setShowLoginPage={setShowLoginPage} siteData={siteData} />
+      ) : (
+        <Sidebar />
       )}
     </>
   );
