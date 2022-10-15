@@ -55,75 +55,73 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, setFieldValue }) => (
-        <>
+        <Form className="mx-auto mt-8 w-6/12">
           <BlockNavigation />
-          <Form className="mx-auto mt-8 w-6/12">
-            <div className="my-5 flex gap-x-4">
-              <Input
-                required
-                className="mr-3 w-5/12"
-                label="Article Title"
-                name="title"
-                placeholder="Enter Title"
-              />
-              <Select
-                isSearchable
-                required
-                className="w-56"
-                label="Select Category"
-                name="category_id"
-                options={CATEGORY_OPTIONS}
-                placeholder="Select Category"
-              />
-            </div>
-            <Textarea
+          <div className="my-5 flex gap-x-4">
+            <Input
               required
-              label="Article Body"
-              name="body"
-              placeholder="Enter text"
-              rows={30}
+              className="mr-3 w-5/12"
+              label="Article Title"
+              name="title"
+              placeholder="Enter Title"
             />
-            <div className="mt-4 flex gap-2">
-              <div className="flex">
-                <Button
-                  className="mr-px"
-                  disabled={isSubmitting}
-                  label={status}
-                  loading={isSubmitting}
-                  name="status"
-                  size="medium"
-                  style="primary"
-                  type="submit"
-                  onClick={() => setSubmitted(true)}
-                />
-                <Dropdown>
-                  <Menu>
-                    {statusListItems.map((item, idx) => (
-                      <MenuItem.Button
-                        key={idx}
-                        onClick={() => {
-                          setFieldValue(
-                            "status",
-                            item !== "Save Draft" ? "Published" : "Draft"
-                          );
-                          setStatus(item);
-                        }}
-                      >
-                        {item}
-                      </MenuItem.Button>
-                    ))}
-                  </Menu>
-                </Dropdown>
-              </div>
+            <Select
+              isSearchable
+              required
+              className="w-56"
+              label="Select Category"
+              name="category_id"
+              options={CATEGORY_OPTIONS}
+              placeholder="Select Category"
+            />
+          </div>
+          <Textarea
+            required
+            label="Article Body"
+            name="body"
+            placeholder="Enter text"
+            rows={30}
+          />
+          <div className="mt-4 flex gap-2">
+            <div className="flex">
               <Button
-                label="Cancel"
-                style="text"
-                type="reset"
-                onClick={() => history.push("/")}
+                className="mr-px"
+                disabled={isSubmitting}
+                label={status}
+                loading={isSubmitting}
+                name="status"
+                size="medium"
+                style="primary"
+                type="submit"
+                onClick={() => setSubmitted(true)}
               />
+              <Dropdown>
+                <Menu>
+                  {statusListItems.map((item, idx) => (
+                    <MenuItem.Button
+                      key={idx}
+                      onClick={() => {
+                        setFieldValue(
+                          "status",
+                          item !== "Save Draft" ? "Published" : "Draft"
+                        );
+                        setStatus(item);
+                      }}
+                    >
+                      {item}
+                    </MenuItem.Button>
+                  ))}
+                </Menu>
+              </Dropdown>
             </div>
-          </Form>
-        </>
+            <Button
+              label="Cancel"
+              style="text"
+              type="reset"
+              onClick={() => history.push("/")}
+            />
+          </div>
+        </Form>
       )}
     </Formik>
   );
