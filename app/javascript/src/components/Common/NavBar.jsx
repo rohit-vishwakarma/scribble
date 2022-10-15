@@ -24,7 +24,13 @@ const NavBar = () => (
         <Typography style="h4">Settings</Typography>
       </NavLink>
     </div>
-    <Button icon={ExternalLink} label="preview" style="secondary" />
+    <Button
+      icon={ExternalLink}
+      label="preview"
+      style="secondary"
+      target="_blank"
+      to="/public"
+    />
   </nav>
 );
 
