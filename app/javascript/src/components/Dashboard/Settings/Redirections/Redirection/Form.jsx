@@ -10,6 +10,12 @@ import redirectionsApi from "apis/redirections";
 const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
   const handleSubmit = async values => {
     try {
+      if (values.from === values.to) {
+        Toastr.warning("From path and To path must not be same.");
+
+        return;
+      }
+
       if (isEdit) {
         await redirectionsApi.update(initialValues.id, {
           from: values.from,
@@ -31,8 +37,8 @@ const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <div className="my-2 w-full">
         <FormikForm className="flex">
-          <Input required className="mx-2 w-2/5" name="from" type="url" />
-          <Input required className="w-2/5" name="to" type="url" />
+          <Input required className="mx-2 w-2/5" name="from" type="text" />
+          <Input required className="w-2/5" name="to" type="text" />
           <Button
             icon={Close}
             size={13}
