@@ -12,11 +12,13 @@ const Row = ({ redirection, setSelectedRedirectionId, refetch }) => {
     <>
       <td className="w-2/5">
         <Typography className="text-gray-700" style="h5">
+          {window.location.origin}
           {redirection.from}
         </Typography>
       </td>
       <td className="w-2/5">
         <Typography className="text-gray-700" style="h5">
+          {window.location.origin}
           {redirection.to}
         </Typography>
       </td>

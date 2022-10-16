@@ -4,7 +4,7 @@ import Form from "./Form";
 
 const Add = ({ setShowAdd, refetch }) => (
   <Form
-    initialValues={{ from: "", to: "" }}
+    initialValues={{ from: "/", to: "/" }}
     isEdit={false}
     refetch={refetch}
     setShowRedirection={setShowAdd}
