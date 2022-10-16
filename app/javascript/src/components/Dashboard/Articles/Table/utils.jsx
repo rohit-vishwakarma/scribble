@@ -1,13 +1,11 @@
 import React from "react";
 
-import dayjs from "dayjs";
 import { Delete, Edit } from "neetoicons";
 import { Typography, Button } from "neetoui";
 
-import { ColumnsListItems } from "../constants";
+import { formatTimeStampToDate } from "components/util";
 
-export const formatCreatedTimeToDate = dateTime =>
-  dayjs(dateTime).format("MMMM Do, YYYY");
+import { ColumnsListItems } from "../constants";
 
 export const buildArticleTableColumnData = handleDelete => {
   const ArticleColumnsData = [
@@ -34,7 +32,7 @@ export const buildArticleTableColumnData = handleDelete => {
           </Typography>
         ) : (
           <Typography className="text-gray-800" style="h5">
-            {formatCreatedTimeToDate(updated_at)}
+            {formatTimeStampToDate(updated_at)}
           </Typography>
         ),
     },
