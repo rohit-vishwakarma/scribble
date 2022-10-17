@@ -1,5 +1,4 @@
-json.site @site,
+json.extract! @site,
   :id,
   :name,
-  :password_digest,
   :authentication_token

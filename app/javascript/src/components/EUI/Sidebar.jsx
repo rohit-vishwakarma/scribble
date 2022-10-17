@@ -9,8 +9,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import articlesApi from "apis/articles";
-import categoriesApi from "apis/categories";
+import { articlesApi, categoriesApi } from "apis/index";
 
 import Article from "./Article";
 
@@ -28,7 +27,10 @@ const Sidebar = () => {
   }, []);
 
   const setIndexOfSelectedCategory = categories => {
-    const currentSlug = window.location.pathname.split("/")[2];
+    const currentPathSplitBySlash = window.location.pathname.split("/");
+    const lastIndex = currentPathSplitBySlash.length - 1;
+    const currentSlug = currentPathSplitBySlash[lastIndex];
+
     categories.forEach((category, idx) =>
       category.publishedArticles.filter(article => {
         const isSlugMatched = article.slug === currentSlug;
