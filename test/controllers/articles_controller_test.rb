@@ -87,6 +87,43 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Title can't be blank and Title can't be blank"
+    assert_equal response_json["error"], "Title can't be blank"
+  end
+
+  def test_should_create_article
+    post articles_path,
+      params: {
+        article: {
+          title: "The Title", category_id: @category.id, user_id: @user.id,
+          body: "This is the test body"
+        }
+      }
+    assert_response :success
+  end
+
+  def test_shouldnt_create_article_without_title
+    post articles_path,
+      params: { article: { title: "", category_id: @category.id, user_id: @user.id, body: "This is the test body" } }
+    assert_response :unprocessable_entity
+
+    response_json = response.parsed_body
+    assert_equal response_json["error"], "Title can't be blank"
+  end
+
+  def test_shouldnt_create_article_without_body
+    post articles_path,
+      params: { article: { title: "My Title", category_id: @category.id, user_id: @user.id, body: "" } }
+    assert_response :unprocessable_entity
+
+    response_json = response.parsed_body
+    assert_equal response_json["error"], "Body can't be blank"
+  end
+
+  def test_shouldnt_create_article_without_category
+    post articles_path, params: { article: { title: "My Title", user_id: @user.id, body: "This is the test body" } }
+    assert_response :unprocessable_entity
+
+    response_json = response.parsed_body
+    assert_equal response_json["error"], "Category must exist"
   end
 end
