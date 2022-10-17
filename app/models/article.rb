@@ -7,7 +7,7 @@ class Article < ApplicationRecord
   belongs_to :user
 
   validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
-  validates :title, :status, :body, presence: true
+  validates :status, :body, presence: true
   validates :slug, uniqueness: true
   validate :slug_not_changed
 
