@@ -11,9 +11,7 @@ export const setAuthHeaders = (setLoading = () => null) => {
       .getAttribute("content"),
   };
   const token = localStorage.getItem("authToken");
-  const email = localStorage.getItem("authEmail");
-  if (token && email) {
-    axios.defaults.headers["X-Auth-Email"] = email;
+  if (token) {
     axios.defaults.headers["X-Auth-Token"] = token;
   }
   setLoading(false);

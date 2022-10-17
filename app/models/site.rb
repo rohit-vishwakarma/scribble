@@ -9,4 +9,7 @@ class Site < ApplicationRecord
       with: /[^wd]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))/,
       message: "requires 1 letter and 1 number"
     }, if: -> { password.present? }
+
+  has_secure_password validations: false
+  has_secure_token :authentication_token
 end

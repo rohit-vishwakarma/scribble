@@ -7,8 +7,17 @@ class SitesController < ApplicationController
     render
   end
 
+  def create
+    @site = Site.first
+    unless @site.authenticate(params[:password])
+      render status: :unauthorized, json: { message: "Wrong password." }
+    end
+  end
+
   def update
-    @site.update!(site_params)
+    @site.name = params[:name]
+    @site.password = params[:password]
+    @site.save!
     render status: :ok, json: { message: "Site is updated successfully." }
   end
 

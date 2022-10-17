@@ -32,7 +32,8 @@ const General = () => {
         name: values.sitename,
         password: showSetPassword ? passwordTerm : null,
       });
-      fetchSiteDetails();
+      localStorage.setItem("authToken", JSON.stringify({ token: null }));
+      window.location.reload();
       if (!showSetPassword) setPasswordTerm("");
     } catch (error) {
       logger.error(error);
@@ -46,9 +47,9 @@ const General = () => {
         data: { site },
       } = await sitesApi.fetch();
       setSiteData(site);
-      if (site.password !== null) {
+      if (site.password_digest !== null) {
         setShowSetPassword(true);
-        setPasswordTerm(site.password);
+        setPasswordTerm(site.password_digest);
       }
     } catch (error) {
       logger.error(error);
