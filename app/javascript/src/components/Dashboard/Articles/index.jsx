@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { PageLoader, Typography } from "neetoui";
+import { PageLoader } from "neetoui";
 import { Container } from "neetoui/layouts";
 
 import articlesApi from "apis/articles";
@@ -69,9 +69,6 @@ const Articles = () => {
           searchArticleTerm={searchArticleTerm}
           setSearchArticleTerm={setSearchArticleTerm}
         />
-        <Typography className="pb-6" style="h4">
-          {articles.length}&nbsp;Articles
-        </Typography>
         {articles.length ? (
           <div className="flex w-full flex-col">
             <Table
