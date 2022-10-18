@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 
+import { Formik, Form } from "formik";
 import { Plus, Search, Close, Check } from "neetoicons";
-import { Typography, Input, Toastr } from "neetoui";
+import { Typography, Toastr, Button } from "neetoui";
+import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
 
 import categoriesApi from "apis/categories";
@@ -15,9 +17,7 @@ const Menu = ({
 }) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
-  const [addValue, setAddValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
-  const [categoriesList, setCategoriesList] = useState([]);
   const [activeStatus, setActiveStatus] = useState("All");
   const [activeCategory, setActiveCategory] = useState(null);
   const selectedArticles = useMemo(() => articles, []);
@@ -40,30 +40,14 @@ const Menu = ({
     },
   ];
 
-  useEffect(() => {
-    if (searchValue === "") {
-      setCategoriesList(categories);
-
-      return;
-    }
-    const searchedCategoriesList = categories.filter(category =>
-      category.name
-        .toLowerCase()
-        .replaceAll(" ", "")
-        .includes(searchValue.toLowerCase().replaceAll(" ", ""))
-    );
-    setCategoriesList(searchedCategoriesList);
-  }, [searchValue]);
-
-  const handleClick = async () => {
+  const handleSubmit = async values => {
     try {
       setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
-      if (addValue === "") return;
-      await categoriesApi.create({ name: addValue });
-      setAddValue("");
+      if (values.name === "") return;
+      await categoriesApi.create({ name: values.name });
       refetch();
     } catch (error) {
-      Toastr.warning("Category already exist.");
+      Toastr.warning(error.response.data.error);
       logger.error(error);
     }
   };
@@ -107,7 +91,7 @@ const Menu = ({
             icon: Search,
             onClick: () => {
               setIsAddCollapsed(true);
-              setAddValue("");
+              setSearchValue("");
               setIsSearchCollapsed(isSearchCollapsed => !isSearchCollapsed);
             },
           },
@@ -134,24 +118,40 @@ const Menu = ({
         collapse={isSearchCollapsed}
         value={searchValue}
         onChange={e => setSearchValue(e.target.value)}
-        onCollapse={() => setIsSearchCollapsed(true)}
+        onCollapse={() => {
+          setIsSearchCollapsed(true);
+          setSearchValue("");
+        }}
       />
       {!isAddCollapsed && (
-        <Input
-          suffix={<Check className="cursor-pointer" onClick={handleClick} />}
-          value={addValue}
-          onChange={e => setAddValue(e.target.value)}
-        />
+        <div>
+          <Formik initialValues={{ name: "" }} onSubmit={handleSubmit}>
+            <Form>
+              <FormikInput
+                className="mb-5"
+                name="name"
+                suffix={<Button icon={Check} style="text" type="submit" />}
+              />
+            </Form>
+          </Formik>
+        </div>
       )}
-      {categoriesList.map(category => (
-        <MenuBar.Block
-          active={category.id === activeCategory}
-          count={category.count}
-          key={category.id}
-          label={category.name}
-          onClick={() => handleActiveCategory(category.id)}
-        />
-      ))}
+      {categories
+        .filter(category =>
+          category.name
+            .toLowerCase()
+            .replaceAll(" ", "")
+            .includes(searchValue.toLowerCase().replaceAll(" ", ""))
+        )
+        .map(category => (
+          <MenuBar.Block
+            active={category.id === activeCategory}
+            count={category.count}
+            key={category.id}
+            label={category.name}
+            onClick={() => handleActiveCategory(category.id)}
+          />
+        ))}
     </MenuBar>
   );
 };
