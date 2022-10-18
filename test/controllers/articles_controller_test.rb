@@ -94,8 +94,8 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     post articles_path,
       params: {
         article: {
-          title: "The Title", category_id: @category.id, user_id: @user.id,
-          body: "This is the test body"
+          title: @article.title, category_id: @category.id, user_id: @user.id,
+          body: @article.body
         }
       }
     assert_response :success
@@ -103,7 +103,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   def test_shouldnt_create_article_without_title
     post articles_path,
-      params: { article: { title: "", category_id: @category.id, user_id: @user.id, body: "This is the test body" } }
+      params: { article: { title: "", category_id: @category.id, user_id: @user.id, body: @article.body } }
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
@@ -112,7 +112,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   def test_shouldnt_create_article_without_body
     post articles_path,
-      params: { article: { title: "My Title", category_id: @category.id, user_id: @user.id, body: "" } }
+      params: { article: { title: @article.title, category_id: @category.id, user_id: @user.id, body: "" } }
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
@@ -120,7 +120,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_shouldnt_create_article_without_category
-    post articles_path, params: { article: { title: "My Title", user_id: @user.id, body: "This is the test body" } }
+    post articles_path, params: { article: { title: @article.title, user_id: @user.id, body: @article.body } }
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
