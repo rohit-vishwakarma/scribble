@@ -30,7 +30,7 @@ class ArticlesController < ApplicationController
   end
 
   def bulk_update
-    @articles.update(category_id: params[:update_id])
+    @articles.update(category_id: params[:new_id])
     render status: :ok, json: { message: "Articles are updated successfully." }
   end
 
@@ -45,6 +45,6 @@ class ArticlesController < ApplicationController
     end
 
     def load_articles!
-      @articles = Article.all.where(category_id: params[:delete_id])
+      @articles = Article.all.where(category_id: params[:current_id])
     end
 end

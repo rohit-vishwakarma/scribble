@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Warning } from "neetoicons";
+import { Warning, Info } from "neetoicons";
 import {
   PageLoader,
   Modal,
@@ -23,7 +23,6 @@ const DeleteAlert = ({
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState(null);
-  const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -42,24 +41,23 @@ const DeleteAlert = ({
   };
 
   const handleDelete = async () => {
-    if (moveToCategory === null) {
-      setShowWarning(true);
-
-      return;
-    }
     try {
       if (categories.length === 1) {
         await categoriesApi.update(selectedDeleteCategory.id, {
           name: "General",
         });
+      } else if (selectedDeleteCategory.count === 0) {
+        await categoriesApi.destroy(selectedDeleteCategory.id);
       } else {
         await articlesApi.bulkUpdate({
-          delete_id: selectedDeleteCategory.id,
-          update_id: moveToCategory.value,
+          current_id: selectedDeleteCategory.id,
+          new_id: moveToCategory.value,
         });
         await categoriesApi.destroy(selectedDeleteCategory.id);
       }
-      Toastr.success("Category is deleted successfully.");
+      Toastr.success(
+        `Category ${selectedDeleteCategory.name} is deleted successfully.`
+      );
       setSelectedDeleteCategory({});
       refetch();
     } catch (error) {
@@ -97,31 +95,52 @@ const DeleteAlert = ({
           category. This action cannot be undone. Are you sure you wish to
           continue?
         </Typography>
-        <Callout className="mb-3" icon={Warning} style="danger">
-          Category "{selectedDeleteCategory.name}" has&nbsp;
-          {selectedDeleteCategory.count} articles. Before this category can be
-          deleted, these articles needs to be moved to another category.
-        </Callout>
-        <Select
-          isSearchable
-          required
-          label="Select a category to move these articles into"
-          name="category_id"
-          options={CATEGORY_OPTIONS}
-          placeholder="Select Category"
-          onChange={e => {
-            setShowWarning(false);
-            setMoveToCategory(e);
-          }}
-        />
-        {showWarning && (
-          <Callout className="mt-3" icon={Warning} style="warning">
-            Please select a category first to move the articles.
+        {selectedDeleteCategory.count > 0 || categories.length === 1 ? (
+          <>
+            {categories.length === 1 ? (
+              <Callout className="mb-3" icon={Info} style="info">
+                Category "{selectedDeleteCategory.name}" has&nbsp;
+                {selectedDeleteCategory.count === 0
+                  ? 'no article. Select category "General" to delete the category.'
+                  : `${selectedDeleteCategory.count} articles. You have no other category to move articles. Select category "General" to move all articles.`}
+              </Callout>
+            ) : (
+              <Callout className="mb-3" icon={Warning} style="danger">
+                Category "{selectedDeleteCategory.name}" has&nbsp;
+                {selectedDeleteCategory.count} articles. Before this category
+                can be deleted, these articles needs to be moved to another
+                category. Select category "General" to move all articles.
+              </Callout>
+            )}
+            <Select
+              isSearchable
+              required
+              label="Select a category"
+              name="category_id"
+              options={CATEGORY_OPTIONS}
+              placeholder="Select Category"
+              onChange={e => setMoveToCategory(e)}
+            />
+          </>
+        ) : (
+          <Callout className="mt-3" icon={Info} style="info">
+            Category "{selectedDeleteCategory.name}" has no articles. Click
+            proceed to delete this category.
           </Callout>
         )}
       </Modal.Body>
       <Modal.Footer className="space-x-2">
-        <Button label="Continue" style="danger" onClick={handleDelete} />
+        <Button
+          label="Proceed"
+          style="danger"
+          disabled={
+            (selectedDeleteCategory.count !== 0 ||
+              (selectedDeleteCategory.count === 0 &&
+                categories.length === 1)) &&
+            !moveToCategory
+          }
+          onClick={handleDelete}
+        />
         <Button label="Cancel" style="text" onClick={onClose} />
       </Modal.Footer>
     </Modal>
