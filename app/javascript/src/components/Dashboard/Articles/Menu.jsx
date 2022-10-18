@@ -43,7 +43,6 @@ const Menu = ({
   const handleSubmit = async values => {
     try {
       setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
-      if (values.name === "") return;
       await categoriesApi.create({ name: values.name });
       refetch();
     } catch (error) {
