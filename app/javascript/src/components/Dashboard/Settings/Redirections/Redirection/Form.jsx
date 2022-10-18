@@ -22,7 +22,6 @@ const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
           to: values.to,
         });
         setShowRedirection(null);
-        Toastr.success("Redirection details are updated.");
       } else {
         setShowRedirection(false);
         await redirectionsApi.create(values);

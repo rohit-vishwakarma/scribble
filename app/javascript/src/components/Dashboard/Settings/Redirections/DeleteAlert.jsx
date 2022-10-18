@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Alert, Toastr } from "neetoui";
+import { Alert } from "neetoui";
 
 import redirectionsApi from "apis/redirections";
 
@@ -11,7 +11,6 @@ const DeleteAlert = ({ refetch, onClose, selectedDeleteRedirection }) => {
     try {
       setDeleting(true);
       await redirectionsApi.destroy(selectedDeleteRedirection.id);
-      Toastr.success("Redirection Link is deleted Successfully");
       onClose();
       refetch();
     } catch (error) {

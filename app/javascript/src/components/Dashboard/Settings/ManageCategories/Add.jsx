@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Check } from "neetoicons";
-import { Button, Toastr } from "neetoui";
+import { Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 
 import categoriesApi from "apis/categories";
@@ -20,7 +20,6 @@ const Add = ({ refetch }) => {
       setAddValue("");
       refetch();
     } catch (error) {
-      Toastr.warning("Category already exist.");
       logger.error(error);
     }
   };
