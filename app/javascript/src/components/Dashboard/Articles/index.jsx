@@ -11,6 +11,7 @@ import EmptyState from "./EmptyState";
 import Header from "./Header";
 import MenuBar from "./Menu";
 import Table from "./Table";
+import { searchArticlesByTitle } from "./utils";
 
 const Articles = () => {
   const [loading, setLoading] = useState(true);
@@ -18,6 +19,7 @@ const Articles = () => {
   const [categories, setCategories] = useState([]);
   const [columnsList, setColumnsList] = useState(ColumnsListItems);
   const [articlesCount, setArticlesCount] = useState({});
+  const [searchArticleTerm, setSearchArticleTerm] = useState("");
 
   const handleCheckedColumns = selectedIdx => {
     const items = ColumnsListItems;
@@ -62,17 +64,20 @@ const Articles = () => {
       />
       <Container>
         <Header
-          articles={articles}
           columnsList={columnsList}
           handleCheckedColumns={handleCheckedColumns}
-          setArticles={setArticles}
+          searchArticleTerm={searchArticleTerm}
+          setSearchArticleTerm={setSearchArticleTerm}
         />
         <Typography className="pb-6" style="h4">
           {articles.length}&nbsp;Articles
         </Typography>
         {articles.length ? (
           <div className="flex w-full flex-col">
-            <Table articles={articles} refetch={fetchArticlesAndCategories} />
+            <Table
+              articles={searchArticlesByTitle(articles, searchArticleTerm)}
+              refetch={fetchArticlesAndCategories}
+            />
           </div>
         ) : (
           <EmptyState
