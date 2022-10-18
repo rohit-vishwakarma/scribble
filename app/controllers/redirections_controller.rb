@@ -10,18 +10,24 @@ class RedirectionsController < ApplicationController
 
   def create
     redirection = Redirection.new(redirection_params)
-    redirection.save!
-    render status: :ok, json: { message: "Redirection is created successfully." }
+    if redirection.save!
+      respond_with_success(t("successfully_created", entity: Redirection))
+    else
+      respond_with_error(t("unprocessable_entity", entity: From))
+    end
   end
 
   def destroy
     @redirection.destroy!
-    render status: :ok, json: { message: "Redirection is deleted successfully." }
+    respond_with_success(t("successfully_deleted", entity: Redirection))
   end
 
   def update
-    @redirection.update!(redirection_params)
-    render status: :ok, json: { message: "Redirection is updated successfully." }
+    if @redirection.update!(redirection_params)
+      respond_with_success(t("successfully_updated", entity: Redirection))
+    else
+      respond_with_error(t("unprocessable_entity", entity: From))
+    end
   end
 
   private

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Search, Close, Check } from "neetoicons";
-import { Typography, Toastr, Button } from "neetoui";
+import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
 
@@ -47,7 +47,6 @@ const Menu = ({
       await categoriesApi.create({ name: values.name });
       refetch();
     } catch (error) {
-      Toastr.warning(error.response.data.error);
       logger.error(error);
     }
   };

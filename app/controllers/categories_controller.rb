@@ -11,20 +11,20 @@ class CategoriesController < ApplicationController
   def create
     category = Category.new(category_params)
     if category.save!
-      render status: :ok, json: { message: "Category is created successfully." }
+      respond_with_success(t("successfully_created", entity: Category))
    else
-     render status: :unprocessable_entity, json: { notice: "Category already exist" }
+     respond_with_error(t("unprocessable_entity", entity: Category))
     end
   end
 
   def update
     @category.update!(category_params)
-    render status: :ok, json: { message: "Your category is updated successfully." }
+    respond_with_success(t("successfully_updated", entity: Category))
   end
 
   def destroy
     @category.destroy!
-    render status: :ok, json: { message: "Category is deleted successfully." }
+    respond_with_success(t("successfully_deleted", entity: Category))
   end
 
   def position_update

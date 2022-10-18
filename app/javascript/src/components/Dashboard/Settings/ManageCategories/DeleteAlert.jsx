@@ -8,7 +8,6 @@ import {
   Select,
   Typography,
   Callout,
-  Toastr,
 } from "neetoui";
 
 import articlesApi from "apis/articles";
@@ -55,9 +54,6 @@ const DeleteAlert = ({
         });
         await categoriesApi.destroy(selectedDeleteCategory.id);
       }
-      Toastr.success(
-        `Category ${selectedDeleteCategory.name} is deleted successfully.`
-      );
       setSelectedDeleteCategory({});
       refetch();
     } catch (error) {

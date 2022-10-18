@@ -12,17 +12,17 @@ class ArticlesController < ApplicationController
   def create
     article = Article.new(article_params)
     article.save!
-    render status: :ok, json: { notice: "Article is created successfully." }
+    respond_with_success(t("successfully_created", entity: Article))
   end
 
   def update
     @article.update!(article_params)
-    render status: :ok, json: { message: "Article is updated successfully." }
+    respond_with_success(t("successfully_updated", entity: Article))
   end
 
   def destroy
     @article.destroy!
-    render status: :ok, json: { message: "Article is deleted successfully." }
+    respond_with_success(t("successfully_deleted", entity: Article))
   end
 
   def show

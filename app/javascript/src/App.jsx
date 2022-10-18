@@ -9,7 +9,12 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { setAuthHeaders, redirectionsApi, sitesApi } from "apis/index";
+import {
+  setAuthHeaders,
+  registerIntercepts,
+  redirectionsApi,
+  sitesApi,
+} from "apis/index";
 import { initializeLogger } from "common/logger";
 import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
 
@@ -21,6 +26,7 @@ const App = () => {
 
   useEffect(() => {
     initializeLogger();
+    registerIntercepts();
     setAuthHeaders(setLoading);
     fetchRedirectionsList();
     fetchSiteDetails();

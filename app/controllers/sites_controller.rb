@@ -18,7 +18,7 @@ class SitesController < ApplicationController
     @site.name = params[:name]
     @site.password = params[:password]
     @site.save!
-    render status: :ok, json: { message: "Site is updated successfully." }
+    respond_with_success(t("successfully_updated", entity: Site))
   end
 
   private
