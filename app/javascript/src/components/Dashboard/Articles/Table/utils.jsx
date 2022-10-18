@@ -3,7 +3,7 @@ import React from "react";
 import { Delete, Edit } from "neetoicons";
 import { Typography, Button } from "neetoui";
 
-import { formatTimeStampToDate } from "components/util";
+import { formatTimeStampToDate } from "components/utils";
 
 import { ColumnsListItems } from "../constants";
 

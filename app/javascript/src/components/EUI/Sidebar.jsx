@@ -12,6 +12,7 @@ import {
 import { articlesApi, categoriesApi } from "apis/index";
 
 import Article from "./Article";
+import { setIndexOfSelectedCategory, findDefaultPreviewPath } from "./utils";
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
@@ -26,30 +27,6 @@ const Sidebar = () => {
     fetchCategoriesAndArticles();
   }, []);
 
-  const setIndexOfSelectedCategory = categories => {
-    const currentPathSplitBySlash = window.location.pathname.split("/");
-    const lastIndex = currentPathSplitBySlash.length - 1;
-    const currentSlug = currentPathSplitBySlash[lastIndex];
-
-    categories.forEach((category, idx) =>
-      category.publishedArticles.filter(article => {
-        const isSlugMatched = article.slug === currentSlug;
-        if (isSlugMatched) setSelectedCategory(idx);
-
-        return isSlugMatched;
-      })
-    );
-  };
-
-  const findDefaultPreviewPath = categories => {
-    const defaultCategory = categories.find(
-      category => category.publishedArticles.length !== 0
-    );
-
-    setDefaultPreviewPath(defaultCategory.publishedArticles[0].slug);
-    setSelectedCategory(categories.indexOf(defaultCategory));
-  };
-
   const fetchCategoriesAndArticles = async () => {
     try {
       setLoading(true);
@@ -59,8 +36,12 @@ const Sidebar = () => {
       } = await articlesApi.fetch();
       setCategoriesAndArticles(fetchedCategories.data);
       setPublishedArticles(publishedArticles);
-      findDefaultPreviewPath(fetchedCategories.data);
-      setIndexOfSelectedCategory(fetchedCategories.data);
+      findDefaultPreviewPath(
+        fetchedCategories.data,
+        setDefaultPreviewPath,
+        setSelectedCategory
+      );
+      setIndexOfSelectedCategory(fetchedCategories.data, setSelectedCategory);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -90,6 +71,7 @@ const Sidebar = () => {
                   className="neeto-ui-text-gray-400 mx-6"
                   key={article.slug}
                   to={`${url}/${article.slug}`}
+                  onClick={() => setSelectedCategory(idx)}
                 >
                   <Typography style="h5">{article.title}</Typography>
                 </NavLink>
@@ -108,6 +90,15 @@ const Sidebar = () => {
         ))}
         <Redirect exact from="/public" to={`/public/${defaultPreviewPath}`} />
       </Switch>
+      {selectedCategory === -1 && (
+        <div className="container mx-auto my-8 flex flex-col items-center">
+          <div className="max-w-md text-center">
+            <Typography className="text-xl text-gray-700" style="h2">
+              No Article Found
+            </Typography>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

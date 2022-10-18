@@ -2,7 +2,7 @@ import React from "react";
 
 import { Typography } from "neetoui";
 
-import { formatTimeStampToDate } from "components/util";
+import { formatTimeStampToDate } from "components/utils";
 
 const Article = ({ article }) => {
   const paragraphs = article.body.split("\n");
