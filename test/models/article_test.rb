@@ -7,15 +7,13 @@ class ArticleTest < ActiveSupport::TestCase
   #   assert true
   # end
   def setup
-    @category = create(:category)
-    @user = create(:user)
-    @article = create(:article, category: @category, user: @user)
+    @category = build(:category)
+    @user = build(:user)
+    @article = build(:article, category: @category, user: @user)
   end
 
   def test_values_of_created_at_and_updated_at
-    article = Article.new(
-      title: "This is a test Article", category: @category, user: @user,
-      body: "This is test article body")
+    article = @article
     assert_nil article.created_at
     assert_nil article.updated_at
 
@@ -62,10 +60,10 @@ class ArticleTest < ActiveSupport::TestCase
   def test_incremental_slug_generation_for_articles_with_duplicate_two_worded_titles
     first_article = Article.create!(
       title: "test article", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
     second_article = Article.create!(
       title: "test article", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
 
     assert_equal "test-article", first_article.slug
     assert_equal "test-article-2", second_article.slug
@@ -74,10 +72,10 @@ class ArticleTest < ActiveSupport::TestCase
   def test_incremental_slug_generation_for_articles_with_duplicate_hyphenated_titles
     first_article = Article.create!(
       title: "test-article", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
     second_article = Article.create!(
       title: "test-article", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
 
     assert_equal "test-article", first_article.slug
     assert_equal "test-article-2", second_article.slug
@@ -86,10 +84,10 @@ class ArticleTest < ActiveSupport::TestCase
   def test_slug_generation_for_articles_having_titles_one_being_prefix_of_the_other
     first_article = Article.create!(
       title: "hyperactive", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
     second_article = Article.create!(
       title: "hypertension", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
 
     assert_equal "hyperactive", first_article.slug
     assert_equal "hypertension", second_article.slug
@@ -98,7 +96,7 @@ class ArticleTest < ActiveSupport::TestCase
   def test_error_raised_for_duplicate_slug
     another_test_article = Article.create!(
       title: "another test article", category: @category, user: @user,
-      body: "This is test article body")
+      body: @article.body)
 
     assert_raises ActiveRecord::RecordInvalid do
       another_test_article.update!(slug: @article.slug)
@@ -115,10 +113,10 @@ class ArticleTest < ActiveSupport::TestCase
 
   def test_slug_suffix_is_maximum_slug_count_plus_one_if_two_or_more_slugs_already_exist
     title = "test-article"
-    first_article = Article.create!(title: title, category: @category, user: @user, body: "This is test article body")
-    second_article = Article.create!(title: title, category: @category, user: @user, body: "This is test article body")
-    third_article = Article.create!(title: title, category: @category, user: @user, body: "This is test article body")
-    fourth_article = Article.create!(title: title, category: @category, user: @user, body: "This is test article body")
+    first_article = Article.create!(title: title, category: @category, user: @user, body: @article.body)
+    second_article = Article.create!(title: title, category: @category, user: @user, body: @article.body)
+    third_article = Article.create!(title: title, category: @category, user: @user, body: @article.body)
+    fourth_article = Article.create!(title: title, category: @category, user: @user, body: @article.body)
 
     assert_equal fourth_article.slug, "#{title.parameterize}-4"
 
@@ -126,12 +124,12 @@ class ArticleTest < ActiveSupport::TestCase
 
     expected_slug_suffix_for_new_article = fourth_article.slug.split("-").last.to_i + 1
 
-    new_article = Article.create!(title: title, category: @category, user: @user, body: "This is test article body")
+    new_article = Article.create!(title: title, category: @category, user: @user, body: @article.body)
     assert_equal new_article.slug, "#{title.parameterize}-#{expected_slug_suffix_for_new_article}"
   end
 
   def test_creates_multiple_articles_with_unique_slug
-    articles = create_list(:article, 10, category: @category, user: @user, body: "This is test article body")
+    articles = create_list(:article, 10, category: @category, user: @user, body: @article.body)
     slugs = articles.pluck(:slug)
     assert_equal slugs.uniq, slugs
   end

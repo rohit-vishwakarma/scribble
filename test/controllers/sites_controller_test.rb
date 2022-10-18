@@ -71,7 +71,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_access_with_valid_credentials
     @site.save!
-    post sites_path, params: { password: @site.password }, as: :json
+    post sites_path, params: { password: @site.password }
     assert_response :success
 
     response_json = response.parsed_body
@@ -80,7 +80,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_not_access_with_invalid_credentials
     @site.save!
-    post sites_path, params: { password: "wrong password" }, as: :json
+    post sites_path, params: { password: "wrong password" }
     assert_response :unauthorized
 
     response_json = response.parsed_body
