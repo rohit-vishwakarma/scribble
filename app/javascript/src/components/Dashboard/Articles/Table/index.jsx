@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Table as NeetoUITable } from "neetoui";
+import { Table as NeetoUITable, Typography } from "neetoui";
 
 import { buildArticleTableColumnData } from "./utils";
 
@@ -17,23 +17,29 @@ const Table = ({ articles, refetch, handleEdit }) => {
   };
 
   return (
-    <div className="w-full">
-      <NeetoUITable
-        columnData={buildArticleTableColumnData(handleDelete, handleEdit)}
-        currentPageNumber={currentPageNumber}
-        defaultPageSize={10}
-        handlePageChange={e => setCurrentPageNumber(e)}
-        rowData={articles}
-      />
-      {showDeleteAlert && (
-        <DeleteAlert
-          refetch={refetch}
-          selectedDeleteArticle={selectedDeleteArticle}
-          setSelectedDeleteArticle={setSelectedDeleteArticle}
-          onClose={() => setShowDeleteAlert(false)}
+    <>
+      <Typography className="pb-6" style="h4">
+        {articles.length}
+        {articles.length > 1 ? " Articles" : " Article"}
+      </Typography>
+      <div className="w-full">
+        <NeetoUITable
+          columnData={buildArticleTableColumnData(handleDelete, handleEdit)}
+          currentPageNumber={currentPageNumber}
+          defaultPageSize={10}
+          handlePageChange={e => setCurrentPageNumber(e)}
+          rowData={articles}
         />
-      )}
-    </div>
+        {showDeleteAlert && (
+          <DeleteAlert
+            refetch={refetch}
+            selectedDeleteArticle={selectedDeleteArticle}
+            setSelectedDeleteArticle={setSelectedDeleteArticle}
+            onClose={() => setShowDeleteAlert(false)}
+          />
+        )}
+      </div>
+    </>
   );
 };
 
