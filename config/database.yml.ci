@@ -1,18 +1,15 @@
 default: &default
   adapter: postgresql
+  host: 127.0.0.1
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: scribble_by_rohit_vishwakarma_development
+  username: scribble_by_rohit_vishwakarma
+  password: <%= ENV['SCRIBBLE_BY_ROHIT_VISHWAKARMA_DATABASE_PASSWORD'] %>
 
 test:
   <<: *default
+  user: postgres
   database: scribble_by_rohit_vishwakarma_test<%= ENV['CIRCLE_NODE_INDEX'] %>
-
-production:
-  <<: *default
-  database: scribble_by_rohit_vishwakarma_production
-  username: scribble_by_rohit_vishwakarma
-  password: <%= ENV['SCRIBBLE_BY_ROHIT_VISHWAKARMA_DATABASE_PASSWORD'] %>
