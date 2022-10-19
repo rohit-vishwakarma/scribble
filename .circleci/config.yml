@@ -4,8 +4,8 @@ jobs:
     #No. of servers/machines
     parallelism: 1
     docker:
-      - image: cimg/ruby:3.0.2-node
-      - image: cimg/postgres:9.6
+      - image: circleci/ruby:3.0.2-node
+      - image: circleci/postgres:9.6
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
 
@@ -18,8 +18,7 @@ jobs:
 
     steps:
       - checkout
-      - run: gem install bundler:2.2.20
-      - run: sudo apt-get install postgresql-client
+      - run: gem install bundler:2.1.4
       # Bundle install
       - run:
           bundle check --path=vendor/bundle || bundle install
