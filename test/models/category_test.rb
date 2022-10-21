@@ -3,15 +3,8 @@
 require "test_helper"
 
 class CategoryTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @category = create(:category)
-  end
-
-  def test_category_should_be_valid
-    assert @category.valid?
   end
 
   def test_name_should_be_of_valid_length

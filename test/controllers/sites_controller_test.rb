@@ -3,16 +3,8 @@
 require "test_helper"
 
 class SitesControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @site = build(:site)
-  end
-
-  def test_should_get_successfully_from_sites_path
-    get categories_path
-    assert_response :success
   end
 
   def test_should_change_password_to_nil

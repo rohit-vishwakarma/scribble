@@ -3,16 +3,8 @@
 require "test_helper"
 
 class RedirectionsControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @redirection = build(:redirection)
-  end
-
-  def test_should_get_successfully_from_redirection_path
-    get redirections_path
-    assert_response :success
   end
 
   def test_should_create_redirection
