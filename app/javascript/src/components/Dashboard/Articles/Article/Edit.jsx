@@ -10,7 +10,7 @@ import Form from "./Form";
 const Edit = () => {
   const [article, setArticle] = useState({});
   const [loading, setLoading] = useState(true);
-  const { slug } = useParams();
+  const { id } = useParams();
   const history = useHistory();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Edit = () => {
   const fetchArticle = async () => {
     try {
       setLoading(true);
-      const fetchedArticle = await articlesApi.show(slug);
+      const fetchedArticle = await articlesApi.show(id);
       setArticle(fetchedArticle.data);
     } catch (error) {
       logger.error(error);
@@ -34,7 +34,7 @@ const Edit = () => {
       resetForm();
       const newCategoryData = { ...values };
       newCategoryData.category_id = values.category_id.value;
-      await articlesApi.update(article.slug, newCategoryData);
+      await articlesApi.update(article.id, newCategoryData);
       history.push("/");
     } catch (error) {
       logger.error(error);

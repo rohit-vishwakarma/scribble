@@ -121,7 +121,7 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal slugs.uniq, slugs
   end
 
-  def test_should_not_be_delete_category_if_article_is_present_in_that_category
+  def test_should_not_delete_category_if_article_is_present_in_that_category
     @article.save!
 
     assert_raises ActiveRecord::InvalidForeignKey do

@@ -73,23 +73,18 @@ export const buildArticleTableColumnData = handleDelete => {
 
   const optionColumn = {
     title: "",
-    dataIndex: "slug",
+    dataIndex: "id",
     key: "option",
     width: "10%",
-    render: (_, { slug, title }) => (
+    render: (_, { id, title }) => (
       <div className="flex items-end">
         <Button
           icon={Delete}
           size={13}
           style="text"
-          onClick={() => handleDelete({ title, slug })}
+          onClick={() => handleDelete({ title, id })}
         />
-        <Button
-          icon={Edit}
-          size={13}
-          style="text"
-          to={`/article/${slug}/edit`}
-        />
+        <Button icon={Edit} size={13} style="text" to={`/article/${id}/edit`} />
       </div>
     ),
   };
