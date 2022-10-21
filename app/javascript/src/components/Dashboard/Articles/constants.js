@@ -9,7 +9,13 @@ export const ARTICLES_FORM_INITIAL_VALUES = {
 
 export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
   yup.object().shape({
-    title: yup.string().required("Title is required. Please Enter the Title."),
+    title: yup
+      .string()
+      .matches(
+        /\w*[aA-zZ0-9]\w*/,
+        "Must contain at least one letter or number."
+      )
+      .required("Title is required. Please Enter the Title."),
     body: yup
       .string()
       .required("Body is required. Please Enter the Body of the Article."),
