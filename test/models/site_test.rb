@@ -10,10 +10,6 @@ class SiteTest < ActiveSupport::TestCase
     @site = build(:site)
   end
 
-  def test_site_should_be_valid
-    assert @site.valid?
-  end
-
   def test_name_should_be_of_valid_length
     @site.name = "a" * (Site::MAX_NAME_LENGTH + 1)
     assert_not @site.valid?

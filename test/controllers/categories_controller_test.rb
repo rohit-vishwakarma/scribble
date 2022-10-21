@@ -3,16 +3,8 @@
 require "test_helper"
 
 class CategoriesControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @category = create(:category)
-  end
-
-  def test_should_get_successfully_from_categories_url
-    get categories_path
-    assert_response :success
   end
 
   def test_should_create_category

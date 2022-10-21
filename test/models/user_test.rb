@@ -10,10 +10,6 @@ class UserTest < ActiveSupport::TestCase
     @user = create(:user)
   end
 
-  def test_user_should_be_valid
-    assert @user.valid?
-  end
-
   def test_name_should_be_of_valid_length
     @user.name = "a" * (User::MAX_NAME_LENGTH + 1)
     assert_not @user.valid?

@@ -12,11 +12,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     @article = create(:article, category: @category, user: @user)
   end
 
-  def test_should_get_successfully_from_root_url
-    get articles_path
-    assert_response :success
-  end
-
   def test_should_list_all_articles
     get articles_path
     assert_response :success
@@ -27,7 +22,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     published_articles_count = response_json["published"]
 
     total_articles_count = draft_articles_count + published_articles_count
-
     assert_equal all_articles.length, total_articles_count
   end
 

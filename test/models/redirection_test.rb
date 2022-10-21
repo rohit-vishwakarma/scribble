@@ -10,10 +10,6 @@ class RedirectionTest < ActiveSupport::TestCase
     @redirection = build(:redirection)
   end
 
-  def test_redirection_should_be_valid
-    assert @redirection.valid?
-  end
-
   def test_redirection_shouldnt_be_valid_without_from
     @redirection.from = ""
     assert @redirection.invalid?
