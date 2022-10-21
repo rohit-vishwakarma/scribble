@@ -3,8 +3,8 @@
 Rails.application.routes.draw do
 
   defaults format: :json do
-    resources :articles, only: %i[index create destroy show], param: :slug
-    resources :articles, only: :update, param: :slug do
+    resources :articles, only: %i[index create destroy show], param: :id
+    resources :articles, only: :update, param: :id do
       collection do
         put "bulk_update"
       end

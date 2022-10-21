@@ -2,18 +2,18 @@ import axios from "axios";
 
 const fetch = () => axios.get("/articles");
 
-const show = slug => axios.get(`/articles/${slug}`);
+const show = id => axios.get(`/articles/${id}`);
 
 const create = async payload => {
   await axios.post("/articles", payload);
 };
 
-const destroy = async slug => {
-  await axios.delete(`/articles/${slug}`);
+const destroy = async id => {
+  await axios.delete(`/articles/${id}`);
 };
 
-const update = async (slug, payload) => {
-  await axios.put(`/articles/${slug}`, payload);
+const update = async (id, payload) => {
+  await axios.put(`/articles/${id}`, payload);
 };
 
 const bulkUpdate = async payload => {

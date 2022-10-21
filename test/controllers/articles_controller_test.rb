@@ -3,9 +3,6 @@
 require "test_helper"
 
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @category = create(:category)
     @user = create(:user)
@@ -28,7 +25,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   def test_user_can_change_status
     article_params = { article: { status: "Published" } }
 
-    put article_path(@article.slug), params: article_params
+    put article_path(@article.id), params: article_params
     assert_response :success
 
     @article.reload
@@ -37,7 +34,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_destroy_article
     assert_difference "Article.count", -1 do
-      delete article_path(@article.slug)
+      delete article_path(@article.id)
     end
     assert_response :ok
   end
@@ -45,7 +42,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   def test_user_can_change_body
     article_params = { article: { body: "Updated body" } }
 
-    put article_path(@article.slug), params: article_params
+    put article_path(@article.id), params: article_params
     assert_response :success
 
     @article.reload
@@ -55,7 +52,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   def test_user_can_change_title
     article_params = { article: { title: "Updated Title" } }
 
-    put article_path(@article.slug), params: article_params
+    put article_path(@article.id), params: article_params
     assert_response :success
 
     @article.reload
@@ -67,7 +64,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
     article_params = { article: { category_id: new_category.id } }
 
-    put article_path(@article.slug), params: article_params
+    put article_path(@article.id), params: article_params
     assert_response :success
 
     @article.reload
@@ -77,7 +74,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   def test_user_shouldnt_change_title_to_blank
     article_params = { article: { title: "" } }
 
-    put article_path(@article.slug), params: article_params
+    put article_path(@article.id), params: article_params
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
