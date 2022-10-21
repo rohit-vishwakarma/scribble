@@ -50,6 +50,7 @@ const ArticleHeader = ({
       </div>
     }
     searchProps={{
+      placeholder: "Search article title",
       value: searchArticleTerm,
       onChange: e => setSearchArticleTerm(e.target.value),
     }}
