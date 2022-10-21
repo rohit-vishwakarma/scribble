@@ -77,9 +77,12 @@ const App = () => {
             />
           </Route>
         ))}
-        <Route exact path="/public/login">
-          <SiteLogin setIsAuthorized={setIsAuthorized} />
-        </Route>
+        <PrivateRoute
+          component={() => <SiteLogin setIsAuthorized={setIsAuthorized} />}
+          condition={!isAuthorized}
+          path="/public/login"
+          redirectRoute="/public"
+        />
         <PrivateRoute
           component={() => <Eui />}
           condition={isAuthorized}
