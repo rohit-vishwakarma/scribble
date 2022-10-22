@@ -10,11 +10,8 @@ class RedirectionsController < ApplicationController
 
   def create
     redirection = Redirection.new(redirection_params)
-    if redirection.save!
-      respond_with_success(t("successfully_created", entity: Redirection))
-    else
-      respond_with_error(t("unprocessable_entity", entity: From))
-    end
+    redirection.save!
+    respond_with_success(t("successfully_created", entity: Redirection))
   end
 
   def destroy
@@ -23,11 +20,8 @@ class RedirectionsController < ApplicationController
   end
 
   def update
-    if @redirection.update!(redirection_params)
-      respond_with_success(t("successfully_updated", entity: Redirection))
-    else
-      respond_with_error(t("unprocessable_entity", entity: From))
-    end
+    @redirection.update!(redirection_params)
+    respond_with_success(t("successfully_updated", entity: Redirection))
   end
 
   private

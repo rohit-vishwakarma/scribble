@@ -10,11 +10,8 @@ class CategoriesController < ApplicationController
 
   def create
     category = Category.new(category_params)
-    if category.save!
-      respond_with_success(t("successfully_created", entity: Category))
-   else
-     respond_with_error(t("unprocessable_entity", entity: Category))
-    end
+    category.save!
+    respond_with_success(t("successfully_created", entity: Category))
   end
 
   def update
