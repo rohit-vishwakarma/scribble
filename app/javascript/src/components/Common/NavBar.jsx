@@ -19,7 +19,7 @@ const NavBar = () => (
       <NavLink
         activeClassName="neeto-ui-text-primary-500"
         className="neeto-ui-text-gray-500"
-        to="/settings"
+        to="/settings?tab=general"
       >
         <Typography style="h4">Settings</Typography>
       </NavLink>

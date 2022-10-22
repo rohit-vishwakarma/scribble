@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 
 import { articlesApi, categoriesApi } from "apis/index";
+import NotFound from "components/Common/NotFound";
 
 import Article from "./Article";
 import { setIndexOfSelectedCategory, findDefaultPreviewPath } from "./utils";
@@ -90,15 +91,7 @@ const Sidebar = () => {
         ))}
         <Redirect exact from="/public" to={`/public/${defaultPreviewPath}`} />
       </Switch>
-      {selectedCategory === -1 && (
-        <div className="container mx-auto my-8 flex flex-col items-center">
-          <div className="max-w-md text-center">
-            <Typography className="text-xl text-gray-700" style="h2">
-              No Article Found
-            </Typography>
-          </div>
-        </div>
-      )}
+      {selectedCategory === -1 && <NotFound message="No Article Found" />}
     </div>
   );
 };
