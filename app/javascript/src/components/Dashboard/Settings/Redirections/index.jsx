@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import { PageLoader } from "@bigbinary/neetoui";
 import { Plus } from "neetoicons";
-import { Typography, Button } from "neetoui";
+import { Typography, Button, PageLoader } from "neetoui";
 
 import redirectionsApi from "apis/redirections";
 

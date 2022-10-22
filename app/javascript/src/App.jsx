@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import "lib/dayjs"; // eslint-disable-line
+import { PageLoader } from "neetoui";
 import {
   Switch,
   Route,
@@ -63,7 +64,11 @@ const App = () => {
   };
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
   }
 
   return (
