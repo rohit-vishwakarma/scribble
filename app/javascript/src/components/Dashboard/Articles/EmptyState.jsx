@@ -1,6 +1,5 @@
 import React from "react";
 
-import { AddCircle } from "neetoicons";
 import { Button } from "neetoui";
 
 import { ARTICLE_CREATE_PATH } from "../../routeConstants";
@@ -14,7 +13,6 @@ const EmptyState = ({ title, subtitle, primaryActionLabel }) => (
       </p>
       <div className="flex flex-row items-center justify-center">
         <Button
-          icon={AddCircle}
           label={primaryActionLabel}
           to={ARTICLE_CREATE_PATH}
           type="primary"

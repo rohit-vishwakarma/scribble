@@ -1,6 +1,5 @@
 import React from "react";
 
-import { AddCircle } from "neetoicons";
 import { Button, ActionDropdown, Checkbox, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
 
@@ -42,11 +41,7 @@ const ArticleHeader = ({
             ))}
           </Menu>
         </ActionDropdown>
-        <Button
-          icon={AddCircle}
-          label="Add New Article"
-          to={ARTICLE_CREATE_PATH}
-        />
+        <Button label="Add New Article" to={ARTICLE_CREATE_PATH} />
       </div>
     }
     searchProps={{
