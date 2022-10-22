@@ -21,7 +21,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Name can't be blank"
+    assert_equal "Name can't be blank", response_json["error"]
   end
 
   def test_password_shouldnt_be_change_with_less_than_6_characters
@@ -31,7 +31,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Password is too short (minimum is 6 characters)"
+    assert_equal "Password is too short (minimum is 6 characters)", response_json["error"]
   end
 
   def test_password_should_be_change_with_more_than_5_characters
@@ -48,7 +48,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Password requires 1 letter and 1 number"
+    assert_equal "Password requires 1 letter and 1 number", response_json["error"]
   end
 
   def test_password_shouldnt_be_change_without_number
@@ -58,7 +58,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Password requires 1 letter and 1 number"
+    assert_equal "Password requires 1 letter and 1 number", response_json["error"]
   end
 
   def test_should_access_with_valid_credentials
@@ -67,7 +67,7 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    assert_equal response_json["authentication_token"], @site.authentication_token
+    assert_equal @site.authentication_token, response_json["authentication_token"]
   end
 
   def test_should_not_access_with_invalid_credentials
@@ -76,6 +76,6 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
 
     response_json = response.parsed_body
-    assert_equal response_json["message"], "Wrong password."
+    assert_equal "Invalid Password", response_json["error"]
   end
 end
