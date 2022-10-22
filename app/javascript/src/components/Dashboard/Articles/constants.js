@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const ARTICLES_FORM_INITIAL_VALUES = {
   title: "",
   body: "",
-  category_id: null,
+  category: null,
   status: "Draft",
 };
 
@@ -19,7 +19,7 @@ export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
     body: yup
       .string()
       .required("Body is required. Please Enter the Body of the Article."),
-    category_id: yup
+    category: yup
       .object()
       .nullable()
       .shape({

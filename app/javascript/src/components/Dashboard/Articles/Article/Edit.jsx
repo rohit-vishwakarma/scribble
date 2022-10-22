@@ -7,6 +7,8 @@ import articlesApi from "apis/articles";
 
 import Form from "./Form";
 
+import { convertArticleToFormFormat } from "../utils";
+
 const Edit = () => {
   const [article, setArticle] = useState({});
   const [loading, setLoading] = useState(true);
@@ -33,7 +35,7 @@ const Edit = () => {
     try {
       resetForm();
       const newCategoryData = { ...values };
-      newCategoryData.category_id = values.category_id.value;
+      newCategoryData.category_id = values.category.value;
       await articlesApi.update(article.id, newCategoryData);
       history.push("/");
     } catch (error) {
@@ -49,7 +51,13 @@ const Edit = () => {
     );
   }
 
-  return <Form isEdit handleSubmit={handleSubmit} selectedArticle={article} />;
+  return (
+    <Form
+      isEdit
+      handleSubmit={handleSubmit}
+      selectedArticle={convertArticleToFormFormat(article)}
+    />
+  );
 };
 
 export default Edit;

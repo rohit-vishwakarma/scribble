@@ -7,7 +7,6 @@ import articlesApi from "apis/articles";
 import Form from "./Form";
 
 import { ARTICLES_FORM_INITIAL_VALUES } from "../constants";
-import { convertArticleToFormFormat } from "../utils";
 
 const Create = () => {
   const history = useHistory();
@@ -16,7 +15,7 @@ const Create = () => {
     try {
       resetForm();
       const newCategoryData = { ...values };
-      newCategoryData.category_id = values.category_id.value;
+      newCategoryData.category_id = values.category.value;
       await articlesApi.create(newCategoryData);
       history.push("/");
     } catch (error) {
@@ -27,7 +26,7 @@ const Create = () => {
   return (
     <Form
       handleSubmit={handleSubmit}
-      selectedArticle={convertArticleToFormFormat(ARTICLES_FORM_INITIAL_VALUES)}
+      selectedArticle={ARTICLES_FORM_INITIAL_VALUES}
     />
   );
 };

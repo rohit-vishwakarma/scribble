@@ -58,7 +58,7 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
       validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(CATEGORY_OPTIONS)}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, setFieldValue }) => (
+      {({ isSubmitting, setFieldValue, dirty, isValid }) => (
         <Form className="mx-auto mt-8 w-6/12">
           <BlockNavigation />
           <div className="my-5 flex gap-x-4">
@@ -74,7 +74,7 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
               required
               className="w-56"
               label="Select Category"
-              name="category_id"
+              name="category"
               options={CATEGORY_OPTIONS}
               placeholder="Select Category"
             />
@@ -90,7 +90,7 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
             <div className="flex">
               <Button
                 className="mr-px"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !(dirty && isValid)}
                 label={status}
                 loading={isSubmitting}
                 name="status"
