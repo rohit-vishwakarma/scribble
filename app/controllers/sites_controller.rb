@@ -10,7 +10,7 @@ class SitesController < ApplicationController
   def create
     @site = Site.first
     unless @site.authenticate(params[:password])
-      render status: :unauthorized, json: { message: "Wrong password." }
+      respond_with_error(t("site.incorrect_credentials"), :unauthorized)
     end
   end
 
