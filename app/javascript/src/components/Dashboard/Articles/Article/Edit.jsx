@@ -42,7 +42,11 @@ const Edit = () => {
   };
 
   if (loading) {
-    return <PageLoader />;
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
   }
 
   return <Form isEdit handleSubmit={handleSubmit} selectedArticle={article} />;

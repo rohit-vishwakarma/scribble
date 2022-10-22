@@ -37,14 +37,18 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
     }
   };
 
-  if (loading) {
-    return <PageLoader />;
-  }
-
   const CATEGORY_OPTIONS = categories.map(category => ({
     label: category.name,
     value: category.id,
   }));
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <Formik

@@ -62,10 +62,6 @@ const DeleteAlert = ({
     onClose();
   };
 
-  if (loading) {
-    return <PageLoader />;
-  }
-
   const filteredCategoryOptions = categories
     .map(category => ({
       label: category.name,
@@ -77,6 +73,14 @@ const DeleteAlert = ({
     filteredCategoryOptions.length > 0
       ? filteredCategoryOptions
       : [{ label: "General", value: 0 }];
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <Modal isOpen onClose={onClose}>

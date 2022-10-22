@@ -51,9 +51,11 @@ const Sidebar = () => {
   };
 
   if (loading) {
-    <div className="h-screen w-screen">
-      <PageLoader />
-    </div>;
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
   }
 
   return (

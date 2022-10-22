@@ -50,7 +50,11 @@ const Articles = () => {
   };
 
   if (loading) {
-    return <PageLoader />;
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
   }
 
   return (

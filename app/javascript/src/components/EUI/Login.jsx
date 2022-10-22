@@ -32,14 +32,6 @@ const Login = ({ setIsAuthorized }) => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="h-screen w-screen">
-        <PageLoader />
-      </div>
-    );
-  }
-
   const handleSubmit = async values => {
     try {
       const response = await sitesApi.login({ password: values.password });
@@ -54,6 +46,14 @@ const Login = ({ setIsAuthorized }) => {
       logger.error(error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <>
