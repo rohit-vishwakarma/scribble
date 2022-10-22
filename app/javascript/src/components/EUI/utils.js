@@ -18,7 +18,7 @@ export const setIndexOfSelectedCategory = (categories, setSelectedCategory) => {
     );
   }
 
-  if (!isSlugFound && window.location.pathname !== "/public/") {
+  if (!isSlugFound && window.location.pathname !== "/public") {
     setSelectedCategory(-1);
   }
 };
