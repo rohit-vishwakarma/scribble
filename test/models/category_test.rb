@@ -21,4 +21,9 @@ class CategoryTest < ActiveSupport::TestCase
     @category.name = ""
     assert_not @category.valid?
   end
+
+  def test_should_set_position_before_create_category
+    test_category = create(:category)
+    assert_equal Category.maximum(:position), test_category.position
+  end
 end

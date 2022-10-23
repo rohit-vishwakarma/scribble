@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :load_category!, only: %i[update destroy position_update]
+  before_action :load_category!, only: %i[update destroy]
 
   def index
     @categories = Category.all.order("position ASC")
@@ -25,7 +25,14 @@ class CategoriesController < ApplicationController
   end
 
   def position_update
-    @category.update!(position: params[:position])
+    position = 1
+    category_id_list = params[:category_ids]
+    category_id_list.each do | id |
+      category = Category.find(id)
+      category.update!(position: position)
+      position = position + 1
+    end
+    respond_with_success(t("position_updated", entity: Category))
   end
 
   private

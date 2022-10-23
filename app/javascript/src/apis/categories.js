@@ -14,8 +14,8 @@ const destroy = async id => {
   await axios.delete(`/categories/${id}`);
 };
 
-const positionUpdate = async (id, payload) => {
-  await axios.put(`/categories/${id}/position_update`, { position: payload });
+const positionUpdate = async payload => {
+  await axios.put(`/categories/position_update`, payload);
 };
 
 const categoriesApi = {
