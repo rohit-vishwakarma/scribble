@@ -25,12 +25,16 @@ const App = () => {
   const [isAuthorized, setIsAuthorized] = useState(true);
   const authToken = JSON.parse(localStorage.getItem("authToken"));
 
+  const fetchSiteDetailsAndRedirectionsList = async () => {
+    await Promise.all([fetchRedirectionsList(), fetchSiteDetails()]);
+    setLoading(false);
+  };
+
   useEffect(() => {
     initializeLogger();
     registerIntercepts();
     setAuthHeaders(setLoading);
-    fetchRedirectionsList();
-    fetchSiteDetails();
+    fetchSiteDetailsAndRedirectionsList();
   }, []);
 
   const fetchRedirectionsList = async () => {
@@ -42,8 +46,6 @@ const App = () => {
       setRedirectionsList(redirections);
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -58,8 +60,6 @@ const App = () => {
       );
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
