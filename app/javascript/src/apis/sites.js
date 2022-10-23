@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const fetch = () => axios.get("/sites");
+const fetch = () => axios.get("/site");
 
-const update = async (id, payload) => {
-  await axios.put(`/sites/${id}`, payload);
+const update = async payload => {
+  await axios.put(`/site`, payload);
 };
 
-const login = payload => axios.post("/sites", payload);
+const login = payload => axios.post("/site", payload);
 
 const sitesApi = {
   fetch,

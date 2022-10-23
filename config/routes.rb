@@ -3,20 +3,18 @@
 Rails.application.routes.draw do
 
   defaults format: :json do
-    resources :articles, only: %i[index create destroy show], param: :id
-    resources :articles, only: :update, param: :id do
+    resources :articles, except: %i[new edit], param: :id do
       collection do
         put "bulk_update"
       end
     end
-    resources :categories, only: %i[index create destroy]
-    resources :categories, only: :update do
+    resources :categories, except: %i[new edit] do
       member do
         put "position_update"
       end
     end
-    resources :sites, only: %i[index update create]
-    resources :redirections, only: %i[index create destroy update]
+    resource :site, only: %i[show update create]
+    resources :redirections, except: %i[new edit]
   end
 
   root "home#index"

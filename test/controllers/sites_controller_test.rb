@@ -7,75 +7,30 @@ class SitesControllerTest < ActionDispatch::IntegrationTest
     @site = build(:site)
   end
 
-  def test_should_change_password_to_nil
-    @site.save!
-    site_params = { name: @site.name, password: nil }
-    put site_path(@site.id), params: site_params
-    assert_response :success
-  end
-
-  def test_name_shouldnt_change_to_blank
-    @site.save!
-    site_params = { name: "", password: @site.password }
-    put site_path(@site.id), params: site_params
-    assert_response :unprocessable_entity
-
-    response_json = response.parsed_body
-    assert_equal "Name can't be blank", response_json["error"]
-  end
-
-  def test_password_shouldnt_be_change_with_less_than_6_characters
-    @site.save!
-    site_params = { name: @site.name, password: "Welc1" }
-    put site_path(@site.id), params: site_params
-    assert_response :unprocessable_entity
-
-    response_json = response.parsed_body
-    assert_equal "Password is too short (minimum is 6 characters)", response_json["error"]
-  end
-
-  def test_password_should_be_change_with_more_than_5_characters
-    @site.save!
-    site_params = { name: @site.name, password: "Welcome1" }
-    put site_path(@site.id), params: site_params
-    assert_response :success
-  end
-
-  def test_password_shouldnt_be_change_without_letter
-    @site.save!
-    site_params = { name: @site.name, password: "123456" }
-    put site_path(@site.id), params: site_params
-    assert_response :unprocessable_entity
-
-    response_json = response.parsed_body
-    assert_equal "Password requires 1 letter and 1 number", response_json["error"]
-  end
-
-  def test_password_shouldnt_be_change_without_number
-    @site.save!
-    site_params = { name: @site.name, password: "welcome" }
-    put site_path(@site.id), params: site_params
-    assert_response :unprocessable_entity
-
-    response_json = response.parsed_body
-    assert_equal "Password requires 1 letter and 1 number", response_json["error"]
-  end
-
   def test_should_access_with_valid_credentials
     @site.save!
-    post sites_path, params: { password: @site.password }
+    post site_path, params: { password: @site.password }
     assert_response :success
 
-    response_json = response.parsed_body
+    response_json = response.parsed_body["site"]
     assert_equal @site.authentication_token, response_json["authentication_token"]
   end
 
   def test_should_not_access_with_invalid_credentials
     @site.save!
-    post sites_path, params: { password: "wrong password" }
+    post site_path, params: { password: "wrong password" }
     assert_response :unauthorized
 
     response_json = response.parsed_body
-    assert_equal "Invalid Password", response_json["error"]
+    assert_equal t("site.incorrect_credentials"), response_json["error"]
+  end
+
+  def test_should_update_site_details
+    @site.save!
+    put site_path, params: { name: "Spin", password: "hello123" }
+    assert_response :success
+
+    response_json = response.parsed_body
+    assert_equal t("successfully_updated", entity: Site), response_json["notice"]
   end
 end

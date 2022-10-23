@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class SitesController < ApplicationController
-  before_action :load_site!, only: %i[index update]
+  before_action :load_site!, only: %i[show create update]
 
-  def index
+  def show
     render
   end
 
   def create
-    @site = Site.first
     unless @site.authenticate(params[:password])
       respond_with_error(t("site.incorrect_credentials"), :unauthorized)
     end

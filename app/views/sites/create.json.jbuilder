@@ -1,6 +1,3 @@
-# frozen_string_literal: true
+  # frozen_string_literal: true
 
-json.extract! @site,
-  :id,
-  :name,
-  :authentication_token
+  json.partial! "sites/site", site: @site
