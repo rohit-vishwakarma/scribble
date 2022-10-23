@@ -10,23 +10,27 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   def test_should_create_category
     post categories_path, params: { category: { name: "Getting Started" } }
     assert_response :success
-  end
-
-  def test_shouldnt_create_category_with_existing_name
-    test_category = @category
-
-    post categories_path, params: { category: { name: test_category.name } }
-    assert_response :unprocessable_entity
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Name has already been taken"
+    assert_equal t("successfully_created", entity: Category), response_json["notice"]
   end
 
-  def test_shouldnt_create_category_without_name
-    post categories_path, params: { category: { name: "" } }
-    assert_response :unprocessable_entity
+  def test_should_update_category
+    category_params = { category: { name: "Updated title" } }
+    put category_path(@category.id), params: category_params
+    assert_response :success
 
     response_json = response.parsed_body
-    assert_equal response_json["error"], "Name can't be blank"
+    assert_equal t("successfully_updated", entity: Category), response_json["notice"]
+  end
+
+  def test_should_destroy_category
+    assert_difference "Category.count", -1 do
+      delete category_path(@category.id)
+    end
+    assert_response :ok
+
+    response_json = response.parsed_body
+    assert_equal t("successfully_deleted", entity: Category), response_json["notice"]
   end
 end
