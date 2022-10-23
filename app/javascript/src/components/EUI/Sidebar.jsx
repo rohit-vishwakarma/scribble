@@ -17,38 +17,45 @@ import { setIndexOfSelectedCategory, findDefaultPreviewPath } from "./utils";
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
-  const [categoriesAndArticles, setCategoriesAndArticles] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [publishedArticles, setPublishedArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [defaultPreviewPath, setDefaultPreviewPath] = useState("");
 
   const { path, url } = useRouteMatch();
 
-  useEffect(() => {
-    fetchCategoriesAndArticles();
-  }, []);
-
-  const fetchCategoriesAndArticles = async () => {
+  const fetchCategories = async () => {
     try {
       setLoading(true);
-      const fetchedCategories = await categoriesApi.fetch();
+      const { data } = await categoriesApi.fetch();
+      setCategories(data);
+      findDefaultPreviewPath(data, setDefaultPreviewPath, setSelectedCategory);
+      setIndexOfSelectedCategory(data, setSelectedCategory);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const fetchArticles = async () => {
+    try {
+      setLoading(true);
       const {
         data: { published_articles: publishedArticles },
       } = await articlesApi.fetch();
-      setCategoriesAndArticles(fetchedCategories.data);
       setPublishedArticles(publishedArticles);
-      findDefaultPreviewPath(
-        fetchedCategories.data,
-        setDefaultPreviewPath,
-        setSelectedCategory
-      );
-      setIndexOfSelectedCategory(fetchedCategories.data, setSelectedCategory);
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
+
+  const fetchCategoriesAndArticles = async () => {
+    await Promise.all([fetchCategories(), fetchArticles()]);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchCategoriesAndArticles();
+  }, []);
 
   if (loading) {
     return (
@@ -64,10 +71,10 @@ const Sidebar = () => {
         className="border-r h-screen w-1/4 px-5"
         defaultActiveKey={selectedCategory}
       >
-        {categoriesAndArticles.map((category, idx) => (
+        {categories.map((category, idx) => (
           <Accordion.Item key={idx} title={category.name}>
-            {category.publishedArticles.length > 0 ? (
-              category.publishedArticles.map(article => (
+            {category.articles.length > 0 ? (
+              category.articles.map(article => (
                 <NavLink
                   exact
                   activeClassName="neeto-ui-text-primary-500 mx-6"

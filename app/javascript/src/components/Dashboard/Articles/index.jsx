@@ -28,26 +28,37 @@ const Articles = () => {
     setColumnsList([...items]);
   };
 
-  useEffect(() => {
-    fetchArticlesAndCategories();
-  }, []);
-
-  const fetchArticlesAndCategories = async () => {
+  const fetchArticles = async () => {
     try {
       setLoading(true);
       const {
         data: { articles, draft, published },
       } = await articlesApi.fetch();
-      const fetchedCategories = await categoriesApi.fetch();
       setArticles(articles);
       setArticlesCount({ all: draft + published, draft, published });
-      setCategories(fetchedCategories.data);
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
+
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const { data } = await categoriesApi.fetch();
+      setCategories(data);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const fetchArticlesAndCategories = async () => {
+    await Promise.all([fetchArticles(), fetchCategories()]);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchArticlesAndCategories();
+  }, []);
 
   if (loading) {
     return (

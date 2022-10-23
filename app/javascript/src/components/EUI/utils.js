@@ -6,7 +6,7 @@ export const setIndexOfSelectedCategory = (categories, setSelectedCategory) => {
 
   if (currentSlug !== "") {
     categories.forEach((category, idx) =>
-      category.publishedArticles.filter(article => {
+      category.articles.filter(article => {
         const isSlugMatched = article.slug === currentSlug;
         if (isSlugMatched) {
           isSlugFound = true;
@@ -29,9 +29,9 @@ export const findDefaultPreviewPath = (
   setSelectedCategory
 ) => {
   const defaultCategory = categories.find(
-    category => category.publishedArticles.length !== 0
+    category => category.articles.length !== 0
   );
 
-  setDefaultPreviewPath(defaultCategory.publishedArticles[0].slug);
+  setDefaultPreviewPath(defaultCategory.articles[0].slug);
   setSelectedCategory(categories.indexOf(defaultCategory));
 };
