@@ -15,7 +15,7 @@ const List = ({ categories, setCategories, refetch }) => {
     return shuffledCategories;
   };
 
-  const handleDragEnd = endPosition => {
+  const handleDragEnd = async endPosition => {
     if (!endPosition.destination) return;
 
     const reorderedCategories = reorderList(
@@ -24,13 +24,14 @@ const List = ({ categories, setCategories, refetch }) => {
       endPosition.destination.index
     );
     setCategories(reorderedCategories);
-    reorderedCategories.forEach(async (category, idx) => {
-      try {
-        await categoriesApi.positionUpdate(category.id, idx);
-      } catch (error) {
-        logger.error(error);
-      }
-    });
+    const categoryIds = reorderedCategories.map(category => category.id);
+    try {
+      await categoriesApi.positionUpdate({
+        category_ids: categoryIds,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   return (

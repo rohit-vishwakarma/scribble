@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       end
     end
     resources :categories, except: %i[new edit] do
-      member do
+      collection do
         put "position_update"
       end
     end
