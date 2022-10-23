@@ -33,7 +33,7 @@ const Sidebar = () => {
       setLoading(true);
       const fetchedCategories = await categoriesApi.fetch();
       const {
-        data: { publishedArticles },
+        data: { published_articles: publishedArticles },
       } = await articlesApi.fetch();
       setCategoriesAndArticles(fetchedCategories.data);
       setPublishedArticles(publishedArticles);

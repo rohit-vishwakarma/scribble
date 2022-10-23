@@ -28,7 +28,7 @@ const General = () => {
       return;
     }
     try {
-      await sitesApi.update(siteData.id, {
+      await sitesApi.update({
         name: values.sitename,
         password: showSetPassword ? passwordTerm : null,
       });
