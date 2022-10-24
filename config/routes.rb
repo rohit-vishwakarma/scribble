@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     end
     resource :organization, only: %i[show update create]
     resources :redirections, except: %i[new edit]
+    resource :user, only: :show
   end
 
   root "home#index"

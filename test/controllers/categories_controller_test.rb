@@ -4,11 +4,13 @@ require "test_helper"
 
 class CategoriesControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @category = create(:category)
+    @organization = create(:organization)
+    @user = create(:user, organization: @organization)
+    @category = create(:category, user: @user)
   end
 
   def test_should_create_category
-    post categories_path, params: { category: { name: "Getting Started" } }
+    post categories_path, params: { category: { name: "Getting Started", user: @user } }
     assert_response :success
 
     response_json = response.parsed_body
@@ -35,9 +37,9 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_update_categories_positions
-    first_category = create(:category)
-    second_category = create(:category)
-    third_category = create(:category)
+    first_category = create(:category, user: @user)
+    second_category = create(:category, user: @user)
+    third_category = create(:category, user: @user)
 
     category_ids = [third_category.id, first_category.id, second_category.id]
     last_position = @category.position

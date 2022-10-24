@@ -4,9 +4,10 @@ require "test_helper"
 
 class ArticleTest < ActiveSupport::TestCase
   def setup
-    @category = build(:category)
-    @user = build(:user)
-    @article = build(:article, category: @category, user: @user)
+    @organization = create(:organization)
+    @user = create(:user, organization: @organization)
+    @category = create(:category, user: @user)
+    @article = create(:article, category: @category, user: @user)
   end
 
   def test_article_should_not_be_valid_without_category
@@ -138,12 +139,14 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal slugs.uniq, slugs
   end
 
-  def test_should_not_delete_category_if_article_is_present_in_that_category
+  def test_should_delete_articles_if_category_is_deleted
     @article.save!
+    category_id = @article.category_id
+    previous_articles_count = Article.all.where(category_id: category_id).count
 
-    assert_raises ActiveRecord::InvalidForeignKey do
-      @article.category.destroy
-    end
+    @article.category.destroy
+    current_articles_count = Article.all.where(category_id: category_id).count
+    assert_not_equal previous_articles_count, current_articles_count
   end
 
   def test_slug_should_nil_if_article_is_drafted_first_time

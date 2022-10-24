@@ -4,6 +4,7 @@ class Category < ApplicationRecord
   MAX_NAME_LENGTH = 60
 
   has_many :articles
+  belongs_to :user
 
   validates :name, presence: true, uniqueness: true, length: { maximum: MAX_NAME_LENGTH }
 

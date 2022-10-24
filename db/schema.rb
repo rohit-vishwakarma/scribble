@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_24_070924) do
+ActiveRecord::Schema.define(version: 2022_10_24_114444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 2022_10_24_070924) do
     t.string "status", default: "Draft", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "category_id"
-    t.integer "user_id", default: 1
+    t.integer "category_id", null: false
+    t.integer "user_id", default: 1, null: false
     t.string "slug"
   end
 
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2022_10_24_070924) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "position"
+    t.integer "user_id", default: 1, null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
@@ -58,9 +59,11 @@ ActiveRecord::Schema.define(version: 2022_10_24_070924) do
     t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "organization_id", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "articles", "categories"
-  add_foreign_key "articles", "users"
+  add_foreign_key "articles", "categories", on_delete: :cascade
+  add_foreign_key "categories", "users", on_delete: :cascade
+  add_foreign_key "users", "organizations", on_delete: :cascade
 end

@@ -4,8 +4,9 @@ require "test_helper"
 
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @category = create(:category)
-    @user = create(:user)
+    @organization = create(:organization)
+    @user = create(:user, organization: @organization)
+    @category = create(:category, user: @user)
     @article = create(:article, category: @category, user: @user)
   end
 

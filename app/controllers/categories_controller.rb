@@ -2,9 +2,10 @@
 
 class CategoriesController < ApplicationController
   before_action :load_category!, only: %i[update destroy]
+  before_action :load_current_user!, only: :index
 
   def index
-    @categories = Category.all.order("position ASC")
+    @categories = Category.where(user_id: @current_user.id).order("position ASC")
     render
   end
 
