@@ -57,7 +57,7 @@ const App = () => {
       } = await organizationsApi.fetch();
       setIsAuthorized(
         (authToken && authToken.token !== null) ||
-          organization.password_digest === null
+          !organization.is_password_protected
       );
     } catch (error) {
       logger.error(error);

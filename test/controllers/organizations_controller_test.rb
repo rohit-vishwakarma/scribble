@@ -12,8 +12,8 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
     post organization_path, params: { password: @organization.password }
     assert_response :success
 
-    response_json = response.parsed_body["organization"]
-    assert_equal @organization.authentication_token, response_json["authentication_token"]
+    response_json = response.parsed_body["authentication_token"]
+    assert_equal @organization.authentication_token, response_json
   end
 
   def test_should_not_access_with_invalid_credentials
