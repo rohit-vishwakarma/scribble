@@ -50,7 +50,9 @@ end
 def create_sample_organization_data!
   puts "Seeding with sample Organization name..."
   Organization.create!(
-    name: "Spinkart"
+    name: "Spinkart",
+    password: "welcome123",
+    is_password_protected: false
   )
   puts "Done! Organization name is created successfully."
 end
