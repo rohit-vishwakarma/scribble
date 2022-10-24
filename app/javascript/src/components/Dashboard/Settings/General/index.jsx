@@ -4,21 +4,21 @@ import { Formik, Form } from "formik";
 import { Typography, Button, Checkbox, PageLoader, Toastr } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 
-import sitesApi from "apis/sites";
+import organizationsApi from "apis/organizations";
 
 import Password from "./Password";
 
 import { GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA } from "../constants";
 
 const General = () => {
-  const [siteData, setSiteData] = useState({});
+  const [organizationData, setOrganizationData] = useState({});
   const [loading, setLoading] = useState(true);
   const [passwordTerm, setPasswordTerm] = useState("");
   const [isPasswordValidated, setIsPasswordValidated] = useState(true);
   const [showSetPassword, setShowSetPassword] = useState(false);
 
   useEffect(() => {
-    fetchSiteDetails();
+    fetchOrganizationDetails();
   }, []);
 
   const handleSubmit = async values => {
@@ -28,8 +28,8 @@ const General = () => {
       return;
     }
     try {
-      await sitesApi.update({
-        name: values.sitename,
+      await organizationsApi.update({
+        name: values.name,
         password: showSetPassword ? passwordTerm : null,
       });
       localStorage.setItem("authToken", JSON.stringify({ token: null }));
@@ -40,16 +40,16 @@ const General = () => {
     }
   };
 
-  const fetchSiteDetails = async () => {
+  const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
       const {
-        data: { site },
-      } = await sitesApi.fetch();
-      setSiteData(site);
-      if (site.password_digest !== null) {
+        data: { organization },
+      } = await organizationsApi.fetch();
+      setOrganizationData(organization);
+      if (organization.password_digest !== null) {
         setShowSetPassword(true);
-        setPasswordTerm(site.password_digest);
+        setPasswordTerm(organization.password_digest);
       }
     } catch (error) {
       logger.error(error);
@@ -78,12 +78,12 @@ const General = () => {
         <Formik
           validationSchema={GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA}
           initialValues={{
-            sitename: siteData.name,
+            name: organizationData.name,
           }}
           onSubmit={handleSubmit}
         >
           <Form className="space-y-2">
-            <FormikInput label="Site Name" name="sitename" />
+            <FormikInput label="Site Name" name="name" />
             <Typography className="neeto-ui-text-gray-500" style="body3">
               Customize the site name which is used to show the site name in
             </Typography>

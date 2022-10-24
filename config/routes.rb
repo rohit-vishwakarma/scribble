@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         put "position_update"
       end
     end
-    resource :site, only: %i[show update create]
+    resource :organization, only: %i[show update create]
     resources :redirections, except: %i[new edit]
   end
 

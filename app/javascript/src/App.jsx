@@ -14,7 +14,7 @@ import {
   setAuthHeaders,
   registerIntercepts,
   redirectionsApi,
-  sitesApi,
+  organizationsApi,
 } from "apis/index";
 import { initializeLogger } from "common/logger";
 import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
@@ -25,8 +25,8 @@ const App = () => {
   const [isAuthorized, setIsAuthorized] = useState(true);
   const authToken = JSON.parse(localStorage.getItem("authToken"));
 
-  const fetchSiteDetailsAndRedirectionsList = async () => {
-    await Promise.all([fetchRedirectionsList(), fetchSiteDetails()]);
+  const fetchOrganizationDetailsAndRedirectionsList = async () => {
+    await Promise.all([fetchRedirectionsList(), fetchOrganizationDetails()]);
     setLoading(false);
   };
 
@@ -34,7 +34,7 @@ const App = () => {
     initializeLogger();
     registerIntercepts();
     setAuthHeaders(setLoading);
-    fetchSiteDetailsAndRedirectionsList();
+    fetchOrganizationDetailsAndRedirectionsList();
   }, []);
 
   const fetchRedirectionsList = async () => {
@@ -49,14 +49,15 @@ const App = () => {
     }
   };
 
-  const fetchSiteDetails = async () => {
+  const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
       const {
-        data: { site },
-      } = await sitesApi.fetch();
+        data: { organization },
+      } = await organizationsApi.fetch();
       setIsAuthorized(
-        (authToken && authToken.token !== null) || site.password_digest === null
+        (authToken && authToken.token !== null) ||
+          organization.password_digest === null
       );
     } catch (error) {
       logger.error(error);

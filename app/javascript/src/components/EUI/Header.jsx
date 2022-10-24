@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 
 import { Typography, PageLoader } from "neetoui";
 
-import sitesApi from "apis/sites";
+import organizationsApi from "apis/organizations";
 
 const Header = () => {
-  const [siteData, setSiteData] = useState({});
+  const [organizationData, setOrganizationData] = useState({});
   const [loading, setLoading] = useState({});
 
   useEffect(() => {
-    fetchSiteDetails();
+    fetchOrganizationDetails();
   }, []);
 
-  const fetchSiteDetails = async () => {
+  const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
       const {
-        data: { site },
-      } = await sitesApi.fetch();
-      setSiteData(site);
+        data: { organization },
+      } = await organizationsApi.fetch();
+      setOrganizationData(organization);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -36,7 +36,7 @@ const Header = () => {
 
   return (
     <div className="flex h-12 w-full justify-center border-b-2 py-3">
-      <Typography style="h4">{siteData.name}</Typography>
+      <Typography style="h4">{organizationData.name}</Typography>
     </div>
   );
 };

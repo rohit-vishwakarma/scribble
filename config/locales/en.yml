@@ -5,7 +5,7 @@ en:
   successfully_deleted: "%{entity} was successfully deleted!"
   unprocessable_entity: "%{entity} is already exist!"
   position_updated: "%{entity} position is updated!"
-  site:
+  organization:
     incorrect_credentials: "Invalid Password"
   article:
     slug:

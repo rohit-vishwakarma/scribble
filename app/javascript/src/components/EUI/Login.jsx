@@ -5,26 +5,26 @@ import { Typography, Button, PageLoader } from "neetoui";
 import { Input } from "neetoui/formik";
 import * as yup from "yup";
 
-import { setAuthHeaders, sitesApi } from "apis/index";
+import { setAuthHeaders, organizationsApi } from "apis/index";
 import EUILoginImg from "images/EUILoginImg";
 
 import Header from "./Header";
 
 const Login = ({ setIsAuthorized }) => {
-  const [siteData, setSiteData] = useState({});
+  const [organizationData, setOrganizationData] = useState({});
   const [loading, setLoading] = useState({});
 
   useEffect(() => {
-    fetchSiteDetails();
+    fetchOrganizationDetails();
   }, []);
 
-  const fetchSiteDetails = async () => {
+  const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
       const {
-        data: { site },
-      } = await sitesApi.fetch();
-      setSiteData(site);
+        data: { organization },
+      } = await organizationsApi.fetch();
+      setOrganizationData(organization);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -34,7 +34,9 @@ const Login = ({ setIsAuthorized }) => {
 
   const handleSubmit = async values => {
     try {
-      const response = await sitesApi.login({ password: values.password });
+      const response = await organizationsApi.login({
+        password: values.password,
+      });
       localStorage.setItem(
         "authToken",
         JSON.stringify({ token: response.data.authentication_token })
@@ -61,10 +63,10 @@ const Login = ({ setIsAuthorized }) => {
       <div className="mt-16 grid justify-center p-8">
         <img className="mx-auto justify-center" src={EUILoginImg} />
         <Typography className="mt-6" style="h2">
-          {siteData.name} is password protected!
+          {organizationData.name} is password protected!
         </Typography>
         <Typography className="text-gray-600" style="body1">
-          Enter the password to gain access to {siteData.name}.
+          Enter the password to gain access to {organizationData.name}.
         </Typography>
         <Formik
           initialValues={{ password: "" }}
