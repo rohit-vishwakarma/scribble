@@ -15,11 +15,14 @@ import { searchArticlesByTitle } from "./utils";
 
 const Articles = () => {
   const [loading, setLoading] = useState(true);
-  const [articles, setArticles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [columnsList, setColumnsList] = useState(ColumnsListItems);
-  const [articlesCount, setArticlesCount] = useState({});
   const [searchArticleTerm, setSearchArticleTerm] = useState("");
+  const [allArticles, setAllArticles] = useState({
+    main: [],
+    selected: [],
+    table: [],
+  });
 
   const handleCheckedColumns = selectedIdx => {
     const items = ColumnsListItems;
@@ -32,10 +35,9 @@ const Articles = () => {
     try {
       setLoading(true);
       const {
-        data: { articles, draft, published },
+        data: { articles },
       } = await articlesApi.fetch();
-      setArticles(articles);
-      setArticlesCount({ all: draft + published, draft, published });
+      setAllArticles({ main: articles, selected: articles, table: articles });
     } catch (error) {
       logger.error(error);
     }
@@ -71,11 +73,10 @@ const Articles = () => {
   return (
     <div className="flex">
       <MenuBar
-        articles={articles}
-        articlesCount={articlesCount}
+        allArticles={allArticles}
         categories={categories}
         refetch={fetchArticlesAndCategories}
-        setArticles={setArticles}
+        setAllArticles={setAllArticles}
       />
       <Container>
         <Header
@@ -84,11 +85,14 @@ const Articles = () => {
           searchArticleTerm={searchArticleTerm}
           setSearchArticleTerm={setSearchArticleTerm}
         />
-        {articles.length ? (
+        {allArticles.table.length ? (
           <div className="flex w-full flex-col">
             <Table
-              articles={searchArticlesByTitle(articles, searchArticleTerm)}
               refetch={fetchArticlesAndCategories}
+              articles={searchArticlesByTitle(
+                allArticles.table,
+                searchArticleTerm
+              )}
             />
           </div>
         ) : (

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Search, Close, Check } from "neetoicons";
@@ -8,41 +8,41 @@ import { MenuBar } from "neetoui/layouts";
 
 import categoriesApi from "apis/categories";
 
-const Menu = ({
-  categories,
-  refetch,
-  articlesCount,
-  articles,
-  setArticles,
-}) => {
-  const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
-  const [isAddCollapsed, setIsAddCollapsed] = useState(true);
+import {
+  filterArticlesAccordingToCategory,
+  filterArticlesAccordingToStatus,
+} from "./utils";
+
+const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
+  const [isCollapsed, setIsCollapsed] = useState({ add: true, search: true });
   const [searchValue, setSearchValue] = useState("");
   const [activeStatus, setActiveStatus] = useState("All");
-  const [activeCategory, setActiveCategory] = useState(null);
-  const selectedArticles = useMemo(() => articles, []);
+  const [activeCategories, setActiveCategories] = useState([]);
 
   const MenuBarBlocks = [
     {
       label: "All",
-      count: articlesCount.all,
+      count: allArticles.selected.length,
       active: true,
     },
     {
       label: "Draft",
-      count: articlesCount.draft,
+      count: allArticles.selected.filter(article => article.status === "Draft")
+        .length,
       active: false,
     },
     {
       label: "Published",
-      count: articlesCount.published,
+      count: allArticles.selected.filter(
+        article => article.status === "Published"
+      ).length,
       active: false,
     },
   ];
 
   const handleSubmit = async values => {
     try {
-      setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
+      setIsCollapsed({ ...isCollapsed, add: !isCollapsed.add });
       await categoriesApi.create({ name: values.name });
       refetch();
     } catch (error) {
@@ -51,25 +51,24 @@ const Menu = ({
   };
 
   const handleActiveBlock = dataLabel => {
-    if (dataLabel === "All") {
-      setArticles(selectedArticles);
-    } else {
-      const filterSelectedArticles = selectedArticles.filter(
-        article => article.status === dataLabel
-      );
-      setArticles(filterSelectedArticles);
-    }
-    setActiveStatus(dataLabel);
-    setActiveCategory(null);
+    filterArticlesAccordingToStatus(
+      dataLabel,
+      allArticles,
+      setAllArticles,
+      setActiveStatus,
+      activeCategories
+    );
   };
 
-  const handleActiveCategory = categoryId => {
-    const filterSelectedCategory = selectedArticles.filter(
-      article => article.category_id === categoryId
+  const handleActiveCategories = category => {
+    filterArticlesAccordingToCategory(
+      category,
+      activeCategories,
+      setActiveCategories,
+      allArticles,
+      setAllArticles,
+      setActiveStatus
     );
-    setArticles(filterSelectedCategory);
-    setActiveCategory(categoryId);
-    setActiveStatus("All");
   };
 
   return (
@@ -88,17 +87,15 @@ const Menu = ({
           {
             icon: Search,
             onClick: () => {
-              setIsAddCollapsed(true);
+              setIsCollapsed({ add: true, search: !isCollapsed.search });
               setSearchValue("");
-              setIsSearchCollapsed(isSearchCollapsed => !isSearchCollapsed);
             },
           },
           {
-            icon: isAddCollapsed ? Plus : Close,
+            icon: isCollapsed.add ? Plus : Close,
             onClick: () => {
-              setIsSearchCollapsed(true);
+              setIsCollapsed({ search: true, add: !isCollapsed.add });
               setSearchValue("");
-              setIsAddCollapsed(isAddCollapsed => !isAddCollapsed);
             },
           },
         ]}
@@ -113,15 +110,15 @@ const Menu = ({
         </Typography>
       </MenuBar.SubTitle>
       <MenuBar.Search
-        collapse={isSearchCollapsed}
+        collapse={isCollapsed.search}
         value={searchValue}
         onChange={e => setSearchValue(e.target.value)}
         onCollapse={() => {
-          setIsSearchCollapsed(true);
+          setIsCollapsed({ ...isCollapsed, search: true });
           setSearchValue("");
         }}
       />
-      {!isAddCollapsed && (
+      {!isCollapsed.add && (
         <div>
           <Formik initialValues={{ name: "" }} onSubmit={handleSubmit}>
             <Form>
@@ -143,11 +140,11 @@ const Menu = ({
         )
         .map(category => (
           <MenuBar.Block
-            active={category.id === activeCategory}
+            active={activeCategories.includes(category.id)}
             count={category.count}
             key={category.id}
             label={category.name}
-            onClick={() => handleActiveCategory(category.id)}
+            onClick={() => handleActiveCategories(category)}
           />
         ))}
     </MenuBar>
