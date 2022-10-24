@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-json.partial! "organizations/organization", organization: @organization
+json.organization @organization,
+  :id,
+  :name,
+  :is_password_protected
