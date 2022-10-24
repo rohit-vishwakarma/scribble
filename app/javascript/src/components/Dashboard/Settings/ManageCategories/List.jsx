@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -7,6 +7,8 @@ import categoriesApi from "apis/categories";
 import Row from "./Row";
 
 const List = ({ categories, setCategories, refetch }) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
   const reorderList = (categoriesList, startIndex, endIndex) => {
     const shuffledCategories = Array.from(categoriesList);
     const [removed] = shuffledCategories.splice(startIndex, 1);
@@ -40,9 +42,15 @@ const List = ({ categories, setCategories, refetch }) => {
         {provided => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {categories.map((category, idx) => (
-              <div key={category.id}>
+              <div className="w-full" key={category.id}>
                 <hr />
-                <Row category={category} index={idx} refetch={refetch} />
+                <Row
+                  category={category}
+                  index={idx}
+                  refetch={refetch}
+                  selectedCategoryId={selectedCategoryId}
+                  setSelectedCategoryId={setSelectedCategoryId}
+                />
               </div>
             ))}
             {provided.placeholder}
