@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_21_204731) do
+ActiveRecord::Schema.define(version: 2022_10_23_225826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,20 +36,20 @@ ActiveRecord::Schema.define(version: 2022_10_21_204731) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
+  create_table "organizations", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "password_digest"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "authentication_token"
+  end
+
   create_table "redirections", force: :cascade do |t|
     t.text "from", null: false
     t.text "to", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["from"], name: "index_redirections_on_from", unique: true
-  end
-
-  create_table "sites", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "authentication_token"
   end
 
   create_table "users", force: :cascade do |t|

@@ -17,7 +17,7 @@ def create_sample_data!
   create_sample_user_data!
   create_sample_category_data!
   create_sample_article_data!
-  create_sample_site_data!
+  create_sample_organization_data!
 end
 
 def create_sample_user_data!
@@ -47,10 +47,10 @@ def create_sample_article_data!
   puts "Done! article is created successfully."
 end
 
-def create_sample_site_data!
-  puts "Seeding with sample Site name..."
-  Site.create!(
+def create_sample_organization_data!
+  puts "Seeding with sample Organization name..."
+  Organization.create!(
     name: "Spinkart"
   )
-  puts "Done! Site name is created successfully."
+  puts "Done! Organization name is created successfully."
 end

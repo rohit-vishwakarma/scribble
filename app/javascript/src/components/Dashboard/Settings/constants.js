@@ -30,5 +30,5 @@ export const SETTINGS_OPTIONS = [
 ];
 
 export const GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA = yup.object().shape({
-  sitename: yup.string().required("SiteName cannot be empty."),
+  name: yup.string().required("SiteName cannot be empty."),
 });

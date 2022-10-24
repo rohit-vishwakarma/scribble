@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.site site,
+json.organization organization,
   :id,
   :name,
   :password_digest,
