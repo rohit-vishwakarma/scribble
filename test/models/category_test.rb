@@ -4,7 +4,9 @@ require "test_helper"
 
 class CategoryTest < ActiveSupport::TestCase
   def setup
-    @category = create(:category)
+    @organization = create(:organization)
+    @user = create(:user, organization: @organization)
+    @category = create(:category, user: @user)
   end
 
   def test_name_should_be_of_valid_length
@@ -23,7 +25,7 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   def test_should_set_position_before_create_category
-    test_category = create(:category)
+    test_category = create(:category, user: @user)
     assert_equal Category.maximum(:position), test_category.position
   end
 end

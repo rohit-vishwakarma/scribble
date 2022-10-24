@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :user do
+    association :organization, factory: :organization
     name { Faker::Name.name[0..29] }
     email { Faker::Internet.email }
     id { 1 }

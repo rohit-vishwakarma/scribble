@@ -3,9 +3,10 @@
 class ArticlesController < ApplicationController
   before_action :load_article!, only: [:destroy, :update, :show]
   before_action :load_articles!, only: :bulk_update
+  before_action :load_current_user!, only: :index
 
   def index
-    @articles = Article.all
+    @articles = Article.joins(:category).where(user_id: @current_user.id).order("updated_at DESC")
     render
   end
 

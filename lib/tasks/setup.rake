@@ -14,17 +14,18 @@ end
 
 def create_sample_data!
   puts "Seeding sample data..."
+  create_sample_organization_data!
   create_sample_user_data!
   create_sample_category_data!
   create_sample_article_data!
-  create_sample_organization_data!
 end
 
 def create_sample_user_data!
   puts "Seeding with sample user..."
   User.create!(
     name: 'Oliver Smith',
-    email: 'oliver@example.com'
+    email: 'oliver@example.com',
+    organization_id: 1
   )
   puts "Done! user is created successfully."
 end
@@ -32,7 +33,8 @@ end
 def create_sample_category_data!
   puts "Seeding with sample category..."
   Category.create!(
-    name: "Getting Started"
+    name: "Getting Started",
+    user_id: 1
   )
   puts "Done! category is created successfully"
 end
