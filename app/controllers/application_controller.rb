@@ -7,11 +7,11 @@ class ApplicationController < ActionController::Base
   private
 
     def load_organization!
-      @organization = Organization.first
+      @current_organization = Organization.first
     end
 
-    def load_current_user!
+    def current_user!
       load_organization!
-      @current_user = User.where(organization_id: @organization.id).first
+      @_current_user ||= @current_organization.users.first
     end
 end

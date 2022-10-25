@@ -16,8 +16,8 @@ def create_sample_data!
   puts "Seeding sample data..."
   create_sample_organization_data!
   create_sample_user_data!
-  create_sample_category_data!
-  create_sample_article_data!
+  create_sample_categories_data!
+  create_sample_articles_data!
 end
 
 def create_sample_user_data!
@@ -30,20 +30,71 @@ def create_sample_user_data!
   puts "Done! user is created successfully."
 end
 
-def create_sample_category_data!
+def create_sample_categories_data!
   puts "Seeding with sample category..."
   Category.create!(
     name: "Getting Started",
     user_id: 1
   )
+  Category.create!(
+    name: "Misc",
+    user_id: 1
+  )
+  Category.create!(
+    name: "Apps & Integration",
+    user_id: 1
+  )
+  Category.create!(
+    name: "Security & Privacy",
+    user_id: 1
+  )
   puts "Done! category is created successfully"
 end
 
-def create_sample_article_data!
-  puts "Seeding with sample article..."
+def create_sample_articles_data!
+  puts "Seeding with sample articles..."
   Article.create!(
     title: "Welcome to scribble",
-    body: "Using scribble application you can create your articles.",
+    body: "Using Scribble application you can create your articles.",
+    category_id: 1
+  )
+  Article.create!(
+    title: "Setting up",
+    body: "Using Scribble application you can create your articles.",
+    status: "Published",
+    category_id: 2
+  )
+  Article.create!(
+    title: "Redirections",
+    body: "Using Scribble application you can create your articles.",
+    status: "Published",
+    category_id: 4
+  )
+  Article.create!(
+    title: "301 and 302 redirections",
+    body: "Using Scribble application you can create your articles.",
+    status: "Published",
+    category_id: 4
+  )
+  Article.create!(
+    title: "Writing an article",
+    body: "Using Scribble application you can create your articles.",
+    category_id: 1
+  )
+  Article.create!(
+    title: "Password Protection",
+    body: "Using Scribble application you can create your articles.",
+    category_id: 4
+  )
+  Article.create!(
+    title: "Unprotected Scribble",
+    body: "Using Scribble application you can create your articles.",
+    category_id: 3
+  )
+  Article.create!(
+    title: "Welcome to scribble",
+    body: "Using Scribble application you can create your articles.",
+    status: "Published",
     category_id: 1
   )
   puts "Done! article is created successfully."

@@ -8,16 +8,16 @@ class OrganizationsController < ApplicationController
   end
 
   def create
-    unless @organization.authenticate(params[:password])
+    unless @current_organization.authenticate(params[:password])
       respond_with_error(t("organization.incorrect_credentials"), :unauthorized)
     end
   end
 
   def update
-    @organization.name = params[:name]
-    @organization.password = params[:password] if params[:password].present?
-    @organization.is_password_protected = params[:is_password_protected]
-    @organization.save!
+    @current_organization.name = params[:name]
+    @current_organization.password = params[:password] if params[:password].present?
+    @current_organization.is_password_protected = params[:is_password_protected]
+    @current_organization.save!
     respond_with_success(t("successfully_updated", entity: Organization))
   end
 end
