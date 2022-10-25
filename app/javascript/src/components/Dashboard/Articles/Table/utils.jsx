@@ -2,6 +2,7 @@ import React from "react";
 
 import { Delete, Edit } from "neetoicons";
 import { Typography, Button } from "neetoui";
+import { Link } from "react-router-dom";
 
 import { formatTimeStampToDate } from "components/utils";
 
@@ -14,11 +15,22 @@ export const buildArticleTableColumnData = handleDelete => {
       dataIndex: "title",
       key: "title",
       width: "25%",
-      render: title => (
-        <Typography className="text-indigo-500" lineHeight="loose" style="h5">
-          {title}
-        </Typography>
-      ),
+      render: (title, { slug, status }) =>
+        status === "Published" ? (
+          <Link target="_blank" to={`/public/${slug}`}>
+            <Typography
+              className="text-indigo-500"
+              lineHeight="loose"
+              style="h5"
+            >
+              {title}
+            </Typography>
+          </Link>
+        ) : (
+          <Typography className="text-gray-500" lineHeight="loose" style="h5">
+            {title}
+          </Typography>
+        ),
     },
     {
       title: "Last Updated At",
