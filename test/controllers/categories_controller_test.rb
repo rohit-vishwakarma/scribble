@@ -14,7 +14,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    assert_equal t("successfully_created", entity: Category), response_json["notice"]
+    assert_equal t("successfully_created", entity: "Category"), response_json["notice"]
   end
 
   def test_should_update_category
@@ -23,7 +23,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    assert_equal t("successfully_updated", entity: Category), response_json["notice"]
+    assert_equal t("successfully_updated", entity: "Category"), response_json["notice"]
   end
 
   def test_should_destroy_category
@@ -33,7 +33,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
 
     response_json = response.parsed_body
-    assert_equal t("successfully_deleted", entity: Category), response_json["notice"]
+    assert_equal t("successfully_deleted", entity: "Category"), response_json["notice"]
   end
 
   def test_should_update_categories_positions
@@ -47,6 +47,6 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    assert_equal t("position_updated", entity: Category), response_json["notice"]
+    assert_equal t("position_updated", entity: "Category"), response_json["notice"]
   end
 end

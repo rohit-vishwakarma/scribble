@@ -18,6 +18,6 @@ class OrganizationsController < ApplicationController
     @current_organization.password = params[:password] if params[:password].present?
     @current_organization.is_password_protected = params[:is_password_protected]
     @current_organization.save!
-    respond_with_success(t("successfully_updated", entity: Organization))
+    respond_with_success(t("successfully_updated", entity: "Organization"))
   end
 end

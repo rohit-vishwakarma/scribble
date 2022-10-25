@@ -31,6 +31,6 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    assert_equal t("successfully_updated", entity: Organization), response_json["notice"]
+    assert_equal t("successfully_updated", entity: "Organization"), response_json["notice"]
   end
 end

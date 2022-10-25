@@ -11,17 +11,17 @@ class RedirectionsController < ApplicationController
   def create
     redirection = Redirection.new(redirection_params)
     redirection.save!
-    respond_with_success(t("successfully_created", entity: Redirection))
+    respond_with_success(t("successfully_created", entity: "Redirection"))
   end
 
   def destroy
     @redirection.destroy!
-    respond_with_success(t("successfully_deleted", entity: Redirection))
+    respond_with_success(t("successfully_deleted", entity: "Redirection"))
   end
 
   def update
     @redirection.update!(redirection_params)
-    respond_with_success(t("successfully_updated", entity: Redirection))
+    respond_with_success(t("successfully_updated", entity: "Redirection"))
   end
 
   private
