@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.organization @organization,
+json.organization @current_organization,
   :id,
   :name,
   :is_password_protected

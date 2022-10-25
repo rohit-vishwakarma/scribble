@@ -8,14 +8,13 @@ Rails.application.routes.draw do
         put "bulk_update"
       end
     end
-    resources :categories, except: %i[new edit] do
+    resources :categories, except: %i[new edit show] do
       collection do
         put "position_update"
       end
     end
     resource :organization, only: %i[show update create]
-    resources :redirections, except: %i[new edit]
-    resource :user, only: :show
+    resources :redirections, except: %i[new edit show]
   end
 
   root "home#index"
