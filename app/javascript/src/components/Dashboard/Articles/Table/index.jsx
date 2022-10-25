@@ -24,6 +24,7 @@ const Table = ({ articles, refetch, handleEdit }) => {
       </Typography>
       <div className="w-full">
         <NeetoUITable
+          allowRowClick={false}
           columnData={buildArticleTableColumnData(handleDelete, handleEdit)}
           currentPageNumber={currentPageNumber}
           defaultPageSize={10}
