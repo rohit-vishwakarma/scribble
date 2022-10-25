@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Search, Close, Check } from "neetoicons";
@@ -9,8 +9,8 @@ import { MenuBar } from "neetoui/layouts";
 import categoriesApi from "apis/categories";
 
 import {
-  filterArticlesAccordingToCategory,
-  filterArticlesAccordingToStatus,
+  filterArticlesAccordingToCategories,
+  filterArticlesAccordingToCategoriesAndStatus,
 } from "./utils";
 
 const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
@@ -22,23 +22,34 @@ const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
   const MenuBarBlocks = [
     {
       label: "All",
-      count: allArticles.selected.length,
+      count: allArticles.selectedArticles.length,
       active: true,
     },
     {
       label: "Draft",
-      count: allArticles.selected.filter(article => article.status === "Draft")
-        .length,
+      count: allArticles.selectedArticles.filter(
+        article => article.status === "Draft"
+      ).length,
       active: false,
     },
     {
       label: "Published",
-      count: allArticles.selected.filter(
+      count: allArticles.selectedArticles.filter(
         article => article.status === "Published"
       ).length,
       active: false,
     },
   ];
+
+  useEffect(() => {
+    filterArticlesAccordingToCategoriesAndStatus(
+      activeStatus,
+      allArticles,
+      setAllArticles,
+      setActiveStatus,
+      activeCategories
+    );
+  }, [allArticles.selectedArticles, activeStatus]);
 
   const handleSubmit = async values => {
     try {
@@ -50,24 +61,13 @@ const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
     }
   };
 
-  const handleActiveBlock = dataLabel => {
-    filterArticlesAccordingToStatus(
-      dataLabel,
-      allArticles,
-      setAllArticles,
-      setActiveStatus,
-      activeCategories
-    );
-  };
-
   const handleActiveCategories = category => {
-    filterArticlesAccordingToCategory(
+    filterArticlesAccordingToCategories(
       category,
       activeCategories,
       setActiveCategories,
       allArticles,
-      setAllArticles,
-      setActiveStatus
+      setAllArticles
     );
   };
 
@@ -79,7 +79,7 @@ const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
           count={menuBarBlock.count}
           key={menuBarBlock.label}
           label={menuBarBlock.label}
-          onClick={() => handleActiveBlock(menuBarBlock.label)}
+          onClick={() => setActiveStatus(menuBarBlock.label)}
         />
       ))}
       <MenuBar.SubTitle

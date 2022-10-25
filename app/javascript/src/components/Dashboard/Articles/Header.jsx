@@ -3,11 +3,13 @@ import React from "react";
 import { Button, ActionDropdown, Checkbox, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
 
-import { ARTICLE_CREATE_PATH } from "../../routeConstants";
+import Tooltip from "components/Common/Tooltip";
+import { ARTICLE_CREATE_PATH } from "components/routeConstants";
 
 const { Menu, MenuItem } = ActionDropdown;
 
 const ArticleHeader = ({
+  disabled,
   columnsList,
   handleCheckedColumns,
   searchArticleTerm,
@@ -15,7 +17,7 @@ const ArticleHeader = ({
 }) => (
   <Header
     actionBlock={
-      <div>
+      <div className="flex">
         <ActionDropdown
           buttonStyle="secondary"
           className="pr-3"
@@ -41,7 +43,18 @@ const ArticleHeader = ({
             ))}
           </Menu>
         </ActionDropdown>
-        <Button label="Add New Article" to={ARTICLE_CREATE_PATH} />
+        <Tooltip
+          content="Add category to create an article"
+          disabled={disabled}
+          followCursor="horizontal"
+          position="bottom"
+        >
+          <Button
+            disabled={disabled}
+            label="Add New Article"
+            to={disabled ? "/" : ARTICLE_CREATE_PATH}
+          />
+        </Tooltip>
       </div>
     }
     searchProps={{
