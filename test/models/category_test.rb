@@ -28,4 +28,23 @@ class CategoryTest < ActiveSupport::TestCase
     test_category = create(:category, user: @user)
     assert_equal Category.maximum(:position), test_category.position
   end
+
+  def test_categories_should_be_deleted_if_user_is_deleted
+    previous_categories_count = @user.categories.count
+
+    first_category = create(:category, user: @user)
+    second_category = create(:category, user: @user)
+
+    current_categories_count = @user.categories.count
+
+    assert_equal previous_categories_count + 2, current_categories_count
+    @user.destroy!
+    assert_equal 0, @user.categories.count
+  end
+
+  def test_should_delete_category_if_user_is_deleted
+    assert Category.exists?(@category.id)
+    @user.destroy
+    assert_not Category.exists?(@category.id)
+  end
 end

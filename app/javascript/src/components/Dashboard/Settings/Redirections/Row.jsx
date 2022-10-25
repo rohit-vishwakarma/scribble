@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 
-import { Delete, Edit as NeetoEdit } from "neetoicons";
+import { Delete, Edit } from "neetoicons";
 import { Typography, Button } from "neetoui";
 
 import DeleteAlert from "./DeleteAlert";
 
-const Row = ({ redirection, setSelectedRedirectionId, refetch }) => {
+const Row = ({
+  redirection,
+  setSelectedRedirectionId,
+  refetch,
+  setShowAdd,
+}) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   return (
     <>
-      <td className="w-2/5">
-        <Typography className="text-gray-700" style="h5">
-          {window.location.origin}
-          {redirection.from}
-        </Typography>
-      </td>
-      <td className="w-2/5">
-        <Typography className="text-gray-700" style="h5">
-          {window.location.origin}
-          {redirection.to}
-        </Typography>
-      </td>
-      <td className="flex items-end">
+      <Typography className="w-2/5 overflow-x-auto text-gray-500" style="h5">
+        {window.location.origin}
+        {redirection.from}
+      </Typography>
+      <Typography className="w-2/5 overflow-x-auto text-gray-700" style="h5">
+        {window.location.origin}
+        {redirection.to}
+      </Typography>
+      <div className="flex items-end">
         <Button
           icon={Delete}
           size={13}
@@ -30,17 +31,23 @@ const Row = ({ redirection, setSelectedRedirectionId, refetch }) => {
           onClick={() => setShowDeleteAlert(prevState => !prevState)}
         />
         <Button
-          icon={NeetoEdit}
+          icon={Edit}
           size={13}
           style="text"
-          onClick={() => setSelectedRedirectionId(redirection.id)}
+          onClick={() => {
+            setSelectedRedirectionId(redirection.id);
+            setShowAdd(false);
+          }}
         />
-      </td>
+      </div>
       {showDeleteAlert && (
         <DeleteAlert
           refetch={refetch}
           selectedDeleteRedirection={redirection}
-          onClose={() => setShowDeleteAlert(false)}
+          onClose={() => {
+            setShowDeleteAlert(false);
+            setShowAdd(false);
+          }}
         />
       )}
     </>

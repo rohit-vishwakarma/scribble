@@ -7,7 +7,8 @@ class UserTest < ActiveSupport::TestCase
   #   assert true
   # end
   def setup
-    @user = create(:user)
+    @organization = create(:organization)
+    @user = create(:user, organization: @organization)
   end
 
   def test_name_should_be_of_valid_length
@@ -35,5 +36,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not test_user.valid?
 
     assert_includes test_user.errors.full_messages, "Email has already been taken"
+  end
+
+  def test_users_should_be_deleted_if_organization_is_deleted
+    users_count = @organization.users.count
+    assert_not_equal 0, users_count
+
+    @organization.destroy!
+    assert_equal 0, @organization.users.count
   end
 end
