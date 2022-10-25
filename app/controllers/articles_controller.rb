@@ -32,7 +32,7 @@ class ArticlesController < ApplicationController
 
   def bulk_update
     @articles.update(category_id: params[:new_id])
-    respond_with_success(t("successfully_deleted", entity: "Articles"))
+    respond_with_success(t("successfully_updated", entity: "Articles"))
   end
 
   private

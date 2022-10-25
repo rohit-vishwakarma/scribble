@@ -41,10 +41,4 @@ class CategoryTest < ActiveSupport::TestCase
     @user.destroy!
     assert_equal 0, @user.categories.count
   end
-
-  def test_should_delete_category_if_user_is_deleted
-    assert Category.exists?(@category.id)
-    @user.destroy
-    assert_not Category.exists?(@category.id)
-  end
 end
