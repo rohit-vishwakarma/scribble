@@ -19,9 +19,9 @@ const Articles = () => {
   const [columnsList, setColumnsList] = useState(ColumnsListItems);
   const [searchArticleTerm, setSearchArticleTerm] = useState("");
   const [allArticles, setAllArticles] = useState({
-    main: [],
-    selected: [],
-    table: [],
+    articlesList: [],
+    selectedArticles: [],
+    articlesTable: [],
   });
 
   const handleCheckedColumns = selectedIdx => {
@@ -37,7 +37,11 @@ const Articles = () => {
       const {
         data: { articles },
       } = await articlesApi.fetch();
-      setAllArticles({ main: articles, selected: articles, table: articles });
+      setAllArticles({
+        articlesList: articles,
+        selectedArticles: articles,
+        articlesTable: articles,
+      });
     } catch (error) {
       logger.error(error);
     }
@@ -81,26 +85,23 @@ const Articles = () => {
       <Container>
         <Header
           columnsList={columnsList}
+          disabled={categories.length === 0}
           handleCheckedColumns={handleCheckedColumns}
           searchArticleTerm={searchArticleTerm}
           setSearchArticleTerm={setSearchArticleTerm}
         />
-        {allArticles.table.length ? (
+        {allArticles.articlesTable.length ? (
           <div className="flex w-full flex-col">
             <Table
               refetch={fetchArticlesAndCategories}
               articles={searchArticlesByTitle(
-                allArticles.table,
+                allArticles.articlesTable,
                 searchArticleTerm
               )}
             />
           </div>
         ) : (
-          <EmptyState
-            primaryActionLabel="Add New Article"
-            subtitle="Add some articles"
-            title="Looks like you don't have any articles!"
-          />
+          <EmptyState disabled={categories.length === 0} />
         )}
       </Container>
     </div>

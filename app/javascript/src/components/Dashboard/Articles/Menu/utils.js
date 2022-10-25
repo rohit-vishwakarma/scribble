@@ -1,70 +1,70 @@
-export const filterArticlesAccordingToCategory = (
+export const filterArticlesAccordingToCategories = (
   category,
   activeCategories,
   setActiveCategories,
   allArticles,
-  setAllArticles,
-  setActiveStatus
+  setAllArticles
 ) => {
   if (activeCategories.includes(category.id)) {
-    const filterSelectedCategory = allArticles.selected.filter(
+    const filteredArticles = allArticles.selectedArticles.filter(
       article => article.category_id !== category.id
     );
 
     setActiveCategories(
       activeCategories.filter(categoryId => categoryId !== category.id)
     );
+
     if (activeCategories.length === 1) {
       setAllArticles({
         ...allArticles,
-        selected: allArticles.main,
-        table: allArticles.main,
+        selectedArticles: allArticles.articlesList,
+        articlesTable: allArticles.articlesList,
       });
     } else {
       setAllArticles({
         ...allArticles,
-        selected: filterSelectedCategory,
-        table: filterSelectedCategory,
+        selectedArticles: filteredArticles,
+        articlesTable: filteredArticles,
       });
     }
   } else {
-    const filterSelectedCategory = allArticles.main.filter(
+    const filteredArticles = allArticles.articlesList.filter(
       article =>
         activeCategories.includes(article.category_id) ||
         article.category_id === category.id
     );
+
     setActiveCategories([...activeCategories, category.id]);
     setAllArticles({
       ...allArticles,
-      selected: filterSelectedCategory,
-      table: filterSelectedCategory,
+      selectedArticles: filteredArticles,
+      articlesTable: filteredArticles,
     });
   }
-  setActiveStatus("All");
 };
 
-export const filterArticlesAccordingToStatus = (
+export const filterArticlesAccordingToCategoriesAndStatus = (
   dataLabel,
   allArticles,
   setAllArticles,
   setActiveStatus,
-  activeCategory
+  activeCategories
 ) => {
   if (dataLabel !== "All") {
-    const filterSelectedArticles = allArticles.selected.filter(
+    const filteredArticles = allArticles.selectedArticles.filter(
       article => article.status === dataLabel
     );
-    setAllArticles({ ...allArticles, table: filterSelectedArticles });
-  } else if (activeCategory.length === 0) {
+    setAllArticles({ ...allArticles, articlesTable: filteredArticles });
+  } else if (activeCategories.length === 0) {
     setAllArticles({
       ...allArticles,
-      selected: allArticles.main,
-      table: allArticles.main,
+      selectedArticles: allArticles.articlesList,
+      articlesTable: allArticles.articlesList,
     });
   } else {
     setAllArticles({
       ...allArticles,
-      table: allArticles.selected,
+      articlesTable: allArticles.selectedArticles,
     });
   }
   setActiveStatus(dataLabel);
