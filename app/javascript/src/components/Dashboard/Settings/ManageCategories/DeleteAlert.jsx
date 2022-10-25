@@ -22,6 +22,8 @@ const DeleteAlert = ({
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState(null);
+  const defaultCategory =
+    selectedDeleteCategory.name === "General" ? "Getting Started" : "General";
 
   useEffect(() => {
     fetchCategories();
@@ -41,19 +43,22 @@ const DeleteAlert = ({
 
   const handleDelete = async () => {
     try {
-      if (categories.length === 1) {
-        await categoriesApi.update(selectedDeleteCategory.id, {
-          name: "General",
+      let moveToCategoryId = moveToCategory?.value;
+      if (categories.length === 1 && selectedDeleteCategory.count > 0) {
+        await categoriesApi.create({
+          name: defaultCategory,
         });
-      } else if (selectedDeleteCategory.count === 0) {
-        await categoriesApi.destroy(selectedDeleteCategory.id);
-      } else {
+        const { data } = await categoriesApi.fetch();
+        moveToCategoryId = data[1].id;
+      }
+
+      if (selectedDeleteCategory.count > 0) {
         await articlesApi.bulkUpdate({
           current_id: selectedDeleteCategory.id,
-          new_id: moveToCategory.value,
+          new_id: moveToCategoryId,
         });
-        await categoriesApi.destroy(selectedDeleteCategory.id);
       }
+      await categoriesApi.destroy(selectedDeleteCategory.id);
       setSelectedDeleteCategory({});
       refetch();
     } catch (error) {
@@ -62,17 +67,12 @@ const DeleteAlert = ({
     onClose();
   };
 
-  const filteredCategoryOptions = categories
+  const CATEGORY_OPTIONS = categories
     .map(category => ({
       label: category.name,
       value: category.id,
     }))
     .filter(category => category.value !== selectedDeleteCategory.id);
-
-  const CATEGORY_OPTIONS =
-    filteredCategoryOptions.length > 0
-      ? filteredCategoryOptions
-      : [{ label: "General", value: 0 }];
 
   if (loading) {
     return (
@@ -95,32 +95,35 @@ const DeleteAlert = ({
           category. This action cannot be undone. Are you sure you wish to
           continue?
         </Typography>
-        {selectedDeleteCategory.count > 0 || categories.length === 1 ? (
+        {selectedDeleteCategory.count > 0 ? (
           <>
             {categories.length === 1 ? (
               <Callout className="mb-3" icon={Info} style="info">
                 Category "{selectedDeleteCategory.name}" has&nbsp;
                 {selectedDeleteCategory.count === 0
-                  ? 'no article. Select category "General" to delete the category.'
-                  : `${selectedDeleteCategory.count} articles. You have no other category to move articles. Select category "General" to move all articles.`}
+                  ? `no article. Click proceed to delete the category.`
+                  : `${selectedDeleteCategory.count} articles.
+                  This will be moved to category "${defaultCategory}". Click proceed to continue.`}
               </Callout>
             ) : (
               <Callout className="mb-3" icon={Warning} style="danger">
                 Category "{selectedDeleteCategory.name}" has&nbsp;
                 {selectedDeleteCategory.count} articles. Before this category
                 can be deleted, these articles needs to be moved to another
-                category. Select category "General" to move all articles.
+                category. Select category to move all articles.
               </Callout>
             )}
-            <Select
-              isSearchable
-              required
-              label="Select a category"
-              name="category_id"
-              options={CATEGORY_OPTIONS}
-              placeholder="Select Category"
-              onChange={e => setMoveToCategory(e)}
-            />
+            {CATEGORY_OPTIONS.length > 0 && (
+              <Select
+                isSearchable
+                required
+                label="Select a category"
+                name="category_id"
+                options={CATEGORY_OPTIONS}
+                placeholder="Select Category"
+                onChange={e => setMoveToCategory(e)}
+              />
+            )}
           </>
         ) : (
           <Callout className="mt-3" icon={Info} style="info">
@@ -133,15 +136,15 @@ const DeleteAlert = ({
         <Button
           label="Proceed"
           style="danger"
+          type="submit"
           disabled={
-            (selectedDeleteCategory.count !== 0 ||
-              (selectedDeleteCategory.count === 0 &&
-                categories.length === 1)) &&
-            !moveToCategory
+            selectedDeleteCategory.count > 0 &&
+            !moveToCategory &&
+            CATEGORY_OPTIONS.length > 0
           }
           onClick={handleDelete}
         />
-        <Button label="Cancel" style="text" onClick={onClose} />
+        <Button label="Cancel" style="text" type="cancel" onClick={onClose} />
       </Modal.Footer>
     </Modal>
   );
