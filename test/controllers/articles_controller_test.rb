@@ -15,7 +15,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    all_articles = Article.all.count
+    all_articles = @user.articles.count
     assert_equal all_articles, response_json["articles"].count
   end
 

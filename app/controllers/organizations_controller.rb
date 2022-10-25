@@ -4,6 +4,7 @@ class OrganizationsController < ApplicationController
   before_action :load_organization!, only: %i[show create update]
 
   def show
+    render
   end
 
   def create
@@ -19,10 +20,4 @@ class OrganizationsController < ApplicationController
     @organization.save!
     respond_with_success(t("successfully_updated", entity: Organization))
   end
-
-  private
-
-    def organization_params
-      params.require(:organization).permit(:name, :password, :is_password_protected)
-    end
 end

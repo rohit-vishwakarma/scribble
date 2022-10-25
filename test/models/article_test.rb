@@ -140,7 +140,6 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   def test_should_delete_articles_if_category_is_deleted
-    @article.save!
     category_id = @article.category_id
     previous_articles_count = Article.all.where(category_id: category_id).count
 
@@ -156,7 +155,6 @@ class ArticleTest < ActiveSupport::TestCase
 
   def test_should_generate_slug_after_article_set_to_publish_first_time
     article_title = @article.title
-    @article.save
     assert_nil @article.slug
 
     @article.status = "Published"
@@ -173,5 +171,18 @@ class ArticleTest < ActiveSupport::TestCase
     @article.save!
 
     assert_equal article_slug, @article.slug
+  end
+
+  def test_articles_should_be_deleted_if_category_is_deleted
+    previous_articles_count = @category.articles.count
+
+    first_article = create(:article, category: @category, user: @user)
+    second_article = create(:article, category: @category, user: @user)
+
+    current_articles_count = @category.articles.count
+
+    assert_equal previous_articles_count + 2, current_articles_count
+    @category.destroy!
+    assert_equal 0, @category.articles.count
   end
 end

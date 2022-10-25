@@ -10,3 +10,4 @@ en:
   article:
     slug:
       immutable: "is immutable!"
+  redirection_loop: "Adding this can cause redirection loop"

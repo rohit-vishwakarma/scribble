@@ -21,7 +21,7 @@ export const buildArticleTableColumnData = handleDelete => {
       ),
     },
     {
-      title: "Date",
+      title: "Last Updated At",
       dataIndex: "updated_at",
       key: "updated_at",
       width: "20%",
