@@ -29,7 +29,7 @@ class CategoriesController < ApplicationController
     position = 1
     category_id_list = params[:category_ids]
     category_id_list.each do | id |
-      category = Category.find(id)
+      category = @_current_user.categories.find(id)
       category.update!(position: position)
       position = position + 1
     end
