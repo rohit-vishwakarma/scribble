@@ -40,7 +40,7 @@ export const buildArticleTableColumnData = handleDelete => {
       render: (updated_at, { status }) =>
         status === "Draft" ? (
           <Typography className="text-gray-500" style="h5">
-            ----------
+            -
           </Typography>
         ) : (
           <Typography className="text-gray-800" style="h5">

@@ -77,7 +77,7 @@ const Login = ({ setIsAuthorized }) => {
         >
           <FormikForm className="mt-8">
             <Input required label="Password" name="password" type="password" />
-            <Button className="mt-6" label="continue" type="submit" />
+            <Button className="mt-6" label="Continue" type="submit" />
           </FormikForm>
         </Formik>
       </div>

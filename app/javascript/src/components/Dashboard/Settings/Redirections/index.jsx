@@ -90,7 +90,7 @@ const Redirection = () => {
           <Button
             icon={Plus}
             iconPosition="left"
-            label="Add New Redirection"
+            label="Add new redirection"
             style="link"
             onClick={() => {
               setShowAdd(prevState => !prevState);

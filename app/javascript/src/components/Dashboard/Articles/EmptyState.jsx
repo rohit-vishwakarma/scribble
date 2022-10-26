@@ -23,7 +23,7 @@ const EmptyState = ({ disabled }) => (
         >
           <Button
             disabled={disabled}
-            label="Add New Article"
+            label="Add new article"
             to={disabled ? "/" : ARTICLE_CREATE_PATH}
             type="primary"
           />

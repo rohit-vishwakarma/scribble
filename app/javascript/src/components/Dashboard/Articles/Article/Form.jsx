@@ -12,11 +12,11 @@ import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 const ArticleForm = ({ selectedArticle, handleSubmit }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState("Save Draft");
+  const [status, setStatus] = useState("Save draft");
   const [categories, setCategories] = useState([]);
   const history = useHistory();
   const { Menu, MenuItem } = Dropdown;
-  const statusListItems = ["Save Draft", "Publish"];
+  const statusListItems = ["Save draft", "Publish"];
 
   useEffect(() => {
     fetchCategories();
@@ -107,7 +107,7 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
                       onClick={() => {
                         setFieldValue(
                           "status",
-                          item !== "Save Draft" ? "Published" : "Draft"
+                          item !== "Save draft" ? "Published" : "Draft"
                         );
                         setStatus(item);
                       }}

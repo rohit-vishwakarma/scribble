@@ -26,7 +26,7 @@ const NavBar = () => (
     </div>
     <Button
       icon={ExternalLink}
-      label="preview"
+      label="Preview"
       style="secondary"
       target="_blank"
       to="/public"
