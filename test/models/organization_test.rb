@@ -47,9 +47,4 @@ class OrganizationTest < ActiveSupport::TestCase
     assert @organization.invalid?
     assert_includes @organization.errors.full_messages, "Password requires 1 letter and 1 number"
   end
-
-  def test_password_shouldnt_valid_with_nil
-    @organization.password = nil
-    assert_not @organization.valid?
-  end
 end

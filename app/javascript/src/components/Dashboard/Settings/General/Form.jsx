@@ -12,13 +12,12 @@ const Form = ({ organizationData }) => {
   const [showPassword, setShowPassword] = useState(
     organizationData.isPasswordProtected
   );
-  const [changePassword, setChangePassword] = useState(false);
 
   const handleSubmit = async values => {
     try {
       await organizationsApi.update({
         name: values.name,
-        password: changePassword ? values.password : null,
+        password: values.password,
         is_password_protected: values.isChecked,
       });
       localStorage.setItem("authToken", JSON.stringify({ token: null }));
@@ -30,14 +29,14 @@ const Form = ({ organizationData }) => {
 
   return (
     <Formik
-      validationSchema={GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA}
+      validationSchema={GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA(showPassword)}
       initialValues={{
         name: organizationData.name,
         isChecked: organizationData.isPasswordProtected,
       }}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, setFieldValue, isValid, dirty }) => (
+      {({ isSubmitting, setFieldValue, dirty }) => (
         <FormikForm className="space-y-2">
           <div className="border-b-2 pb-4">
             <Input
@@ -71,30 +70,21 @@ const Form = ({ organizationData }) => {
             }}
           />
           {showPassword && (
-            <div className="flex gap-x-2">
+            <div className="flex">
               <Input
                 required
                 className="mt-4 mb-px"
-                disabled={!changePassword}
                 id="password"
                 label="Password"
-                minLength="6"
                 name="password"
                 placeholder="******"
                 type="password"
               />
-              <Button
-                className="h-7 mt-10 mb-2"
-                disabled={changePassword}
-                label="Change password"
-                size="small"
-                onClick={() => setChangePassword(true)}
-              />
             </div>
           )}
-          <div className="flex gap-x-1 pt-4">
+          <div className="flex gap-x-1 pt-2">
             <Button
-              disabled={isSubmitting || !(isValid && dirty)}
+              disabled={isSubmitting || !dirty}
               label="Save changes"
               type="submit"
             />
@@ -102,10 +92,9 @@ const Form = ({ organizationData }) => {
               label="Cancel"
               style="text"
               type="reset"
-              onClick={() => {
-                setShowPassword(organizationData.isPasswordProtected);
-                setChangePassword(false);
-              }}
+              onClick={() =>
+                setShowPassword(organizationData.isPasswordProtected)
+              }
             />
           </div>
         </FormikForm>

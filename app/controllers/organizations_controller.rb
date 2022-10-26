@@ -15,7 +15,7 @@ class OrganizationsController < ApplicationController
 
   def update
     @current_organization.name = params[:name]
-    @current_organization.password = params[:password] if params[:password].present?
+    @current_organization.password = params[:password]
     @current_organization.is_password_protected = params[:is_password_protected]
     @current_organization.save!
     respond_with_success(t("successfully_updated", entity: "Organization"))

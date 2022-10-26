@@ -29,6 +29,17 @@ export const SETTINGS_OPTIONS = [
   },
 ];
 
-export const GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA = yup.object().shape({
-  name: yup.string().required("SiteName cannot be empty."),
-});
+export const GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA = showPassword =>
+  yup.object().shape({
+    name: yup.string().required("SiteName cannot be empty."),
+    password: showPassword
+      ? yup
+          .string()
+          .required("Password is required")
+          .min(6, "Password must be at least 6 characters")
+          .matches(
+            /[^wd]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))/,
+            "Password must have one letter and one number"
+          )
+      : yup.string().notRequired(),
+  });
