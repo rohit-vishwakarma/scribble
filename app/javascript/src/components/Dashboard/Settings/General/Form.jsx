@@ -86,7 +86,7 @@ const Form = ({ organizationData }) => {
               <Button
                 className="h-7 mt-10 mb-2"
                 disabled={changePassword}
-                label="Change Password"
+                label="Change password"
                 size="small"
                 onClick={() => setChangePassword(true)}
               />
@@ -95,7 +95,7 @@ const Form = ({ organizationData }) => {
           <div className="flex gap-x-1 pt-4">
             <Button
               disabled={isSubmitting || !(isValid && dirty)}
-              label="Save Changes"
+              label="Save changes"
               type="submit"
             />
             <Button
