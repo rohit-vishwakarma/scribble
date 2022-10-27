@@ -33,7 +33,8 @@ const handleErrorResponse = axiosErrorObject => {
     localStorage.setItem("authToken", JSON.stringify({ token: null }));
   }
   Toastr.error(
-    axiosErrorObject.response?.data?.error || DEFAULT_ERROR_NOTIFICATION
+    axiosErrorObject.response?.data?.error.split("and")[0] ||
+      DEFAULT_ERROR_NOTIFICATION
   );
 
   return Promise.reject(axiosErrorObject);

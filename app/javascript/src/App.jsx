@@ -78,9 +78,7 @@ const App = () => {
       <Switch>
         {redirectionsList.map(redirection => (
           <Route exact from={redirection.from} key={redirection.id}>
-            <Redirect
-              to={{ pathname: redirection.to, state: { status: 301 } }}
-            />
+            <Redirect to={redirection.to} />
           </Route>
         ))}
         <PrivateRoute
