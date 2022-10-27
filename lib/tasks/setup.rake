@@ -3,8 +3,7 @@ task setup: [:environment, 'db:drop', 'db:create', 'db:migrate'] do
   Rake::Task['populate_with_sample_data'].invoke if Rails.env.development?
 end
 
-task reset_and_populate_sample_data: [:environment] do
-  Rake::Task["db:schema:load"].invoke
+task populate_sample_data: [:environment] do
   create_sample_data!
   puts "Sample data has been added."
 end
