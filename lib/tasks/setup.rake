@@ -3,6 +3,11 @@ task setup: [:environment, 'db:drop', 'db:create', 'db:migrate'] do
   Rake::Task['populate_with_sample_data'].invoke if Rails.env.development?
 end
 
+task populate_sample_data: [:environment] do
+  create_sample_data!
+  puts "Sample data has been added."
+end
+
 task populate_with_sample_data: [:environment] do
   if Rails.env.production?
     puts "Skipping deleting and populating sample data in production"
@@ -10,6 +15,7 @@ task populate_with_sample_data: [:environment] do
     create_sample_data!
     puts "Sample data has been added."
   end
+  Rake::Task["populate_with_sample_data"].invoke
 end
 
 def create_sample_data!
@@ -104,7 +110,7 @@ def create_sample_organization_data!
   puts "Seeding with sample Organization name..."
   Organization.create!(
     name: "Spinkart",
-    password: "welcome123",
+    password: nil,
     is_password_protected: false
   )
   puts "Done! Organization name is created successfully."
