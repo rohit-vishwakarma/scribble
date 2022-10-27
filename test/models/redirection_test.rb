@@ -26,7 +26,13 @@ class RedirectionTest < ActiveSupport::TestCase
 
   def test_from_and_to_should_not_be_equal
     @redirection.from = @redirection.to
-    assert_not @redirection.valid?
+
+    assert_raises ActiveRecord::RecordInvalid do
+      @redirection.save!
+    end
+
+    error_msg = @redirection.errors.full_messages.to_sentence
+    assert_match t("redirection.equal_path"), error_msg
   end
 
   def test_redirections_should_not_create_cycle
@@ -35,9 +41,15 @@ class RedirectionTest < ActiveSupport::TestCase
     third_redirection = create(:redirection)
 
     second_redirection.from = first_redirection.to
+    second_redirection.save!
     third_redirection.from = second_redirection.to
     third_redirection.to = first_redirection.from
 
-    assert_not third_redirection.valid?
+    assert_raises ActiveRecord::RecordInvalid do
+      third_redirection.save!
+    end
+
+    error_msg = third_redirection.errors.full_messages.to_sentence
+    assert_match t("redirection.redirection_loop"), error_msg
   end
 end

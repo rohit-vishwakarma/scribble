@@ -63,7 +63,6 @@ const Redirection = () => {
               <div className="flex w-full justify-between">
                 <Edit
                   redirection={redirection}
-                  redirectionsList={redirectionsList}
                   refetch={fetchRedirectionsList}
                   setSelectedRedirectionId={setSelectedRedirectionId}
                 />
@@ -80,11 +79,7 @@ const Redirection = () => {
         ))}
         {showAdd ? (
           <div className="my-3 flex w-full items-center justify-between bg-white">
-            <Add
-              redirectionsList={redirectionsList}
-              refetch={fetchRedirectionsList}
-              setShowAdd={setShowAdd}
-            />
+            <Add refetch={fetchRedirectionsList} setShowAdd={setShowAdd} />
           </div>
         ) : (
           <Button

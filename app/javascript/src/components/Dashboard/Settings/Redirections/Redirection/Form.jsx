@@ -9,13 +9,7 @@ import redirectionsApi from "apis/redirections";
 
 import { REDIRECTION_FORM_VALIDATION_SCHEMA } from "./constants";
 
-const Form = ({
-  setShowRedirection,
-  redirectionsList,
-  initialValues,
-  isEdit,
-  refetch,
-}) => {
+const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
   const handleSubmit = async values => {
     try {
       if (isEdit) {
@@ -38,7 +32,7 @@ const Form = ({
     <Formik
       validateOnChange
       initialValues={initialValues}
-      validationSchema={REDIRECTION_FORM_VALIDATION_SCHEMA(redirectionsList)}
+      validationSchema={REDIRECTION_FORM_VALIDATION_SCHEMA}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, dirty, isValid }) => (

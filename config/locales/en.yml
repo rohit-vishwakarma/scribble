@@ -10,4 +10,6 @@ en:
   article:
     slug:
       immutable: "is immutable!"
-  redirection_loop: "Adding this can cause redirection loop"
+  redirection:
+    redirection_loop: "can't be added due to redirection loop."
+    equal_path: "from & to path can't be same."
