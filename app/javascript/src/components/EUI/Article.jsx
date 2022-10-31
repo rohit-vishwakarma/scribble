@@ -1,11 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { Typography } from "neetoui";
+import { Typography, PageLoader } from "neetoui";
 
+import articlesApi from "apis/articles";
 import { formatTimeStampToDate } from "components/utils";
 
-const Article = ({ article }) => {
-  const paragraphs = article.body.split("\n");
+const Article = ({ slug }) => {
+  const [article, setArticle] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchArticle = async () => {
+    try {
+      setLoading(true);
+      const { data: article } = await articlesApi.showBySlug(slug);
+      setArticle({
+        title: article.title,
+        category: article.category.name,
+        date: article.updated_at,
+        paragraphs: article.body.split("\n"),
+      });
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticle();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="m-8 w-3/4">
@@ -17,14 +48,14 @@ const Article = ({ article }) => {
           className="neeto-ui-rounded neeto-ui-bg-primary-100 neeto-ui-text-primary-800 mr-4 py-1 px-3"
           style="h5"
         >
-          {article.category.name}
+          {article.category}
         </Typography>
         <Typography className="neeto-ui-text-gray-400 p-1" style="h5">
-          {formatTimeStampToDate(article.update_at)}
+          {formatTimeStampToDate(article.date)}
         </Typography>
       </div>
       <div className="mt-6">
-        {paragraphs.map((paragraph, idx) => (
+        {article.paragraphs.map((paragraph, idx) => (
           <Typography key={idx} style="body2">
             {paragraph}
             <br />

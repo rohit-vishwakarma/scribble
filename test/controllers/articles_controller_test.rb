@@ -64,4 +64,15 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     response_json = response.parsed_body
     assert_equal t("successfully_updated", entity: "Articles"), response_json["notice"]
   end
+
+  def test_should_update_visits_count_on_show_article_by_slug
+    test_article = create(:article, status: "Published", category: @category, user: @user)
+    article_visits = test_article.visits
+
+    get show_by_slug_article_path(test_article.slug)
+    assert_response :ok
+
+    response_json = response.parsed_body
+    assert_equal article_visits + 1, response_json["visits"]
+  end
 end
