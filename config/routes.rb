@@ -8,11 +8,16 @@ Rails.application.routes.draw do
         put "bulk_update"
       end
     end
+    resources :articles, only: :show, param: :slug do
+      get "show_by_slug", on: :member
+    end
+
     resources :categories, except: %i[new edit show] do
       collection do
         put "position_update"
       end
     end
+
     resource :organization, only: %i[show update create]
     resources :redirections, except: %i[new edit show]
   end

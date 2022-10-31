@@ -46,9 +46,10 @@ export const ArticleColumnsData = [
     dataIndex: "visits",
     key: "visits",
     width: "15%",
-    render: () => (
+    sorter: (a, b) => a.visits - b.visits,
+    render: visits => (
       <Typography className="text-gray-600" style="h5">
-        0
+        {visits}
       </Typography>
     ),
   },

@@ -7,5 +7,6 @@ FactoryBot.define do
     title { Faker::Lorem.sentence[0..49] }
     body { Faker::Lorem.paragraph }
     status { "Draft" }
+    visits { 0 }
   end
 end

@@ -1,4 +1,8 @@
-export const setIndexOfSelectedCategory = (categories, setSelectedCategory) => {
+export const setIndexOfSelectedCategory = (
+  categories,
+  setSelectedCategory,
+  setPreviewPath
+) => {
   const currentPathSplitBySlash = window.location.pathname.split("/");
   const lastIndex = currentPathSplitBySlash.length - 1;
   const currentSlug = currentPathSplitBySlash[lastIndex];
@@ -11,6 +15,7 @@ export const setIndexOfSelectedCategory = (categories, setSelectedCategory) => {
         if (isSlugMatched) {
           isSlugFound = true;
           setSelectedCategory(idx);
+          setPreviewPath(currentSlug);
         }
 
         return isSlugMatched;
@@ -23,15 +28,17 @@ export const setIndexOfSelectedCategory = (categories, setSelectedCategory) => {
   }
 };
 
-export const findDefaultPreviewPath = (
+export const findPreviewPath = (
   categories,
-  setDefaultPreviewPath,
+  setPreviewPath,
   setSelectedCategory
 ) => {
   const defaultCategory = categories.find(
     category => category.articles.length !== 0
   );
 
-  setDefaultPreviewPath(defaultCategory.articles[0].slug);
-  setSelectedCategory(categories.indexOf(defaultCategory));
+  if (defaultCategory !== undefined) {
+    setPreviewPath(defaultCategory.articles[0].slug);
+    setSelectedCategory(categories.indexOf(defaultCategory));
+  }
 };
