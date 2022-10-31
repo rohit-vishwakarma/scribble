@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import articlesApi from "apis/articles";
 
 import Form from "./Form";
+import VersionHistory from "./VersionHistory";
 
 import { convertArticleToFormFormat } from "../utils";
 
@@ -52,11 +53,14 @@ const Edit = () => {
   }
 
   return (
-    <Form
-      isEdit
-      handleSubmit={handleSubmit}
-      selectedArticle={convertArticleToFormFormat(article)}
-    />
+    <div className="flex">
+      <Form
+        isEdit
+        handleSubmit={handleSubmit}
+        selectedArticle={convertArticleToFormFormat(article)}
+      />
+      <VersionHistory article={article} />
+    </div>
   );
 };
 
