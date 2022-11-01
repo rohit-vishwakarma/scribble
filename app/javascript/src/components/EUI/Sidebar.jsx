@@ -7,9 +7,10 @@ import { categoriesApi } from "apis/index";
 import NotFound from "components/Common/NotFound";
 
 import Article from "./Article";
+import SearchBar from "./SearchBar";
 import { setIndexOfSelectedCategory, findPreviewPath } from "./utils";
 
-const Sidebar = () => {
+const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(-1);
@@ -34,6 +35,10 @@ const Sidebar = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    setIndexOfSelectedCategory(categories, setSelectedCategory, setPreviewPath);
+  }, [previewPath]);
 
   if (loading) {
     return (
@@ -80,6 +85,13 @@ const Sidebar = () => {
         </>
       ) : (
         <NotFound message="No Article Found" />
+      )}
+      {showSearchBar && (
+        <SearchBar
+          setPreviewPath={setPreviewPath}
+          setShowSearchBar={setShowSearchBar}
+          showSearchBar={showSearchBar}
+        />
       )}
     </div>
   );

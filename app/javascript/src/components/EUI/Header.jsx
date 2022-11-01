@@ -4,7 +4,7 @@ import { Typography, PageLoader } from "neetoui";
 
 import organizationsApi from "apis/organizations";
 
-const Header = () => {
+const Header = ({ isEUI, setShowSearchBar }) => {
   const [organizationData, setOrganizationData] = useState({});
   const [loading, setLoading] = useState({});
 
@@ -35,8 +35,24 @@ const Header = () => {
   }
 
   return (
-    <div className="flex h-12 w-full justify-center border-b-2 py-3">
-      <Typography style="h4">{organizationData.name}</Typography>
+    <div className="flex h-12 w-full border-b-2">
+      {isEUI && (
+        <div className="mt-2 ml-8 h-10 w-3/12">
+          <div
+            className="border cursor-pointer rounded-sm border-gray-500"
+            onClick={() => setShowSearchBar(true)}
+          >
+            <Typography className="m-1 text-gray-400">
+              Search for articles here.
+            </Typography>
+          </div>
+        </div>
+      )}
+      <div className="w-full">
+        <Typography className="flex justify-center py-3" style="h4">
+          {organizationData.name}
+        </Typography>
+      </div>
     </div>
   );
 };

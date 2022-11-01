@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form as FormikForm } from "formik";
 import { Typography, Button, PageLoader } from "neetoui";
 import { Input } from "neetoui/formik";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 
 import { setAuthHeaders, organizationsApi } from "apis/index";
@@ -13,6 +14,7 @@ import Header from "./Header";
 const Login = ({ setIsAuthorized }) => {
   const [organizationData, setOrganizationData] = useState({});
   const [loading, setLoading] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     fetchOrganizationDetails();
@@ -43,7 +45,7 @@ const Login = ({ setIsAuthorized }) => {
       );
       setIsAuthorized(true);
       setAuthHeaders();
-      window.location.href = "/public";
+      history.push("/public");
     } catch (error) {
       logger.error(error);
     }
@@ -59,7 +61,7 @@ const Login = ({ setIsAuthorized }) => {
 
   return (
     <>
-      <Header />
+      <Header isEUI={false} />
       <div className="mt-16 grid justify-center p-8">
         <img className="mx-auto justify-center" src={EUILoginImg} />
         <Typography className="mt-6" style="h2">
