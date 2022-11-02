@@ -5,11 +5,8 @@ import { PageLoader } from "neetoui";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import {
-  setAuthHeaders,
-  registerIntercepts,
-  organizationsApi,
-} from "apis/index";
+import { organizationsApi } from "apis/admin";
+import { setAuthHeaders, registerIntercepts } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
 

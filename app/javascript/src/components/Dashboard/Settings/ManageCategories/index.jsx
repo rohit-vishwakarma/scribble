@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Typography, PageLoader } from "neetoui";
 
-import categoriesApi from "apis/categories";
+import { categoriesApi } from "apis/admin";
 
 import Add from "./Add";
 import List from "./List";

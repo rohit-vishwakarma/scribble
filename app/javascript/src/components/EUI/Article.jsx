@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Typography, PageLoader } from "neetoui";
 
-import articlesApi from "apis/articles";
+import { articlesApi } from "apis/public";
 import { formatTimeStampToDate } from "components/utils";
 
 const Article = ({ slug }) => {
@@ -12,7 +12,7 @@ const Article = ({ slug }) => {
   const fetchArticle = async () => {
     try {
       setLoading(true);
-      const { data: article } = await articlesApi.showBySlug(slug);
+      const { data: article } = await articlesApi.show(slug);
       setArticle({
         title: article.title,
         category: article.category.name,

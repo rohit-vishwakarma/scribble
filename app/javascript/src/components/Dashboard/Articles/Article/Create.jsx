@@ -2,7 +2,7 @@ import React from "react";
 
 import { useHistory } from "react-router-dom";
 
-import articlesApi from "apis/articles";
+import { articlesApi } from "apis/admin";
 
 import Form from "./Form";
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Alert } from "neetoui";
 
-import articlesApi from "apis/articles";
+import { articlesApi } from "apis/admin";
 
 const DeleteAlert = ({
   refetch,

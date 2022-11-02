@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Typography, PageLoader } from "neetoui";
 
-import organizationsApi from "apis/organizations";
+import { organizationsApi } from "apis/admin";
 
 const Header = ({ isEUI, setShowSearchBar }) => {
   const [organizationData, setOrganizationData] = useState({});

@@ -6,7 +6,8 @@ import { Input } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 
-import { setAuthHeaders, organizationsApi } from "apis/index";
+import { organizationsApi } from "apis/admin";
+import { setAuthHeaders } from "apis/axios";
 import EUILoginImg from "images/EUILoginImg";
 
 import Header from "./Header";

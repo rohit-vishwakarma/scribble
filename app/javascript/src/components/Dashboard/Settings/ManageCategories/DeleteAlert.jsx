@@ -10,8 +10,7 @@ import {
   Callout,
 } from "neetoui";
 
-import articlesApi from "apis/articles";
-import categoriesApi from "apis/categories";
+import { articlesApi, categoriesApi } from "apis/admin";
 
 const DeleteAlert = ({
   onClose,

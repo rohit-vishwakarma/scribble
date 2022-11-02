@@ -2,8 +2,6 @@ import axios from "axios";
 
 const fetch = () => axios.get("/api/admin/categories");
 
-const fetchPublic = () => axios.get("/api/public/categories");
-
 const create = async payload => {
   await axios.post("/api/admin/categories", payload);
 };
@@ -26,7 +24,6 @@ const categoriesApi = {
   update,
   destroy,
   positionUpdate,
-  fetchPublic,
 };
 
 export default categoriesApi;

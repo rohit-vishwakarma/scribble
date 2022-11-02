@@ -4,8 +4,6 @@ const fetch = () => axios.get("/api/admin/articles");
 
 const show = id => axios.get(`/api/admin/articles/${id}`);
 
-const showBySlug = slug => axios.get(`/api/public/articles/${slug}`);
-
 const create = async payload => {
   await axios.post("/api/admin/articles", payload);
 };
@@ -29,7 +27,6 @@ const articlesApi = {
   destroy,
   update,
   bulkUpdate,
-  showBySlug,
 };
 
 export default articlesApi;

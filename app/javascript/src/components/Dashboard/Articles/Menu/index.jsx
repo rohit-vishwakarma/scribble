@@ -6,7 +6,7 @@ import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
 
-import categoriesApi from "apis/categories";
+import { categoriesApi } from "apis/admin";
 
 import {
   filterArticlesAccordingToCategories,

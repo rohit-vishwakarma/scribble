@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Table, PageLoader } from "neetoui";
 
-import articlesApi from "apis/articles";
+import { articlesApi } from "apis/admin";
 
 import { ArticleColumnsData } from "./utils";
 

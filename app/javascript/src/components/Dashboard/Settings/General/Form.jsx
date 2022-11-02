@@ -4,7 +4,7 @@ import { Formik, Form as FormikForm } from "formik";
 import { Typography, Button } from "neetoui";
 import { Input, Checkbox } from "neetoui/formik";
 
-import organizationsApi from "apis/organizations";
+import { organizationsApi } from "apis/admin";
 
 import { GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA } from "../constants";
 

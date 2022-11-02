@@ -5,7 +5,7 @@ import { Check, Close } from "neetoicons";
 import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 
-import redirectionsApi from "apis/redirections";
+import { redirectionsApi } from "apis/admin";
 
 import { REDIRECTION_FORM_VALIDATION_SCHEMA } from "./constants";
 
