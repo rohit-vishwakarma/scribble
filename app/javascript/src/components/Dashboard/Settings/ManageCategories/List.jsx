@@ -9,8 +9,8 @@ import Row from "./Row";
 const List = ({ categories, setCategories, refetch }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
-  const reorderList = (categoriesList, startIndex, endIndex) => {
-    const shuffledCategories = Array.from(categoriesList);
+  const reorderList = (categoryList, startIndex, endIndex) => {
+    const shuffledCategories = Array.from(categoryList);
     const [removed] = shuffledCategories.splice(startIndex, 1);
     shuffledCategories.splice(endIndex, 0, removed);
 

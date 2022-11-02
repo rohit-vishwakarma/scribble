@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Formik, Form } from "formik";
+import { Formik, Form as FormikForm } from "formik";
 import { Dropdown, Button, PageLoader } from "neetoui";
 import { Select, Input, Textarea, BlockNavigation } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
@@ -9,7 +9,7 @@ import categoriesApi from "apis/categories";
 
 import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 
-const ArticleForm = ({ selectedArticle, handleSubmit }) => {
+const Form = ({ selectedArticle, handleSubmit }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("Save draft");
@@ -59,7 +59,7 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, setFieldValue, dirty, isValid }) => (
-        <Form className="mx-auto mt-8 w-6/12">
+        <FormikForm className="mx-auto mt-8 w-6/12">
           <BlockNavigation />
           <div className="my-5 flex gap-x-4">
             <Input
@@ -125,10 +125,10 @@ const ArticleForm = ({ selectedArticle, handleSubmit }) => {
               onClick={() => history.push("/")}
             />
           </div>
-        </Form>
+        </FormikForm>
       )}
     </Formik>
   );
 };
 
-export default ArticleForm;
+export default Form;
