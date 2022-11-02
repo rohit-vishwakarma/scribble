@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { PageLoader, Accordion, Typography } from "neetoui";
 import { useRouteMatch, NavLink, Redirect } from "react-router-dom";
 
-import { categoriesApi } from "apis/index";
+import { categoriesApi, articlesApi } from "apis/index";
 import NotFound from "components/Common/NotFound";
 
 import Article from "./Article";
@@ -13,6 +13,7 @@ import { setIndexOfSelectedCategory, findPreviewPath } from "./utils";
 const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [previewPath, setPreviewPath] = useState("");
 
@@ -27,13 +28,33 @@ const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
       setIndexOfSelectedCategory(data, setSelectedCategory, setPreviewPath);
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
+  const fetchArticles = async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { published_articles: articles },
+      } = await articlesApi.fetch();
+      setArticles(
+        articles.map(article => ({
+          label: article.title,
+          value: article.slug,
+        }))
+      );
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const fetchArticlesAndCategories = async () => {
+    await Promise.all([fetchArticles(), fetchCategories()]);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    fetchCategories();
+    fetchArticlesAndCategories();
   }, []);
 
   useEffect(() => {
@@ -55,7 +76,7 @@ const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
         defaultActiveKey={selectedCategory}
       >
         {categories.map((category, idx) => (
-          <Accordion.Item key={idx} title={category.name}>
+          <Accordion.Item key={category.id} title={category.name}>
             {category.articles.length > 0 ? (
               category.articles.map(article => (
                 <NavLink
@@ -88,6 +109,7 @@ const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
       )}
       {showSearchBar && (
         <SearchBar
+          articles={articles}
           setPreviewPath={setPreviewPath}
           setShowSearchBar={setShowSearchBar}
           showSearchBar={showSearchBar}

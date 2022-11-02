@@ -33,12 +33,10 @@ export const findPreviewPath = (
   setPreviewPath,
   setSelectedCategory
 ) => {
-  const defaultCategory = categories.find(
-    category => category.articles.length !== 0
-  );
+  const category = categories.find(category => category.articles.length !== 0);
 
-  if (defaultCategory !== undefined) {
-    setPreviewPath(defaultCategory.articles[0].slug);
-    setSelectedCategory(categories.indexOf(defaultCategory));
+  if (category !== undefined) {
+    setPreviewPath(category.articles[0].slug);
+    setSelectedCategory(categories.indexOf(category));
   }
 };
