@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const fetch = () => axios.get("/organization");
+const fetch = () => axios.get("/api/admin/organization");
 
 const update = async payload => {
-  await axios.put(`/organization`, payload);
+  await axios.put("/api/admin/organization", payload);
 };
 
-const login = payload => axios.post("/organization", payload);
+const login = payload => axios.post("/api/admin/organization", payload);
 
 const organizationsApi = {
   fetch,

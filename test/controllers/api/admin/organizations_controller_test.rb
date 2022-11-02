@@ -2,14 +2,14 @@
 
 require "test_helper"
 
-class OrganizationsControllerTest < ActionDispatch::IntegrationTest
+class Api::Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @organization = build(:organization)
   end
 
   def test_should_access_with_valid_credentials
     @organization.save!
-    post organization_path, params: { password: @organization.password }
+    post api_admin_organization_path, params: { password: @organization.password }
     assert_response :success
 
     response_json = response.parsed_body["authentication_token"]
@@ -18,7 +18,7 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_not_access_with_invalid_credentials
     @organization.save!
-    post organization_path, params: { password: "wrong password" }
+    post api_admin_organization_path, params: { password: "wrong password" }
     assert_response :unauthorized
 
     response_json = response.parsed_body
@@ -27,7 +27,7 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_organization_details
     @organization.save!
-    put organization_path, params: { name: "Spin", password: "hello123" }
+    put api_admin_organization_path, params: { name: "Spin", password: "hello123" }
     assert_response :success
 
     response_json = response.parsed_body

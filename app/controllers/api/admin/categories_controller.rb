@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CategoriesController < ApplicationController
+class Api::Admin::CategoriesController < ApplicationController
   before_action :current_user!, except: %i[:new :edit :show]
   before_action :load_category!, only: %i[update destroy]
 

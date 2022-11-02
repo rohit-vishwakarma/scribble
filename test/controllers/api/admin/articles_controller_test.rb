@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class ArticlesControllerTest < ActionDispatch::IntegrationTest
+class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @organization = create(:organization)
     @user = create(:user, organization: @organization)
@@ -11,7 +11,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_list_all_articles
-    get articles_path
+    get api_admin_articles_path
     assert_response :success
 
     response_json = response.parsed_body
@@ -21,7 +21,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_destroy_article
     assert_difference "Article.count", -1 do
-      delete article_path(@article.id)
+      delete api_admin_article_path(@article.id)
     end
     assert_response :ok
 
@@ -30,7 +30,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_create_article
-    post articles_path,
+    post api_admin_articles_path,
       params: {
         article: {
           title: @article.title, category_id: @category.id, user_id: @user.id,
@@ -45,7 +45,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_article
     article_params = { article: { title: "Updated title", body: "Updated body", status: "Published" } }
-    put article_path(@article.id), params: article_params
+    put api_admin_article_path(@article.id), params: article_params
     assert_response :success
 
     response_json = response.parsed_body
@@ -58,21 +58,10 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     second_article = create(:article, category: @category, user: @user)
     third_article = create(:article, category: @category, user: @user)
 
-    put bulk_update_articles_path, params: { current_id: @category.id, new_id: test_category.id }
+    put bulk_update_api_admin_articles_path, params: { current_id: @category.id, new_id: test_category.id }
     assert_response :success
 
     response_json = response.parsed_body
     assert_equal t("successfully_updated", entity: "Articles"), response_json["notice"]
-  end
-
-  def test_should_update_visits_count_on_show_article_by_slug
-    test_article = create(:article, status: "Published", category: @category, user: @user)
-    article_visits = test_article.visits
-
-    get show_by_slug_article_path(test_article.slug)
-    assert_response :ok
-
-    response_json = response.parsed_body
-    assert_equal article_visits + 1, response_json["visits"]
   end
 end

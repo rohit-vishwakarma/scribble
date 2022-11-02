@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class CategoriesControllerTest < ActionDispatch::IntegrationTest
+class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @organization = create(:organization)
     @user = create(:user, organization: @organization)
@@ -10,7 +10,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_create_category
-    post categories_path, params: { category: { name: "Getting Started", user: @user } }
+    post api_admin_categories_path, params: { category: { name: "Getting Started", user: @user } }
     assert_response :success
 
     response_json = response.parsed_body
@@ -19,7 +19,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_category
     category_params = { category: { name: "Updated title" } }
-    put category_path(@category.id), params: category_params
+    put api_admin_category_path(@category.id), params: category_params
     assert_response :success
 
     response_json = response.parsed_body
@@ -28,7 +28,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_destroy_category
     assert_difference "Category.count", -1 do
-      delete category_path(@category.id)
+      delete api_admin_category_path(@category.id)
     end
     assert_response :ok
 
@@ -43,7 +43,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
 
     category_ids = [third_category.id, first_category.id, second_category.id]
     last_position = @category.position
-    put position_update_categories_path, params: { category_ids: category_ids }
+    put position_update_api_admin_categories_path, params: { category_ids: category_ids }
     assert_response :success
 
     response_json = response.parsed_body

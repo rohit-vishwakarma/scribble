@@ -22,7 +22,7 @@ const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const { data } = await categoriesApi.fetch();
+      const { data } = await categoriesApi.fetchPublic();
       setCategories(data);
       findPreviewPath(data, setPreviewPath, setSelectedCategory);
       setIndexOfSelectedCategory(data, setSelectedCategory, setPreviewPath);
