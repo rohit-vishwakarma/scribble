@@ -7,7 +7,7 @@ import { Input as FormikInput } from "neetoui/formik";
 import { Draggable } from "react-beautiful-dnd";
 import * as yup from "yup";
 
-import categoriesApi from "apis/categories";
+import { categoriesApi } from "apis/admin";
 
 import DeleteAlert from "./DeleteAlert";
 

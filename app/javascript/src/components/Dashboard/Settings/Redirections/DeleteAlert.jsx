@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Alert } from "neetoui";
 
-import redirectionsApi from "apis/redirections";
+import { redirectionsApi } from "apis/admin";
 
 const DeleteAlert = ({ refetch, onClose, selectedDeleteRedirection }) => {
   const [deleting, setDeleting] = useState(false);

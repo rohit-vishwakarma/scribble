@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
-import categoriesApi from "apis/categories";
+import { categoriesApi } from "apis/admin";
 
 import Row from "./Row";
 

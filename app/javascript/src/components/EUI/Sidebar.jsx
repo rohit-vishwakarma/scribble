@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { PageLoader, Accordion, Typography } from "neetoui";
 import { useRouteMatch, NavLink, Redirect } from "react-router-dom";
 
-import { categoriesApi, articlesApi } from "apis/index";
+import { categoriesApi, articlesApi } from "apis/public";
 import NotFound from "components/Common/NotFound";
 
 import Article from "./Article";
@@ -22,7 +22,7 @@ const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const { data } = await categoriesApi.fetchPublic();
+      const { data } = await categoriesApi.fetch();
       setCategories(data);
       findPreviewPath(data, setPreviewPath, setSelectedCategory);
       setIndexOfSelectedCategory(data, setSelectedCategory, setPreviewPath);
@@ -35,7 +35,7 @@ const Sidebar = ({ showSearchBar, setShowSearchBar }) => {
     try {
       setLoading(true);
       const {
-        data: { published_articles: articles },
+        data: { articles },
       } = await articlesApi.fetch();
       setArticles(
         articles.map(article => ({

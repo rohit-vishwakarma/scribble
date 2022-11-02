@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Plus } from "neetoicons";
 import { Typography, Button, PageLoader } from "neetoui";
 
-import redirectionsApi from "apis/redirections";
+import { redirectionsApi } from "apis/admin";
 
 import Header from "./Header";
 import Add from "./Redirection/Add";

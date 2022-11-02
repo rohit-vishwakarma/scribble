@@ -5,7 +5,7 @@ import { Dropdown, Button, PageLoader } from "neetoui";
 import { Select, Input, Textarea, BlockNavigation } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
 
-import categoriesApi from "apis/categories";
+import { categoriesApi } from "apis/admin";
 
 import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 

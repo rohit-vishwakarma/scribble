@@ -5,7 +5,7 @@ import { Plus, Check, Close } from "neetoicons";
 import { Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 
-import categoriesApi from "apis/categories";
+import { categoriesApi } from "apis/admin";
 
 const Add = ({ refetch }) => {
   const [showAdd, setShowAdd] = useState(false);
