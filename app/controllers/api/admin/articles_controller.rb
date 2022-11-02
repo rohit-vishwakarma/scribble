@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::Admin::ArticlesController < ApplicationController
-  before_action :current_user!, except: [:new, :edit]
-  before_action :load_article!, only: [:destroy, :update, :show]
+  before_action :current_user!, except: %i[new edit]
+  before_action :load_article!, only: %i[destroy update show versions]
   before_action :load_articles!, only: :bulk_update
 
   def index
@@ -27,6 +27,11 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def show
+    render
+  end
+
+  def versions
+    @article_versions = @article.versions
     render
   end
 

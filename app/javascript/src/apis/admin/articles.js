@@ -20,6 +20,8 @@ const bulkUpdate = async payload => {
   await axios.put("/api/admin/articles/bulk_update", payload);
 };
 
+const versions = id => axios.get(`/api/admin/articles/${id}/versions`);
+
 const articlesApi = {
   fetch,
   show,
@@ -27,6 +29,7 @@ const articlesApi = {
   destroy,
   update,
   bulkUpdate,
+  versions,
 };
 
 export default articlesApi;

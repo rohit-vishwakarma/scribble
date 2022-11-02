@@ -10,6 +10,8 @@ class Article < ApplicationRecord
   validates :status, :body, presence: true
   validate :slug_not_changed
 
+  has_paper_trail only: [:title, :body, :status, :category_id]
+
   before_create :set_slug
   before_update :set_slug
 
