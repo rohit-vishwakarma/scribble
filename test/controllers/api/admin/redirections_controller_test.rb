@@ -2,13 +2,13 @@
 
 require "test_helper"
 
-class RedirectionsControllerTest < ActionDispatch::IntegrationTest
+class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @redirection = build(:redirection)
   end
 
   def test_should_create_redirection
-    post redirections_path, params: { redirection: { from: @redirection.from, to: @redirection.to } }
+    post api_admin_redirections_path, params: { redirection: { from: @redirection.from, to: @redirection.to } }
     assert_response :success
 
     response_json = response.parsed_body
@@ -17,7 +17,7 @@ class RedirectionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_destroy_redirection
     @redirection.save!
-    delete redirection_path(@redirection.id)
+    delete api_admin_redirection_path(@redirection.id)
     assert_response :success
 
     response_json = response.parsed_body
@@ -26,7 +26,7 @@ class RedirectionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_redirection
     @redirection.save!
-    put redirection_path(@redirection.id), params: {
+    put api_admin_redirection_path(@redirection.id), params: {
       redirection: {
         from: "https://lacalhost:3000/settings",
         to: "https://lacalhost:3000/settings/general"

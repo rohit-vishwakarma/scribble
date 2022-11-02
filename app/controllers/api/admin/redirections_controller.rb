@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RedirectionsController < ApplicationController
+class Api::Admin::RedirectionsController < ApplicationController
   before_action :load_redirection!, only: %i[destroy update]
 
   def index
