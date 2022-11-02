@@ -13,12 +13,36 @@ import { convertArticleToFormFormat } from "../utils";
 const Edit = () => {
   const [article, setArticle] = useState({});
   const [loading, setLoading] = useState(true);
+  const [articleVersions, setArticleVersions] = useState([]);
   const { id } = useParams();
   const history = useHistory();
 
   useEffect(() => {
-    fetchArticle();
+    fetchArticleAndVersions();
   }, []);
+
+  const fetchArticleAndVersions = async () => {
+    await Promise.all([fetchArticle(), fetchArticleVersions()]);
+    setLoading(false);
+  };
+
+  const fetchArticleVersions = async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { article_versions: articleVersions },
+      } = await articlesApi.versions(id);
+      const versions = articleVersions
+        .map(version => ({
+          id: version.id,
+          article: version.object,
+        }))
+        .splice(1);
+      setArticleVersions(versions);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const fetchArticle = async () => {
     try {
@@ -27,8 +51,6 @@ const Edit = () => {
       setArticle(fetchedArticle.data);
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -59,7 +81,7 @@ const Edit = () => {
         handleSubmit={handleSubmit}
         selectedArticle={convertArticleToFormFormat(article)}
       />
-      <VersionHistory article={article} />
+      <VersionHistory articleVersions={articleVersions} />
     </div>
   );
 };

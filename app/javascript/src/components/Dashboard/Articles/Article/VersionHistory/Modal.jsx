@@ -8,7 +8,7 @@ import {
   Textarea,
 } from "neetoui";
 
-const Modal = ({ article, showModal, setShowModal }) => (
+const Modal = ({ version, showModal, setShowModal }) => (
   <NeetoUIModal
     isOpen={showModal}
     size="large"
@@ -19,22 +19,27 @@ const Modal = ({ article, showModal, setShowModal }) => (
         Version History
       </Typography>
     </NeetoUIModal.Header>
-    <NeetoUIModal.Body className="space-y-2 ">
+    <NeetoUIModal.Body className="space-y-2">
       <div className="my-5 flex gap-x-4">
         <Input
           disabled
           className="bg-slate-700 mr-3 w-5/12"
           label="Article Title"
-          value={article.title}
+          value={version.article.title}
         />
         <Input
           disabled
           className="w-56"
           label="Category"
-          value={article.category.name}
+          value={version.article.category_id}
         />
       </div>
-      <Textarea disabled label="Article Body" rows={30} value={article.body} />
+      <Textarea
+        disabled
+        label="Article Body"
+        rows={30}
+        value={version.article.body}
+      />
     </NeetoUIModal.Body>
     <NeetoUIModal.Footer className="space-x-2">
       <Button label="Restore version" onClick={() => setShowModal(false)} />

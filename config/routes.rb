@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :articles, except: %i[new edit] do
           put "bulk_update", on: :collection
+          get "versions", on: :member
         end
         resources :categories, except: %i[new edit show] do
           put "position_update", on: :collection
