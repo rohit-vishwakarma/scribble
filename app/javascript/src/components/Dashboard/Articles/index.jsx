@@ -10,17 +10,16 @@ import EmptyState from "./EmptyState";
 import Header from "./Header";
 import MenuBar from "./Menu";
 import Table from "./Table";
-import { searchArticlesByTitle } from "./utils";
 
 const Articles = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [columnsList, setColumnsList] = useState(ColumnsListItems);
-  const [searchArticleTerm, setSearchArticleTerm] = useState("");
-  const [allArticles, setAllArticles] = useState({
-    articlesList: [],
-    selectedArticles: [],
-    articlesTable: [],
+  const [articles, setArticles] = useState([]);
+  const [filterOptions, setFilterOptions] = useState({
+    searchTerm: "",
+    categoryIds: [],
+    activeStatus: "All",
   });
 
   const handleCheckedColumns = selectedIdx => {
@@ -31,16 +30,16 @@ const Articles = () => {
   };
 
   const fetchArticles = async () => {
+    const payload = {
+      status: filterOptions.activeStatus,
+      category_ids: filterOptions.categoryIds,
+      search_term: filterOptions.searchTerm,
+    };
     try {
-      setLoading(true);
       const {
         data: { articles },
-      } = await articlesApi.fetch();
-      setAllArticles({
-        articlesList: articles,
-        selectedArticles: articles,
-        articlesTable: articles,
-      });
+      } = await articlesApi.fetch(payload);
+      setArticles(articles);
     } catch (error) {
       logger.error(error);
     }
@@ -48,7 +47,6 @@ const Articles = () => {
 
   const fetchCategories = async () => {
     try {
-      setLoading(true);
       const { data } = await categoriesApi.fetch();
       setCategories(data);
     } catch (error) {
@@ -63,7 +61,7 @@ const Articles = () => {
 
   useEffect(() => {
     fetchArticlesAndCategories();
-  }, []);
+  }, [filterOptions]);
 
   if (loading) {
     return (
@@ -76,28 +74,23 @@ const Articles = () => {
   return (
     <div className="flex">
       <MenuBar
-        allArticles={allArticles}
+        articles={articles}
         categories={categories}
+        filterOptions={filterOptions}
         refetch={fetchArticlesAndCategories}
-        setAllArticles={setAllArticles}
+        setFilterOptions={setFilterOptions}
       />
       <Container>
         <Header
           columnsList={columnsList}
           disabled={categories.length === 0}
+          filterOptions={filterOptions}
           handleCheckedColumns={handleCheckedColumns}
-          searchArticleTerm={searchArticleTerm}
-          setSearchArticleTerm={setSearchArticleTerm}
+          setFilterOptions={setFilterOptions}
         />
-        {allArticles.articlesTable.length ? (
+        {articles.length ? (
           <div className="flex w-full flex-col">
-            <Table
-              refetch={fetchArticlesAndCategories}
-              articles={searchArticlesByTitle(
-                allArticles.articlesTable,
-                searchArticleTerm
-              )}
-            />
+            <Table articles={articles} refetch={fetchArticlesAndCategories} />
           </div>
         ) : (
           <EmptyState disabled={categories.length === 0} />

@@ -15,9 +15,9 @@ const Analytics = () => {
     try {
       setLoading(true);
       const {
-        data: { published_articles: publishedArticles },
-      } = await articlesApi.fetch();
-      setArticles(publishedArticles);
+        data: { articles },
+      } = await articlesApi.fetchPublished();
+      setArticles(articles);
     } catch (error) {
       logger.error(error);
     } finally {

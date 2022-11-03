@@ -11,9 +11,9 @@ const { Menu, MenuItem } = ActionDropdown;
 const ArticleHeader = ({
   disabled,
   columnsList,
+  filterOptions,
+  setFilterOptions,
   handleCheckedColumns,
-  searchArticleTerm,
-  setSearchArticleTerm,
 }) => (
   <Header
     actionBlock={
@@ -59,8 +59,9 @@ const ArticleHeader = ({
     }
     searchProps={{
       placeholder: "Search article title",
-      value: searchArticleTerm,
-      onChange: e => setSearchArticleTerm(e.target.value),
+      value: filterOptions.searchTerm,
+      onChange: e =>
+        setFilterOptions({ ...filterOptions, searchTerm: e.target.value }),
     }}
   />
 );
