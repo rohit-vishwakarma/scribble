@@ -13,6 +13,7 @@ import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(true);
+
   const authToken = JSON.parse(localStorage.getItem("authToken"));
 
   useEffect(() => {

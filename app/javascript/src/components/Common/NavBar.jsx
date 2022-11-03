@@ -9,6 +9,7 @@ import { articlesApi } from "apis/admin";
 const NavBar = () => {
   const [loading, setLoading] = useState(false);
   const [articleStatus, setArticleStatus] = useState("");
+
   const { pathname } = useLocation();
   const isEditArticlePath = pathname.includes("edit");
 

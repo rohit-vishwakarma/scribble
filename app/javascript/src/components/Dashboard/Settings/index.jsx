@@ -11,8 +11,8 @@ import Sidebar from "./Sidebar";
 
 const Settings = () => {
   const { search } = useLocation();
-  const useQuery = () => new URLSearchParams(search);
-  const currentTab = useQuery().get("tab");
+  const getCurrentTab = tab => new URLSearchParams(search).get(tab);
+  const currentTab = getCurrentTab("tab");
 
   const renderCurrentTab = () => {
     if (currentTab === "general") return <General />;

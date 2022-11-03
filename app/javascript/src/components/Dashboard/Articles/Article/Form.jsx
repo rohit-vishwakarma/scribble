@@ -14,6 +14,7 @@ const Form = ({ selectedArticle, handleSubmit }) => {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("Save draft");
   const [categories, setCategories] = useState([]);
+
   const history = useHistory();
   const { Menu, MenuItem } = Dropdown;
   const statusListItems = ["Save draft", "Publish"];
