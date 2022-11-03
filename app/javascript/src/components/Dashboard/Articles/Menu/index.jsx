@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Search, Close, Check } from "neetoicons";
@@ -10,46 +10,50 @@ import { categoriesApi } from "apis/admin";
 
 import {
   filterArticlesAccordingToCategories,
-  filterArticlesAccordingToCategoriesAndStatus,
+  countArticlesAccordingToStatus,
 } from "./utils";
 
-const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
+const Menu = ({
+  categories,
+  refetch,
+  articles,
+  filterOptions,
+  setFilterOptions,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState({ add: true, search: true });
   const [searchValue, setSearchValue] = useState("");
-  const [activeStatus, setActiveStatus] = useState("All");
-  const [activeCategories, setActiveCategories] = useState([]);
+  const [articlesStatusCount, setArticlesStatusCount] = useState({
+    all: 0,
+    draft: 0,
+    published: 0,
+  });
 
   const MenuBarBlocks = [
     {
       label: "All",
-      count: allArticles.selectedArticles.length,
+      count: articlesStatusCount.all,
       active: true,
     },
     {
       label: "Draft",
-      count: allArticles.selectedArticles.filter(
-        article => article.status === "Draft"
-      ).length,
+      count: articlesStatusCount.draft,
       active: false,
     },
     {
       label: "Published",
-      count: allArticles.selectedArticles.filter(
-        article => article.status === "Published"
-      ).length,
+      count: articlesStatusCount.published,
       active: false,
     },
   ];
 
   useEffect(() => {
-    filterArticlesAccordingToCategoriesAndStatus(
-      activeStatus,
-      allArticles,
-      setAllArticles,
-      setActiveStatus,
-      activeCategories
-    );
-  }, [allArticles.selectedArticles, activeStatus]);
+    if (
+      filterOptions.activeStatus === "All" &&
+      filterOptions.searchTerm === ""
+    ) {
+      countArticlesAccordingToStatus(articles, setArticlesStatusCount);
+    }
+  }, [articles]);
 
   const handleSubmit = async values => {
     try {
@@ -63,11 +67,9 @@ const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
 
   const handleActiveCategories = category => {
     filterArticlesAccordingToCategories(
-      category,
-      activeCategories,
-      setActiveCategories,
-      allArticles,
-      setAllArticles
+      filterOptions,
+      setFilterOptions,
+      category
     );
   };
 
@@ -75,11 +77,16 @@ const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
     <MenuBar showMenu title="Articles">
       {MenuBarBlocks.map(menuBarBlock => (
         <MenuBar.Block
-          active={menuBarBlock.label === activeStatus}
+          active={menuBarBlock.label === filterOptions.activeStatus}
           count={menuBarBlock.count}
           key={menuBarBlock.label}
           label={menuBarBlock.label}
-          onClick={() => setActiveStatus(menuBarBlock.label)}
+          onClick={() =>
+            setFilterOptions({
+              ...filterOptions,
+              activeStatus: menuBarBlock.label,
+            })
+          }
         />
       ))}
       <MenuBar.SubTitle
@@ -140,7 +147,7 @@ const Menu = ({ categories, refetch, allArticles, setAllArticles }) => {
         )
         .map(category => (
           <MenuBar.Block
-            active={activeCategories.includes(category.id)}
+            active={filterOptions.categoryIds.includes(category.id)}
             count={category.count}
             key={category.id}
             label={category.name}

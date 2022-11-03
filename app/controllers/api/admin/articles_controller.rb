@@ -7,6 +7,14 @@ class Api::Admin::ArticlesController < ApplicationController
 
   def index
     @articles = @_current_user.articles.order("updated_at DESC")
+    @articles = Api::Admin::ArticlesFilterService.new(
+      @articles, params[:status],
+      params[:category_ids], params[:search_term]).process
+    render
+  end
+
+  def published_list
+    @articles = @_current_user.articles.where(status: "Published").order("updated_at DESC")
     render
   end
 

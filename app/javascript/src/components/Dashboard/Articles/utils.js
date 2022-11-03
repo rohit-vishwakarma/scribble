@@ -4,11 +4,3 @@ export const convertArticleToFormFormat = article => ({
   category: { label: article.category.name, value: article.category.id },
   status: article.status,
 });
-
-export const searchArticlesByTitle = (articles, searchTerm) =>
-  articles.filter(article =>
-    article.title
-      .toLowerCase()
-      .replaceAll(" ", "")
-      .includes(searchTerm.toLowerCase().replaceAll(" ", ""))
-  );
