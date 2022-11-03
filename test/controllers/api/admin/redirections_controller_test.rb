@@ -37,4 +37,13 @@ class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
     response_json = response.parsed_body
     assert_equal t("successfully_updated", entity: "Redirection"), response_json["notice"]
   end
+
+  def test_should_list_all_redirections
+    get api_admin_redirections_path
+    assert_response :success
+
+    response_json = response.parsed_body
+    all_redirections = Redirection.all.count
+    assert_equal all_redirections, response_json["redirections"].count
+  end
 end
