@@ -31,7 +31,7 @@ const VersionHistory = ({ articleVersions }) => {
                   setShowModal(true);
                 }}
               >
-                Article {version.article.status}
+                Article {version.article.version_status}
               </Typography>
             </div>
           ))}

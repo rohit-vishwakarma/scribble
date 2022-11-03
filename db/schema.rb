@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_02_163830) do
+ActiveRecord::Schema.define(version: 2022_11_03_091249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2022_11_02_163830) do
     t.integer "user_id", default: 1, null: false
     t.string "slug"
     t.integer "visits", default: 0
+    t.string "version_status"
   end
 
   create_table "categories", force: :cascade do |t|

@@ -37,6 +37,7 @@ const Edit = () => {
         .map(version => ({
           id: version.id,
           article: version.object,
+          category: version.category,
         }))
         .splice(1);
       setArticleVersions(versions);
@@ -58,9 +59,9 @@ const Edit = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       resetForm();
-      const newCategoryData = { ...values };
-      newCategoryData.category_id = values.category.value;
-      await articlesApi.update(article.id, newCategoryData);
+      const articleData = { ...values, version_status: article.status };
+      articleData.category_id = values.category.value;
+      await articlesApi.update(article.id, articleData);
       history.push("/");
     } catch (error) {
       logger.error(error);
