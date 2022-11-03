@@ -49,4 +49,13 @@ class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
     response_json = response.parsed_body
     assert_equal t("position_updated", entity: "Category"), response_json["notice"]
   end
+
+  def test_should_list_all_categories
+    get api_public_categories_path
+    assert_response :success
+
+    response_json = response.parsed_body
+    all_categories = @user.categories.count
+    assert_equal all_categories, response_json.count
+  end
 end

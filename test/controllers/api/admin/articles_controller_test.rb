@@ -64,4 +64,24 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     response_json = response.parsed_body
     assert_equal t("successfully_updated", entity: "Articles"), response_json["notice"]
   end
+
+  def test_should_list_all_published_articles
+    get published_list_api_admin_articles_path
+    assert_response :success
+
+    response_json = response.parsed_body
+    all_published_articles = @user.articles.where(status: "Published").count
+    assert_equal all_published_articles, response_json["articles"].count
+  end
+
+  def test_should_list_all_versions_of_an_article
+    @article.title = "test article title"
+    @article.save!
+    get versions_api_admin_article_path(@article.id)
+    assert_response :success
+    response_json = response.parsed_body
+
+    all_version_count = @article.versions.count
+    assert_equal all_version_count, response_json["article_versions"].count
+  end
 end

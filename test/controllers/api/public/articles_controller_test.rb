@@ -10,6 +10,17 @@ class Api::Public::ArticlesControllerTest < ActionDispatch::IntegrationTest
     @article = create(:article, category: @category, user: @user)
   end
 
+  def test_should_list_all_published_articles
+    @article.status = "Published"
+    @article.save!
+    get api_public_articles_path
+    assert_response :success
+
+    response_json = response.parsed_body
+    all_articles = @user.articles.where(status: "Published").count
+    assert_equal all_articles, response_json["articles"].count
+  end
+
   def test_should_update_visits_count_on_show
     test_article = create(:article, status: "Published", category: @category, user: @user)
     article_visits = test_article.visits
