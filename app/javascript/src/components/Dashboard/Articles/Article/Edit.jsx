@@ -83,7 +83,7 @@ const Edit = () => {
         handleSubmit={handleSubmit}
         selectedArticle={convertArticleToFormFormat(article)}
       />
-      <VersionHistory articleVersions={articleVersions} />
+      <VersionHistory article={article} articleVersions={articleVersions} />
     </div>
   );
 };
