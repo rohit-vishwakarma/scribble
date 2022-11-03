@@ -14,6 +14,7 @@ const Edit = () => {
   const [article, setArticle] = useState({});
   const [loading, setLoading] = useState(true);
   const [articleVersions, setArticleVersions] = useState([]);
+
   const { id } = useParams();
   const history = useHistory();
 

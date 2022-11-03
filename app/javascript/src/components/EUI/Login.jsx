@@ -15,6 +15,7 @@ import Header from "./Header";
 const Login = ({ setIsAuthorized }) => {
   const [organizationData, setOrganizationData] = useState({});
   const [loading, setLoading] = useState({});
+
   const history = useHistory();
 
   useEffect(() => {

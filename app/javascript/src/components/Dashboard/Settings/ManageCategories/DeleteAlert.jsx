@@ -21,6 +21,7 @@ const DeleteAlert = ({
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState(null);
+
   const defaultCategory =
     selectedDeleteCategory.name === "General" ? "Getting Started" : "General";
 
