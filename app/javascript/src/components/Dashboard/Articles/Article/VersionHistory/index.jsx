@@ -6,16 +6,16 @@ import { formatTimeStampToTimeAndDate } from "components/utils";
 
 import Modal from "./Modal";
 
-const VersionHistory = ({ articleVersions }) => {
+const VersionHistory = ({ article, articleVersions }) => {
   const [showModal, setShowModal] = useState(false);
   const [version, setVersion] = useState({});
 
   return (
-    <div className="border-l h-screen max-w-sm">
+    <div className="border-l h-screen w-1/4">
       <div className="mt-8 ml-4">
         <Typography style="h3">Version History</Typography>
-        <Typography className="text-gray-600" style="body1">
-          Version history of Setting up an account in Scribble.
+        <Typography className="mt-1 text-gray-600" style="body1">
+          Version history of {article.title} in Scribble.
         </Typography>
         <div className="mt-4">
           {articleVersions.map(version => (
