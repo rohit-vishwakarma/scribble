@@ -7,45 +7,87 @@ import {
   Input,
   Textarea,
 } from "neetoui";
+import { useHistory } from "react-router-dom";
 
-const Modal = ({ version, showModal, setShowModal }) => (
-  <NeetoUIModal
-    isOpen={showModal}
-    size="large"
-    onClose={() => setShowModal(false)}
-  >
-    <NeetoUIModal.Header description="Version history of Setting up an account in Scribble.">
-      <Typography id="dialog1Title" style="h2">
-        Version History
-      </Typography>
-    </NeetoUIModal.Header>
-    <NeetoUIModal.Body className="space-y-2">
-      <div className="my-5 flex gap-x-4">
-        <Input
+import { articlesApi } from "apis/admin";
+import Tooltip from "components/Common/Tooltip";
+
+const Modal = ({ version, showModal, setShowModal }) => {
+  const history = useHistory();
+  const categoryValue = version.category
+    ? version.category.name
+    : "Category doesn't exists.";
+
+  const handleRestore = async () => {
+    try {
+      const articleData = {
+        title: version.article.title,
+        body: version.article.body,
+        status: "Draft",
+        category_id: version.article.category_id,
+        version_status: "Restored",
+      };
+      await articlesApi.update(version.article.id, articleData);
+      history.go(0);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  return (
+    <NeetoUIModal
+      isOpen={showModal}
+      size="large"
+      onClose={() => setShowModal(false)}
+    >
+      <NeetoUIModal.Header description="Version history of Setting up an account in Scribble.">
+        <Typography id="dialog1Title" style="h2">
+          Version History
+        </Typography>
+      </NeetoUIModal.Header>
+      <NeetoUIModal.Body className="space-y-2">
+        <div className="my-5 flex gap-x-4">
+          <Input
+            disabled
+            className="bg-slate-700 mr-3 w-5/12"
+            label="Article Title"
+            value={version.article.title}
+          />
+          <Input
+            disabled
+            className="w-56"
+            label="Category"
+            value={categoryValue}
+          />
+        </div>
+        <Textarea
           disabled
-          className="bg-slate-700 mr-3 w-5/12"
-          label="Article Title"
-          value={version.article.title}
+          label="Article Body"
+          rows={30}
+          value={version.article.body}
         />
-        <Input
-          disabled
-          className="w-56"
-          label="Category"
-          value={version.article.category_id}
+      </NeetoUIModal.Body>
+      <NeetoUIModal.Footer className="flex space-x-2">
+        <Tooltip
+          content="Category doesn't exists, unable to restore."
+          disabled={!version.category}
+          followCursor="horizontal"
+          position="top"
+        >
+          <Button
+            disabled={!version.category}
+            label="Restore version"
+            onClick={handleRestore}
+          />
+        </Tooltip>
+        <Button
+          label="Cancel"
+          style="text"
+          onClick={() => setShowModal(false)}
         />
-      </div>
-      <Textarea
-        disabled
-        label="Article Body"
-        rows={30}
-        value={version.article.body}
-      />
-    </NeetoUIModal.Body>
-    <NeetoUIModal.Footer className="space-x-2">
-      <Button label="Restore version" onClick={() => setShowModal(false)} />
-      <Button label="Cancel" style="text" onClick={() => setShowModal(false)} />
-    </NeetoUIModal.Footer>
-  </NeetoUIModal>
-);
+      </NeetoUIModal.Footer>
+    </NeetoUIModal>
+  );
+};
 
 export default Modal;

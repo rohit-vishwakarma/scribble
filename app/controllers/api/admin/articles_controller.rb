@@ -17,6 +17,8 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def update
+    @article.version_status = params[:version_status]
+    @article.save!
     @article.update!(article_params)
     respond_with_success(t("successfully_updated", entity: "Article"))
   end

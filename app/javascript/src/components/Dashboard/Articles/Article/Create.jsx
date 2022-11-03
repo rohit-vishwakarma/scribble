@@ -14,9 +14,9 @@ const Create = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       resetForm();
-      const newCategoryData = { ...values };
-      newCategoryData.category_id = values.category.value;
-      await articlesApi.create(newCategoryData);
+      const articleData = { ...values };
+      articleData.category_id = values.category.value;
+      await articlesApi.create(articleData);
       history.push("/");
     } catch (error) {
       logger.error(error);
