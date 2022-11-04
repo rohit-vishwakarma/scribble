@@ -4,7 +4,8 @@ require "test_helper"
 
 class RedirectionTest < ActiveSupport::TestCase
   def setup
-    @redirection = create(:redirection)
+    @organization = create(:organization)
+    @redirection = create(:redirection, organization: @organization)
   end
 
   def test_redirection_shouldnt_be_valid_without_from
@@ -36,9 +37,9 @@ class RedirectionTest < ActiveSupport::TestCase
   end
 
   def test_redirections_should_not_create_cycle
-    first_redirection = create(:redirection)
-    second_redirection = create(:redirection)
-    third_redirection = create(:redirection)
+    first_redirection = create(:redirection, organization: @organization)
+    second_redirection = create(:redirection, organization: @organization)
+    third_redirection = create(:redirection, organization: @organization)
 
     second_redirection.from = first_redirection.to
     second_redirection.save!
@@ -51,5 +52,13 @@ class RedirectionTest < ActiveSupport::TestCase
 
     error_msg = third_redirection.errors.full_messages.to_sentence
     assert_match t("redirection.redirection_loop"), error_msg
+  end
+
+  def test_redirections_should_be_deleted_if_organization_is_deleted
+    organization_count = @organization.redirections.count
+    assert_not_equal 0, organization_count
+
+    @organization.destroy!
+    assert_equal 0, @organization.redirections.count
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Redirection < ApplicationRecord
+  belongs_to :organization
+
   validates :from, presence: true, uniqueness: true
   validates :to, presence: true
   validate :check_redirection_loop

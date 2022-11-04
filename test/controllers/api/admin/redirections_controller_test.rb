@@ -4,11 +4,18 @@ require "test_helper"
 
 class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @redirection = build(:redirection)
+    @organization = create(:organization)
+    @redirection = create(:redirection, organization: @organization)
   end
 
   def test_should_create_redirection
-    post api_admin_redirections_path, params: { redirection: { from: @redirection.from, to: @redirection.to } }
+    test_redirection = build(:redirection, organization: @organization)
+    post api_admin_redirections_path, params: {
+      redirection: {
+        from: test_redirection.from,
+        to: test_redirection.to, organization: @organization
+      }
+    }
     assert_response :success
 
     response_json = response.parsed_body
@@ -16,7 +23,6 @@ class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_destroy_redirection
-    @redirection.save!
     delete api_admin_redirection_path(@redirection.id)
     assert_response :success
 
@@ -25,7 +31,6 @@ class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_update_redirection
-    @redirection.save!
     put api_admin_redirection_path(@redirection.id), params: {
       redirection: {
         from: "https://lacalhost:3000/settings",
@@ -43,7 +48,7 @@ class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_json = response.parsed_body
-    all_redirections = Redirection.all.count
+    all_redirections = @organization.redirections.count
     assert_equal all_redirections, response_json["redirections"].count
   end
 end
