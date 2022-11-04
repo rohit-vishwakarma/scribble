@@ -5,8 +5,10 @@ import { Plus, Search, Close, Check } from "neetoicons";
 import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
+import * as yup from "yup";
 
 import { categoriesApi } from "apis/admin";
+import Tooltip from "components/Common/Tooltip";
 
 import {
   filterArticlesAccordingToCategories,
@@ -127,14 +129,39 @@ const Menu = ({
       />
       {!isCollapsed.add && (
         <div>
-          <Formik initialValues={{ name: "" }} onSubmit={handleSubmit}>
-            <Form>
-              <FormikInput
-                className="mb-5"
-                name="name"
-                suffix={<Button icon={Check} style="text" type="submit" />}
-              />
-            </Form>
+          <Formik
+            initialValues={{ name: "" }}
+            validationSchema={yup.object().shape({
+              name: yup
+                .string()
+                .matches(/\w*[aA-zZ]\w*/, "Must contain at least one letter.")
+                .required("Name is required. Please enter the name."),
+            })}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, dirty }) => (
+              <Form>
+                <FormikInput
+                  className="mb-5"
+                  name="name"
+                  suffix={
+                    <Tooltip
+                      content="Enter category name to add."
+                      disabled={isSubmitting || !dirty}
+                      followCursor="horizontal"
+                      position="bottom"
+                    >
+                      <Button
+                        disabled={isSubmitting || !dirty}
+                        icon={Check}
+                        style="text"
+                        type="submit"
+                      />
+                    </Tooltip>
+                  }
+                />
+              </Form>
+            )}
           </Formik>
         </div>
       )}

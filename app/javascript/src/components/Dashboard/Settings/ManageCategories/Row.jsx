@@ -8,6 +8,7 @@ import { Draggable } from "react-beautiful-dnd";
 import * as yup from "yup";
 
 import { categoriesApi } from "apis/admin";
+import Tooltip from "components/Common/Tooltip";
 
 import DeleteAlert from "./DeleteAlert";
 
@@ -56,33 +57,47 @@ const Row = ({
                   validationSchema={yup.object().shape({
                     name: yup
                       .string()
+                      .matches(
+                        /\w*[aA-zZ]\w*/,
+                        "Must contain at least one letter."
+                      )
                       .required("Category name cannot be empty."),
                   })}
                   onSubmit={handleSubmit}
                 >
-                  <Form className="my-2 w-full">
-                    <FormikInput
-                      className="mb-2 w-2/4"
-                      name="name"
-                      suffix={
-                        <>
-                          <Button
-                            icon={Close}
-                            size={13}
-                            style="text"
-                            type="reset"
-                            onClick={() => setSelectedCategoryId(null)}
-                          />
-                          <Button
-                            icon={Check}
-                            size={13}
-                            style="text"
-                            type="submit"
-                          />
-                        </>
-                      }
-                    />
-                  </Form>
+                  {({ isSubmitting, dirty }) => (
+                    <Form className="my-2 w-full">
+                      <FormikInput
+                        className="mb-2 w-2/4"
+                        name="name"
+                        suffix={
+                          <>
+                            <Button
+                              icon={Close}
+                              size={13}
+                              style="text"
+                              type="reset"
+                              onClick={() => setSelectedCategoryId(null)}
+                            />
+                            <Tooltip
+                              content="Make change to save name."
+                              disabled={isSubmitting || !dirty}
+                              followCursor="horizontal"
+                              position="bottom"
+                            >
+                              <Button
+                                disabled={isSubmitting || !dirty}
+                                icon={Check}
+                                size={13}
+                                style="text"
+                                type="submit"
+                              />
+                            </Tooltip>
+                          </>
+                        }
+                      />
+                    </Form>
+                  )}
                 </Formik>
               </div>
             ) : (

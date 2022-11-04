@@ -31,7 +31,10 @@ export const SETTINGS_OPTIONS = [
 
 export const GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA = showPassword =>
   yup.object().shape({
-    name: yup.string().required("SiteName cannot be empty."),
+    name: yup
+      .string()
+      .matches(/\w*[aA-zZ]\w*/, "Must contain at least one letter.")
+      .required("SiteName cannot be empty."),
     password: showPassword
       ? yup
           .string()
