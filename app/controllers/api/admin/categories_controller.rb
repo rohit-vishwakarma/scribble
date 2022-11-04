@@ -10,8 +10,7 @@ class Api::Admin::CategoriesController < ApplicationController
   end
 
   def create
-    category = @_current_user.categories.new(category_params)
-    category.save!
+    category = @_current_user.categories.create! category_params
     respond_with_success(t("successfully_created", entity: "Category"))
   end
 
