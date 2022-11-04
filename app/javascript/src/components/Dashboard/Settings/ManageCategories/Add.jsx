@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Check, Close } from "neetoicons";
 import { Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
-import * as yup from "yup";
 
 import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
-const Add = ({ refetch }) => {
-  const [showAdd, setShowAdd] = useState(false);
+import { ADD_CATEGORY_FORM_VALIDATION_SCHEMA } from "./constants";
 
+const Add = ({ refetch, showAdd, setShowAdd }) => {
   const handleSubmit = async values => {
     try {
       const { name } = values;
@@ -28,12 +27,7 @@ const Add = ({ refetch }) => {
       {showAdd ? (
         <Formik
           initialValues={{ name: "" }}
-          validationSchema={yup.object().shape({
-            name: yup
-              .string()
-              .matches(/\w*[aA-zZ]\w*/, "Must contain at least one letter.")
-              .required("Name is required. Please enter the name."),
-          })}
+          validationSchema={ADD_CATEGORY_FORM_VALIDATION_SCHEMA}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, dirty }) => (

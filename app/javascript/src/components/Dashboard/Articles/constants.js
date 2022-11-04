@@ -65,3 +65,10 @@ export const ColumnsListItems = [
     value: 4,
   },
 ];
+
+export const ADD_CATEGORY_FORM_VALIDATION_SCHEMA = yup.object().shape({
+  name: yup
+    .string()
+    .matches(/\w*[aA-zZ]\w*/, "Must contain at least one letter.")
+    .required("Name is required. Please enter the name."),
+});

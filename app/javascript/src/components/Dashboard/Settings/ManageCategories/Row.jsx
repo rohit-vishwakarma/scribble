@@ -5,11 +5,11 @@ import { Delete, Close, Check, Edit, AddCircle } from "neetoicons";
 import { Button, Typography } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { Draggable } from "react-beautiful-dnd";
-import * as yup from "yup";
 
 import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
+import { EDIT_CATEGORY_FORM_VALIDATION_SCHEMA } from "./constants";
 import DeleteAlert from "./DeleteAlert";
 
 const Row = ({
@@ -18,6 +18,7 @@ const Row = ({
   category,
   index,
   refetch,
+  setShowAdd,
 }) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedDeleteCategory, setSelectedDeleteCategory] = useState({});
@@ -54,15 +55,7 @@ const Row = ({
                 <AddCircle className="my-auto" size={16} />
                 <Formik
                   initialValues={{ name: category.name }}
-                  validationSchema={yup.object().shape({
-                    name: yup
-                      .string()
-                      .matches(
-                        /\w*[aA-zZ]\w*/,
-                        "Must contain at least one letter."
-                      )
-                      .required("Category name cannot be empty."),
-                  })}
+                  validationSchema={EDIT_CATEGORY_FORM_VALIDATION_SCHEMA}
                   onSubmit={handleSubmit}
                 >
                   {({ isSubmitting, dirty }) => (
@@ -119,7 +112,10 @@ const Row = ({
                     icon={Edit}
                     size={13}
                     style="text"
-                    onClick={() => setSelectedCategoryId(category.id)}
+                    onClick={() => {
+                      setSelectedCategoryId(category.id);
+                      setShowAdd(false);
+                    }}
                   />
                 </div>
               </div>

@@ -10,6 +10,7 @@ import List from "./List";
 const Manage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -44,12 +45,17 @@ const Manage = () => {
         Create and configure the categories inside your scribble.
       </Typography>
       <div className="mt-8">
-        <Add refetch={fetchCategories} />
+        <Add
+          refetch={fetchCategories}
+          setShowAdd={setShowAdd}
+          showAdd={showAdd}
+        />
       </div>
       <List
         categories={categories}
         refetch={fetchCategories}
         setCategories={setCategories}
+        setShowAdd={setShowAdd}
       />
     </div>
   );
