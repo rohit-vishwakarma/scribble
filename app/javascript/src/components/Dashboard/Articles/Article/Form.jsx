@@ -6,10 +6,11 @@ import { Select, Input, Textarea, BlockNavigation } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
 
 import { categoriesApi } from "apis/admin";
+import Tooltip from "components/Common/Tooltip";
 
 import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 
-const Form = ({ selectedArticle, handleSubmit }) => {
+const Form = ({ isEdit, selectedArticle, handleSubmit }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("Save draft");
@@ -59,7 +60,7 @@ const Form = ({ selectedArticle, handleSubmit }) => {
       validationSchema={ARTICLES_FORM_VALIDATION_SCHEMA(CATEGORY_OPTIONS)}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, setFieldValue, dirty, isValid }) => (
+      {({ isSubmitting, setFieldValue, dirty }) => (
         <FormikForm className="mx-auto mt-8 w-6/12">
           <BlockNavigation />
           <div className="my-5 flex gap-x-4">
@@ -89,17 +90,24 @@ const Form = ({ selectedArticle, handleSubmit }) => {
           />
           <div className="mt-4 flex gap-2">
             <div className="flex">
-              <Button
-                className="mr-px"
-                disabled={isSubmitting || !(dirty && isValid)}
-                label={status}
-                loading={isSubmitting}
-                name="status"
-                size="medium"
-                style="primary"
-                type="submit"
-                onClick={() => setSubmitted(true)}
-              />
+              <Tooltip
+                content="Please make any change to save."
+                disabled={isSubmitting || (isEdit && !dirty)}
+                followCursor="horizontal"
+                position="bottom"
+              >
+                <Button
+                  className="mr-px"
+                  disabled={isSubmitting || (isEdit && !dirty)}
+                  label={status}
+                  loading={isSubmitting}
+                  name="status"
+                  size="medium"
+                  style="primary"
+                  type="submit"
+                  onClick={() => setSubmitted(true)}
+                />
+              </Tooltip>
               <Dropdown>
                 <Menu>
                   {statusListItems.map((item, idx) => (

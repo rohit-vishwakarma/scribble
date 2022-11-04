@@ -5,6 +5,7 @@ import { Typography, Button } from "neetoui";
 import { Input, Checkbox } from "neetoui/formik";
 
 import { organizationsApi } from "apis/admin";
+import Tooltip from "components/Common/Tooltip";
 
 import { GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA } from "../constants";
 
@@ -83,11 +84,18 @@ const Form = ({ organizationData }) => {
             </div>
           )}
           <div className="flex gap-x-1 pt-2">
-            <Button
+            <Tooltip
+              content="Please make any change to save."
               disabled={isSubmitting || !dirty}
-              label="Save changes"
-              type="submit"
-            />
+              followCursor="horizontal"
+              position="bottom"
+            >
+              <Button
+                disabled={isSubmitting || !dirty}
+                label="Save changes"
+                type="submit"
+              />
+            </Tooltip>
             <Button
               label="Cancel"
               style="text"

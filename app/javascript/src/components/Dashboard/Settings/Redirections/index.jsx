@@ -14,19 +14,19 @@ const Redirection = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedRedirectionId, setSelectedRedirectionId] = useState(null);
-  const [redirectionsList, setRedirectionsList] = useState([]);
+  const [redirectionList, setRedirectionList] = useState([]);
 
   useEffect(() => {
-    fetchRedirectionsList();
+    fetchRedirectionList();
   }, []);
 
-  const fetchRedirectionsList = async () => {
+  const fetchRedirectionList = async () => {
     try {
       setLoading(true);
       const {
         data: { redirections },
       } = await redirectionsApi.fetch();
-      setRedirectionsList(redirections);
+      setRedirectionList(redirections);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -54,7 +54,7 @@ const Redirection = () => {
       </Typography>
       <div className="mx-auto mt-2 w-full bg-indigo-100 p-6">
         <Header />
-        {redirectionsList.map((redirection, idx) => (
+        {redirectionList.map((redirection, idx) => (
           <div
             className="my-3 flex items-center justify-between bg-white p-3"
             key={idx}
@@ -63,14 +63,14 @@ const Redirection = () => {
               <div className="flex w-full justify-between">
                 <Edit
                   redirection={redirection}
-                  refetch={fetchRedirectionsList}
+                  refetch={fetchRedirectionList}
                   setSelectedRedirectionId={setSelectedRedirectionId}
                 />
               </div>
             ) : (
               <Row
                 redirection={redirection}
-                refetch={fetchRedirectionsList}
+                refetch={fetchRedirectionList}
                 setSelectedRedirectionId={setSelectedRedirectionId}
                 setShowAdd={setShowAdd}
               />
@@ -79,7 +79,7 @@ const Redirection = () => {
         ))}
         {showAdd ? (
           <div className="my-3 flex w-full items-center justify-between bg-white">
-            <Add refetch={fetchRedirectionsList} setShowAdd={setShowAdd} />
+            <Add refetch={fetchRedirectionList} setShowAdd={setShowAdd} />
           </div>
         ) : (
           <Button

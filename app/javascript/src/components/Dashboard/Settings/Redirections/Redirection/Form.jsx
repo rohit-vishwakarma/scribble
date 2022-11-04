@@ -6,6 +6,7 @@ import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 
 import { redirectionsApi } from "apis/admin";
+import Tooltip from "components/Common/Tooltip";
 
 import { REDIRECTION_FORM_VALIDATION_SCHEMA } from "./constants";
 
@@ -35,7 +36,7 @@ const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
       validationSchema={REDIRECTION_FORM_VALIDATION_SCHEMA}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, dirty, isValid }) => (
+      {({ isSubmitting, dirty }) => (
         <FormikForm className="my-2 flex w-full">
           <Input
             required
@@ -59,13 +60,20 @@ const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
               isEdit ? setShowRedirection(null) : setShowRedirection(false);
             }}
           />
-          <Button
-            disabled={isSubmitting || (isEdit && !(isValid && dirty))}
-            icon={Check}
-            size={13}
-            style="text"
-            type="submit"
-          />
+          <Tooltip
+            content="Please make any change to save."
+            disabled={isSubmitting || (isEdit && !dirty)}
+            followCursor="horizontal"
+            position="bottom"
+          >
+            <Button
+              disabled={isSubmitting || (isEdit && !dirty)}
+              icon={Check}
+              size={13}
+              style="text"
+              type="submit"
+            />
+          </Tooltip>
         </FormikForm>
       )}
     </Formik>
