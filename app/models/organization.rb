@@ -4,6 +4,7 @@ class Organization < ApplicationRecord
   MAX_NAME_LENGTH = 50
 
   has_many :users
+  has_many :redirections
 
   validates :name, presence: true, length: { maximum: MAX_NAME_LENGTH }
   validates :password, length: { minimum: 6 },
