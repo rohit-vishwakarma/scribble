@@ -9,8 +9,7 @@ class Api::Admin::RedirectionsController < ApplicationController
   end
 
   def create
-    redirection = Redirection.new(redirection_params)
-    redirection.save!
+    redirection = Redirection.create! redirection_params
     respond_with_success(t("successfully_created", entity: "Redirection"))
   end
 

@@ -13,13 +13,20 @@ const Form = ({ organizationData }) => {
   const [showPassword, setShowPassword] = useState(
     organizationData.isPasswordProtected
   );
+  const [changePassword, setChangePassword] = useState(
+    !organizationData.isPasswordProtected
+  );
 
   const handleSubmit = async values => {
     try {
       await organizationsApi.update({
         name: values.name,
         password: values.password,
-        is_password_protected: values.isChecked,
+        is_password_protected:
+          organizationData.isPasswordProtected === values.isChecked &&
+          !changePassword
+            ? null
+            : values.isChecked,
       });
       localStorage.setItem("authToken", JSON.stringify({ token: null }));
       setTimeout(() => window.location.reload(), 300);
@@ -30,11 +37,14 @@ const Form = ({ organizationData }) => {
 
   return (
     <Formik
-      validationSchema={GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA(showPassword)}
       initialValues={{
         name: organizationData.name,
         isChecked: organizationData.isPasswordProtected,
       }}
+      validationSchema={GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA(
+        showPassword,
+        changePassword
+      )}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, setFieldValue, dirty }) => (
@@ -71,16 +81,30 @@ const Form = ({ organizationData }) => {
             }}
           />
           {showPassword && (
-            <div className="flex">
+            <div className="flex gap-x-2">
               <Input
                 required
                 className="mt-4 mb-px"
                 id="password"
                 label="Password"
                 name="password"
-                placeholder="******"
                 type="password"
+                disabled={
+                  !changePassword && organizationData.isPasswordProtected
+                }
+                placeholder={`${
+                  changePassword ? "Enter new password." : "******"
+                }`}
               />
+              {organizationData.isPasswordProtected && (
+                <Button
+                  className="h-7 mt-10 mb-2"
+                  disabled={changePassword}
+                  label="Change password"
+                  size="small"
+                  onClick={() => setChangePassword(true)}
+                />
+              )}
             </div>
           )}
           <div className="flex gap-x-1 pt-2">
@@ -100,9 +124,10 @@ const Form = ({ organizationData }) => {
               label="Cancel"
               style="text"
               type="reset"
-              onClick={() =>
-                setShowPassword(organizationData.isPasswordProtected)
-              }
+              onClick={() => {
+                setShowPassword(organizationData.isPasswordProtected);
+                setChangePassword(!organizationData.isPasswordProtected);
+              }}
             />
           </div>
         </FormikForm>
