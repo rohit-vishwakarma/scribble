@@ -6,7 +6,7 @@ import { categoriesApi } from "apis/admin";
 
 import Row from "./Row";
 
-const List = ({ categories, setCategories, refetch }) => {
+const List = ({ categories, setCategories, refetch, setShowAdd }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const reorderList = (categoryList, startIndex, endIndex) => {
@@ -50,6 +50,7 @@ const List = ({ categories, setCategories, refetch }) => {
                   refetch={refetch}
                   selectedCategoryId={selectedCategoryId}
                   setSelectedCategoryId={setSelectedCategoryId}
+                  setShowAdd={setShowAdd}
                 />
               </div>
             ))}

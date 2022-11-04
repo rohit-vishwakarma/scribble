@@ -4,12 +4,12 @@ import { Formik, Form as FormikForm } from "formik";
 import { Typography, Button, PageLoader } from "neetoui";
 import { Input } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
-import * as yup from "yup";
 
 import { organizationsApi } from "apis/admin";
 import { setAuthHeaders } from "apis/axios";
 import EUILoginImg from "images/EUILoginImg";
 
+import { LOGIN_FORM_VALIDATION_SCHEMA } from "./constants";
 import Header from "./Header";
 
 const Login = ({ setIsAuthorized }) => {
@@ -74,9 +74,7 @@ const Login = ({ setIsAuthorized }) => {
         </Typography>
         <Formik
           initialValues={{ password: "" }}
-          validationSchema={yup.object().shape({
-            password: yup.string().required("Password is required."),
-          })}
+          validationSchema={LOGIN_FORM_VALIDATION_SCHEMA}
           onSubmit={handleSubmit}
         >
           <FormikForm className="mt-8">

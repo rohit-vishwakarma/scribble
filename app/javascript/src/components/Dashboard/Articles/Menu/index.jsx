@@ -5,7 +5,6 @@ import { Plus, Search, Close, Check } from "neetoicons";
 import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
-import * as yup from "yup";
 
 import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
@@ -14,6 +13,8 @@ import {
   filterArticlesAccordingToCategories,
   countArticlesAccordingToStatus,
 } from "./utils";
+
+import { ADD_CATEGORY_FORM_VALIDATION_SCHEMA } from "../constants";
 
 const Menu = ({
   categories,
@@ -131,12 +132,7 @@ const Menu = ({
         <div>
           <Formik
             initialValues={{ name: "" }}
-            validationSchema={yup.object().shape({
-              name: yup
-                .string()
-                .matches(/\w*[aA-zZ]\w*/, "Must contain at least one letter.")
-                .required("Name is required. Please enter the name."),
-            })}
+            validationSchema={ADD_CATEGORY_FORM_VALIDATION_SCHEMA}
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, dirty }) => (
