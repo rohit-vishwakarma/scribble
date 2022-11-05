@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Formik, Form } from "formik";
 import { Plus, Check, Close } from "neetoicons";
@@ -11,6 +11,14 @@ import Tooltip from "components/Common/Tooltip";
 import { ADD_CATEGORY_FORM_VALIDATION_SCHEMA } from "./constants";
 
 const Add = ({ refetch, showAdd, setShowAdd }) => {
+  useEffect(() => {
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setShowAdd(false);
+      }
+    });
+  }, []);
+
   const handleSubmit = async values => {
     try {
       const { name } = values;

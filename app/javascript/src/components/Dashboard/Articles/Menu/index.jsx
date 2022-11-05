@@ -31,6 +31,14 @@ const Menu = ({
     published: 0,
   });
 
+  useEffect(() => {
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setIsCollapsed({ add: true, search: true });
+      }
+    });
+  }, []);
+
   const MenuBarBlocks = [
     {
       label: "All",
