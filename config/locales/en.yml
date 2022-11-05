@@ -13,3 +13,5 @@ en:
   redirection:
     redirection_loop: "can't be added due to redirection loop."
     equal_path: "from & to path can't be same."
+  category:
+    unable_to_delete: "Current category cannot be delete."

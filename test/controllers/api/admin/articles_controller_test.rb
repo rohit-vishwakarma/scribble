@@ -52,19 +52,6 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_equal t("successfully_updated", entity: "Article"), response_json["notice"]
   end
 
-  def test_should_bulk_update_category_of_all_articles
-    test_category = create(:category, user: @user)
-    first_article = create(:article, category: @category, user: @user)
-    second_article = create(:article, category: @category, user: @user)
-    third_article = create(:article, category: @category, user: @user)
-
-    put bulk_update_api_admin_articles_path, params: { current_id: @category.id, new_id: test_category.id }
-    assert_response :success
-
-    response_json = response.parsed_body
-    assert_equal t("successfully_updated", entity: "Articles"), response_json["notice"]
-  end
-
   def test_should_list_all_published_articles
     get published_list_api_admin_articles_path
     assert_response :success

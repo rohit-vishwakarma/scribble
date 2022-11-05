@@ -10,8 +10,10 @@ const update = async (id, payload) => {
   await axios.put(`/api/admin/categories/${id}`, payload);
 };
 
-const destroy = async id => {
-  await axios.delete(`/api/admin/categories/${id}`);
+const destroy = async payload => {
+  await axios.delete(
+    `/api/admin/categories/${payload.id}?new_category_id=${payload.new_category_id}`
+  );
 };
 
 const positionUpdate = async payload => {

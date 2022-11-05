@@ -5,10 +5,7 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :admin do
         resources :articles, except: %i[new edit] do
-          collection do
-            put "bulk_update"
-            get "published_list"
-          end
+          get "published_list", on: :collection
           get "versions", on: :member
         end
         resources :categories, except: %i[new edit show] do

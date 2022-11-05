@@ -20,10 +20,6 @@ const update = async (id, payload) => {
   await axios.put(`/api/admin/articles/${id}`, payload);
 };
 
-const bulkUpdate = async payload => {
-  await axios.put("/api/admin/articles/bulk_update", payload);
-};
-
 const versions = id => axios.get(`/api/admin/articles/${id}/versions`);
 
 const fetchPublished = () => axios.get("/api/admin/articles/published_list");
@@ -34,7 +30,6 @@ const articlesApi = {
   create,
   destroy,
   update,
-  bulkUpdate,
   versions,
   fetchPublished,
 };
