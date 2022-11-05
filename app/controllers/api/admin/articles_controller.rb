@@ -3,11 +3,10 @@
 class Api::Admin::ArticlesController < ApplicationController
   before_action :current_user!, except: %i[new edit]
   before_action :load_article!, only: %i[destroy update show versions]
-  before_action :load_articles!, only: :bulk_update
 
   def index
     @articles = @_current_user.articles.order("updated_at DESC")
-    @articles = Api::Admin::ArticlesFilterService.new(
+    @articles = ArticlesFilterService.new(
       @articles, params[:status],
       params[:category_ids], params[:search_term]).process
     render
@@ -44,11 +43,6 @@ class Api::Admin::ArticlesController < ApplicationController
     render
   end
 
-  def bulk_update
-    @articles.update(category_id: params[:new_id])
-    respond_with_success(t("successfully_updated", entity: "Articles"))
-  end
-
   private
 
     def article_params
@@ -57,9 +51,5 @@ class Api::Admin::ArticlesController < ApplicationController
 
     def load_article!
       @article = @_current_user.articles.find(params[:id])
-    end
-
-    def load_articles!
-      @articles = @_current_user.articles.where(category_id: params[:current_id])
     end
 end

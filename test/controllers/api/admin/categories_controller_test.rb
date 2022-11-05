@@ -27,8 +27,9 @@ class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_destroy_category
+    test_category = create(:category, user: @user)
     assert_difference "Category.count", -1 do
-      delete api_admin_category_path(@category.id)
+      delete api_admin_category_path(test_category.id)
     end
     assert_response :ok
 
