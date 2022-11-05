@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -8,6 +8,14 @@ import Row from "./Row";
 
 const List = ({ categories, setCategories, refetch, setShowAdd }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+  useEffect(() => {
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setSelectedCategoryId(null);
+      }
+    });
+  }, []);
 
   const reorderList = (categoryList, startIndex, endIndex) => {
     const shuffledCategories = Array.from(categoryList);

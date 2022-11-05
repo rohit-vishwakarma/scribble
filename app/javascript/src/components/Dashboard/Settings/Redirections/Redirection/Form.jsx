@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Formik, Form as FormikForm } from "formik";
 import { Check, Close } from "neetoicons";
@@ -11,6 +11,18 @@ import Tooltip from "components/Common/Tooltip";
 import { REDIRECTION_FORM_VALIDATION_SCHEMA } from "./constants";
 
 const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
+  useEffect(() => {
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        if (isEdit) {
+          setShowRedirection(null);
+        } else {
+          setShowRedirection(false);
+        }
+      }
+    });
+  }, []);
+
   const handleSubmit = async values => {
     try {
       if (isEdit) {
