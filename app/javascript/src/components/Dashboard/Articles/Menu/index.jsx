@@ -6,7 +6,7 @@ import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
 
-import { articlesApi, categoriesApi } from "apis/admin";
+import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
 import { filterArticlesAccordingToCategories } from "./utils";
@@ -16,17 +16,12 @@ import { ADD_CATEGORY_FORM_VALIDATION_SCHEMA } from "../constants";
 const Menu = ({
   categories,
   refetch,
-  articles,
   filterOptions,
   setFilterOptions,
+  articlesStatusCount,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState({ add: true, search: true });
   const [searchValue, setSearchValue] = useState("");
-  const [articlesStatusCount, setArticlesStatusCount] = useState({
-    all: 0,
-    draft: 0,
-    published: 0,
-  });
 
   const MenuBarBlocks = [
     {
@@ -54,21 +49,6 @@ const Menu = ({
       }
     });
   }, []);
-
-  useEffect(() => {
-    fetchArticlesStatusCount();
-  }, [articles]);
-
-  const fetchArticlesStatusCount = async () => {
-    try {
-      const { data } = await articlesApi.count({
-        category_ids: filterOptions.categoryIds,
-      });
-      setArticlesStatusCount(data);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
 
   const handleSubmit = async values => {
     try {

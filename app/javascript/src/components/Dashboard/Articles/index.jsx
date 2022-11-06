@@ -21,12 +21,28 @@ const Articles = () => {
     categoryIds: [],
     activeStatus: "All",
   });
+  const [articlesStatusCount, setArticlesStatusCount] = useState({
+    all: 0,
+    draft: 0,
+    published: 0,
+  });
 
   const handleCheckedColumns = selectedIdx => {
     const items = ColumnsListItems;
     const selectedItem = items[selectedIdx];
     selectedItem.checked = !selectedItem.checked;
     setColumnsList([...items]);
+  };
+
+  const fetchArticlesStatusCount = async () => {
+    try {
+      const { data } = await articlesApi.count({
+        category_ids: filterOptions.categoryIds,
+      });
+      setArticlesStatusCount(data);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   const fetchArticles = async () => {
@@ -54,17 +70,17 @@ const Articles = () => {
     }
   };
 
-  const fetchArticlesAndCategories = async () => {
-    await Promise.all([fetchArticles(), fetchCategories()]);
+  const fetchArticlesCategoriesAndStatusCount = async () => {
+    await Promise.all([
+      fetchArticles(),
+      fetchCategories(),
+      fetchArticlesStatusCount(),
+    ]);
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchArticlesAndCategories();
-  }, []);
-
-  useEffect(() => {
-    fetchArticles();
+    fetchArticlesCategoriesAndStatusCount();
   }, [filterOptions]);
 
   if (loading) {
@@ -78,10 +94,10 @@ const Articles = () => {
   return (
     <div className="flex">
       <MenuBar
-        articles={articles}
+        articlesStatusCount={articlesStatusCount}
         categories={categories}
         filterOptions={filterOptions}
-        refetch={fetchArticlesAndCategories}
+        refetch={fetchArticlesCategoriesAndStatusCount}
         setFilterOptions={setFilterOptions}
       />
       <Container>
@@ -94,7 +110,10 @@ const Articles = () => {
         />
         {articles.length ? (
           <div className="flex w-full flex-col">
-            <Table articles={articles} refetch={fetchArticlesAndCategories} />
+            <Table
+              articles={articles}
+              refetch={fetchArticlesCategoriesAndStatusCount}
+            />
           </div>
         ) : (
           <EmptyState disabled={categories.length === 0} />
