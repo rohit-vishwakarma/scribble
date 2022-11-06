@@ -6,7 +6,7 @@ import { buildArticleTableColumnData } from "./utils";
 
 import DeleteAlert from "../DeleteAlert";
 
-const Table = ({ articles, refetch, handleEdit }) => {
+const Table = ({ articles, refetch }) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedDeleteArticle, setSelectedDeleteArticle] = useState({});
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
@@ -25,7 +25,7 @@ const Table = ({ articles, refetch, handleEdit }) => {
       <div className="w-full">
         <NeetoUITable
           allowRowClick={false}
-          columnData={buildArticleTableColumnData(handleDelete, handleEdit)}
+          columnData={buildArticleTableColumnData(handleDelete)}
           currentPageNumber={currentPageNumber}
           defaultPageSize={10}
           handlePageChange={e => setCurrentPageNumber(e)}

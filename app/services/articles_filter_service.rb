@@ -11,14 +11,16 @@ class ArticlesFilterService
   end
 
   def process
-    if @status.present? && @status != "All"
-      @articles = @articles.where({ status: @status })
+    if status.present? && status != "All"
+      @articles = articles.where({ status: status })
     end
-
     if category_ids.present?
-      @articles = @articles.where(category_id: @category_ids.split(",").map(&:to_i))
+      @articles = articles.where(category_id: category_ids.split(",").map(&:to_i))
+    end
+    if search_term != nil
+      @articles = articles.where("lower(title) LIKE ?", "%#{search_term.downcase}%")
     end
 
-    @articles = @articles.where("title LIKE ?", "%#{@search_term}%")
+    @articles
   end
 end

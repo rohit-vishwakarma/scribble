@@ -12,6 +12,14 @@ class Api::Admin::ArticlesController < ApplicationController
     render
   end
 
+  def count
+    @articles = @_current_user.articles
+    if params[:category_ids].present?
+      @articles = @articles.where(category_id: params[:category_ids].split(",").map(&:to_i))
+    end
+    render
+  end
+
   def published_list
     @articles = @_current_user.articles.where(status: "Published").order("updated_at DESC")
     render

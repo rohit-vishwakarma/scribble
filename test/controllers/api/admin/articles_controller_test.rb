@@ -71,4 +71,21 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     all_version_count = @article.versions.count
     assert_equal all_version_count, response_json["article_versions"].count
   end
+
+  def test_should_list_all_articles_according_to_categories
+    test_category = create(:category, user: @user)
+    first_article = create(:article, status: "Published", category: test_category, user: @user)
+    second_article = create(:article, status: "Published", category: @category, user: @user)
+    third_article = create(:article, status: "Draft", category: test_category, user: @user)
+
+    get count_api_admin_articles_path(category_ids: "#{@category.id},#{test_category.id}")
+    assert_response :success
+
+    response_json = response.parsed_body
+    category_articles_count = @category.articles.count
+    test_category_articles_count = test_category.articles.count
+
+    total_articles_count = category_articles_count + test_category_articles_count
+    assert_equal total_articles_count, response_json["all"]
+  end
 end
