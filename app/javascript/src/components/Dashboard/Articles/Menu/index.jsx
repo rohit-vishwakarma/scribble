@@ -6,13 +6,10 @@ import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
 
-import { categoriesApi } from "apis/admin";
+import { articlesApi, categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
-import {
-  filterArticlesAccordingToCategories,
-  countArticlesAccordingToStatus,
-} from "./utils";
+import { filterArticlesAccordingToCategories } from "./utils";
 
 import { ADD_CATEGORY_FORM_VALIDATION_SCHEMA } from "../constants";
 
@@ -30,14 +27,6 @@ const Menu = ({
     draft: 0,
     published: 0,
   });
-
-  useEffect(() => {
-    window.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        setIsCollapsed({ add: true, search: true });
-      }
-    });
-  }, []);
 
   const MenuBarBlocks = [
     {
@@ -58,13 +47,28 @@ const Menu = ({
   ];
 
   useEffect(() => {
-    if (
-      filterOptions.activeStatus === "All" &&
-      filterOptions.searchTerm === ""
-    ) {
-      countArticlesAccordingToStatus(articles, setArticlesStatusCount);
-    }
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setIsCollapsed({ add: true, search: true });
+        setSearchValue("");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchArticlesStatusCount();
   }, [articles]);
+
+  const fetchArticlesStatusCount = async () => {
+    try {
+      const { data } = await articlesApi.count({
+        category_ids: filterOptions.categoryIds,
+      });
+      setArticlesStatusCount(data);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const handleSubmit = async values => {
     try {

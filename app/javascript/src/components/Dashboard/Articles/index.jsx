@@ -61,6 +61,10 @@ const Articles = () => {
 
   useEffect(() => {
     fetchArticlesAndCategories();
+  }, []);
+
+  useEffect(() => {
+    fetchArticles();
   }, [filterOptions]);
 
   if (loading) {

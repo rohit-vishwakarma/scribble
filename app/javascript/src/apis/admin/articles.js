@@ -24,6 +24,9 @@ const versions = id => axios.get(`/api/admin/articles/${id}/versions`);
 
 const fetchPublished = () => axios.get("/api/admin/articles/published_list");
 
+const count = payload =>
+  axios.get(`/api/admin/articles/count/?category_ids=${payload.category_ids}`);
+
 const articlesApi = {
   fetch,
   show,
@@ -32,6 +35,7 @@ const articlesApi = {
   update,
   versions,
   fetchPublished,
+  count,
 };
 
 export default articlesApi;
