@@ -21,7 +21,7 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def published_list
-    @articles = @_current_user.articles.where(status: "Published").order("updated_at DESC")
+    @articles = @_current_user.articles.where(status: "Published").order("updated_at DESC").page(params[:page_no])
     render
   end
 

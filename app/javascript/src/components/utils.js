@@ -5,3 +5,6 @@ export const formatTimeStampToDate = dateTime =>
 
 export const formatTimeStampToTimeAndDate = dateTime =>
   dayjs(dateTime).format("hh:mm A, DD/MM/YYYY");
+
+export const formatTimeStampToDateWithHyphen = dateTime =>
+  dayjs(dateTime).format("DD-MM-YYYY");
