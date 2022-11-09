@@ -66,3 +66,5 @@ gem "bcrypt", "~> 3.1.13"
 gem "paper_trail"
 
 gem "simplecov", require: false, group: :test
+
+gem "kaminari"

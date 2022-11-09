@@ -103,7 +103,7 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  def test_should_not_update_article_if_paramter_missing
+  def test_should_not_update_article_if_parameter_missing
     article_params = { article: {} }
     put api_admin_article_path(@article.id), params: article_params
     assert_response :internal_server_error

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Table, PageLoader } from "neetoui";
+import { Table, PageLoader, Pagination } from "neetoui";
 
 import { articlesApi } from "apis/admin";
 
-import { ArticleColumnsData } from "./utils";
+import { ArticleColumnsData, ArticleVisitsColumnData } from "./utils";
 
 const Analytics = () => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
@@ -16,7 +16,7 @@ const Analytics = () => {
       setLoading(true);
       const {
         data: { articles },
-      } = await articlesApi.fetchPublished();
+      } = await articlesApi.fetchPublished({ page_no: currentPageNumber });
       setArticles(articles);
     } catch (error) {
       logger.error(error);
@@ -27,7 +27,7 @@ const Analytics = () => {
 
   useEffect(() => {
     fetchArticles();
-  }, []);
+  }, [currentPageNumber]);
 
   if (loading) {
     return (
@@ -42,10 +42,29 @@ const Analytics = () => {
       <Table
         allowRowClick={false}
         columnData={ArticleColumnsData}
-        currentPageNumber={currentPageNumber}
-        defaultPageSize={10}
-        handlePageChange={e => setCurrentPageNumber(e)}
         rowData={articles}
+        expandable={{
+          expandedRowRender: record => (
+            <div className="m-0 w-64 pl-8">
+              <Table
+                allowRowClick={false}
+                columnData={ArticleVisitsColumnData}
+                rowData={[record]}
+              />
+            </div>
+          ),
+        }}
+      />
+      <Pagination
+        className="pt-4"
+        navigate={e => setCurrentPageNumber(e)}
+        pageNo={currentPageNumber}
+        pageSize={10}
+        count={
+          articles.length !== 10
+            ? currentPageNumber * 10 - 1
+            : currentPageNumber * 10 + 1
+        }
       />
     </div>
   );

@@ -3,7 +3,10 @@ import React from "react";
 import { Typography } from "neetoui";
 import { Link } from "react-router-dom";
 
-import { formatTimeStampToDate } from "components/utils";
+import {
+  formatTimeStampToDate,
+  formatTimeStampToDateWithHyphen,
+} from "components/utils";
 
 export const ArticleColumnsData = [
   {
@@ -49,6 +52,31 @@ export const ArticleColumnsData = [
     sorter: (a, b) => a.visits - b.visits,
     render: visits => (
       <Typography className="text-gray-600" style="h5">
+        {visits}
+      </Typography>
+    ),
+  },
+];
+
+export const ArticleVisitsColumnData = [
+  {
+    title: "DATE",
+    dataIndex: "updated_at",
+    key: "date",
+    width: "5%",
+    render: date => (
+      <Typography className="text-gray-700" lineHeight="loose" style="h5">
+        {formatTimeStampToDateWithHyphen(date)}
+      </Typography>
+    ),
+  },
+  {
+    title: "Visits",
+    dataIndex: "visits",
+    key: "visits",
+    width: "5%",
+    render: visits => (
+      <Typography className="text-gray-700" style="h5">
         {visits}
       </Typography>
     ),

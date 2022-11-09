@@ -2,6 +2,7 @@
 
 class Article < ApplicationRecord
   MAX_TITLE_LENGTH = 50
+  MAX_PAGE_SIZE = 10
 
   belongs_to :category
   belongs_to :user
@@ -10,6 +11,7 @@ class Article < ApplicationRecord
   validates :status, :body, presence: true
   validate :slug_not_changed
 
+  paginates_per MAX_PAGE_SIZE
   has_paper_trail only: [:title, :body, :status, :category_id]
 
   before_create :set_slug
