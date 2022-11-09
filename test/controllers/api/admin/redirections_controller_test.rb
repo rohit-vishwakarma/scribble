@@ -51,4 +51,17 @@ class Api::Admin::RedirectionsControllerTest < ActionDispatch::IntegrationTest
     all_redirections = @organization.redirections.count
     assert_equal all_redirections, response_json["redirections"].count
   end
+
+  def test_redirection_should_be_invalid_if_from_and_to_path_are_same
+    put api_admin_redirection_path(@redirection.id), params: {
+      redirection: {
+        from: "https://lacalhost:3000/settings",
+        to: "https://lacalhost:3000/settings"
+      }
+    }
+    assert_response :unprocessable_entity
+
+    response_json = response.parsed_body
+    assert_match t("redirection.equal_path"), response_json["error"]
+  end
 end

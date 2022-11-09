@@ -13,13 +13,13 @@ class ArticleTest < ActiveSupport::TestCase
   def test_article_should_not_be_valid_without_category
     @article.category = nil
     assert_not @article.save
-    assert_includes @article.errors.full_messages, "Category must exist"
+    assert_includes @article.errors_to_sentence, "Category must exist"
   end
 
   def test_article_should_not_be_valid_without_user
     @article.user = nil
     assert_not @article.save
-    assert_includes @article.errors.full_messages, "User must exist"
+    assert_includes @article.errors_to_sentence, "User must exist"
   end
 
   def test_article_title_should_not_exceed_maximum_length
@@ -91,7 +91,7 @@ class ArticleTest < ActiveSupport::TestCase
       another_test_article.update!(slug: @article.slug)
     end
 
-    error_msg = another_test_article.errors.full_messages.to_sentence
+    error_msg = another_test_article.errors_to_sentence
     assert_match "Slug is immutable!", error_msg
   end
 

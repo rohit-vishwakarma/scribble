@@ -52,7 +52,7 @@ class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_list_all_categories
-    get api_public_categories_path
+    get api_admin_categories_path
     assert_response :success
 
     response_json = response.parsed_body

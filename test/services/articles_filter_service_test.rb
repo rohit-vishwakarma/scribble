@@ -14,7 +14,7 @@ class ArticlesFilterServiceTest < ActionDispatch::IntegrationTest
     first_article = create(:article, category: @category, user: @user)
     second_article = create(:article, category: @category, user: @user)
 
-    filtered_data = ArticlesFilterService.new(@user.articles, "", "", "").process
+    filtered_data = ArticlesFilterService.new(@user.articles, "All", "", "").process
     assert_equal @user.articles, filtered_data
   end
 
@@ -40,7 +40,7 @@ class ArticlesFilterServiceTest < ActionDispatch::IntegrationTest
   def test_should_filter_articles_by_status
     first_article = create(:article, status: "Published", category: @category, user: @user)
     second_article = create(:article, status: "Published", category: @category, user: @user)
-    third_article = create(:article, status: "Draft", category: @category, user: @user)
+    third_article = create(:article, category: @category, user: @user)
 
     filtered_data = ArticlesFilterService.new(@user.articles, "Published", "", "").process
     assert_equal [first_article, second_article], filtered_data
@@ -62,7 +62,7 @@ class ArticlesFilterServiceTest < ActionDispatch::IntegrationTest
     third_article = create(:article, status: "Published", category: @category, user: @user)
 
     filtered_data = ArticlesFilterService.new(
-      @user.articles, "Published", "#{test_category.id},#{@category.id}",
+      @user.articles, "Published", "#{test_category.id}, #{@category.id}",
       "").process
     assert_equal [first_article, third_article], filtered_data
   end
@@ -80,7 +80,7 @@ class ArticlesFilterServiceTest < ActionDispatch::IntegrationTest
   def test_should_filter_articles_by_status_category_and_search_term
     test_category = create(:category, user: @user)
     first_article = create(:article, title: "first", category: @category, user: @user)
-    second_article = create(:article, status: "Draft", title: "third", category: test_category, user: @user)
+    second_article = create(:article, title: "third", category: test_category, user: @user)
     third_article = create(:article, status: "Published", title: "third", category: test_category, user: @user)
 
     filtered_data = ArticlesFilterService.new(@user.articles, "Published", "#{test_category.id}", "thi").process
