@@ -24,10 +24,18 @@ class Api::Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_update_organization_details
-    put api_admin_organization_path, params: { name: "Spin", password: "hello123" }
+    put api_admin_organization_path, params: { name: "Spin", password: "hello123", is_password_protected: true }
     assert_response :success
 
     response_json = response.parsed_body
     assert_equal t("successfully_updated", entity: "Organization"), response_json["notice"]
+  end
+
+  def test_should_show_organization_details
+    get api_admin_organization_path
+    assert_response :success
+
+    response_json = response.parsed_body["organization"]
+    assert_equal @organization.id, response_json["id"]
   end
 end

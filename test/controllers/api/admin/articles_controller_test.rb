@@ -76,7 +76,7 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     test_category = create(:category, user: @user)
     first_article = create(:article, status: "Published", category: test_category, user: @user)
     second_article = create(:article, status: "Published", category: @category, user: @user)
-    third_article = create(:article, status: "Draft", category: test_category, user: @user)
+    third_article = create(:article, category: test_category, user: @user)
 
     get count_api_admin_articles_path(category_ids: "#{@category.id},#{test_category.id}")
     assert_response :success
@@ -87,5 +87,25 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
 
     total_articles_count = category_articles_count + test_category_articles_count
     assert_equal total_articles_count, response_json["all"]
+  end
+
+  def test_should_show_article
+    get api_admin_article_path(@article.id)
+    assert_response :success
+
+    response_json = response.parsed_body
+    assert_equal @article.id, response_json["id"]
+  end
+
+  def test_should_not_show_article_with_invalid_id
+    @article.destroy!
+    get api_admin_article_path(@article.id)
+    assert_response :not_found
+  end
+
+  def test_should_not_update_article_if_paramter_missing
+    article_params = { article: {} }
+    put api_admin_article_path(@article.id), params: article_params
+    assert_response :internal_server_error
   end
 end

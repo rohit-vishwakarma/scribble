@@ -11,13 +11,13 @@ class RedirectionTest < ActiveSupport::TestCase
   def test_redirection_shouldnt_be_valid_without_from
     @redirection.from = ""
     assert @redirection.invalid?
-    assert_includes @redirection.errors.full_messages, "From can't be blank"
+    assert_includes @redirection.errors_to_sentence, "From can't be blank"
   end
 
   def test_redirection_shouldnt_be_valid_without_to
     @redirection.to = ""
     assert @redirection.invalid?
-    assert_includes @redirection.errors.full_messages, "To can't be blank"
+    assert_includes @redirection.errors_to_sentence, "To can't be blank"
   end
 
   def test_from_should_be_unique
@@ -28,11 +28,9 @@ class RedirectionTest < ActiveSupport::TestCase
   def test_from_and_to_should_not_be_equal
     @redirection.from = @redirection.to
 
-    assert_raises ActiveRecord::RecordInvalid do
-      @redirection.save!
-    end
+    assert @redirection.invalid?
 
-    error_msg = @redirection.errors.full_messages.to_sentence
+    error_msg = @redirection.errors_to_sentence
     assert_match t("redirection.equal_path"), error_msg
   end
 
@@ -46,17 +44,15 @@ class RedirectionTest < ActiveSupport::TestCase
     third_redirection.from = second_redirection.to
     third_redirection.to = first_redirection.from
 
-    assert_raises ActiveRecord::RecordInvalid do
-      third_redirection.save!
-    end
+    assert third_redirection.invalid?
 
-    error_msg = third_redirection.errors.full_messages.to_sentence
+    error_msg = third_redirection.errors_to_sentence
     assert_match t("redirection.redirection_loop"), error_msg
   end
 
   def test_redirections_should_be_deleted_if_organization_is_deleted
-    organization_count = @organization.redirections.count
-    assert_not_equal 0, organization_count
+    redirections_count = @organization.redirections.count
+    assert_not_equal 0, redirections_count
 
     @organization.destroy!
     assert_equal 0, @organization.redirections.count

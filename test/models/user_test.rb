@@ -26,7 +26,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
 
     @user.save
-    assert_includes @user.errors.full_messages, "Email can't be blank", "Email is invalid"
+    assert_includes @user.errors_to_sentence, "Email can't be blank", "Email is invalid"
   end
 
   def test_user_should_not_be_valid_and_saved_if_email_not_unique
@@ -35,7 +35,7 @@ class UserTest < ActiveSupport::TestCase
     test_user = @user.dup
     assert_not test_user.valid?
 
-    assert_includes test_user.errors.full_messages, "Email has already been taken"
+    assert_includes test_user.errors_to_sentence, "Email has already been taken"
   end
 
   def test_users_should_be_deleted_if_organization_is_deleted
