@@ -14,9 +14,11 @@ import Tooltip from "components/Common/Tooltip";
 
 const Modal = ({ version, showModal, setShowModal }) => {
   const history = useHistory();
+
   const categoryValue = version.category
     ? version.category.name
     : "Category doesn't exists.";
+  const isRestored = version.article.version_status;
 
   const handleRestore = async () => {
     try {
@@ -25,7 +27,8 @@ const Modal = ({ version, showModal, setShowModal }) => {
         body: version.article.body,
         status: "Draft",
         category_id: version.article.category_id,
-        version_status: "Restored",
+        version_status: true,
+        restored_at: version.article.updated_at,
       };
       await articlesApi.update(version.article.id, articleData);
       history.go(0);
@@ -69,13 +72,17 @@ const Modal = ({ version, showModal, setShowModal }) => {
       </NeetoUIModal.Body>
       <NeetoUIModal.Footer className="flex space-x-2">
         <Tooltip
-          content="Category doesn't exists, unable to restore."
-          disabled={!version.category}
+          disabled={!version.category || isRestored}
           followCursor="horizontal"
           position="top"
+          content={
+            isRestored
+              ? "Already restored article can't be restore."
+              : "Category doesn't exists, unable to restore."
+          }
         >
           <Button
-            disabled={!version.category}
+            disabled={!version.category || isRestored}
             label="Restore version"
             onClick={handleRestore}
           />

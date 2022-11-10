@@ -25,10 +25,6 @@ class CategoryDeletionService
 
   def update_articles_category_id
     articles = _current_user.articles.where(category_id: id)
-    for article in articles
-      article.version_status = article.status
-      article.save!
-    end
     articles.update(category_id: @new_category_id)
   end
 
