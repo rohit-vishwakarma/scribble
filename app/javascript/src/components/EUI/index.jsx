@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 
 const EUI = () => {
   const [showSearchBar, setShowSearchBar] = useState(false);
+
   const keysPressed = {};
 
   useEffect(() => {
