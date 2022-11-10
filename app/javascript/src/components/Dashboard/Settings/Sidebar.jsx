@@ -9,7 +9,7 @@ const Sidebar = ({ currentActiveTab }) => {
   const { url } = useRouteMatch();
 
   return (
-    <div className="border flex h-screen w-1/4 flex-col p-5">
+    <div className="border-r flex h-screen w-1/4 flex-col p-5">
       {SETTINGS_OPTIONS.map((SettingsOption, idx) => (
         <NavLink
           key={idx}
