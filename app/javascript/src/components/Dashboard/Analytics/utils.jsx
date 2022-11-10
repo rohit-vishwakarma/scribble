@@ -3,10 +3,7 @@ import React from "react";
 import { Typography } from "neetoui";
 import { Link } from "react-router-dom";
 
-import {
-  formatTimeStampToDate,
-  formatTimeStampToDateWithHyphen,
-} from "components/utils";
+import { formatTimeStampToDate } from "components/utils";
 
 export const ArticleColumnsData = [
   {
@@ -61,12 +58,12 @@ export const ArticleColumnsData = [
 export const ArticleVisitsColumnData = [
   {
     title: "DATE",
-    dataIndex: "updated_at",
+    dataIndex: "date",
     key: "date",
     width: "5%",
     render: date => (
       <Typography className="text-gray-700" lineHeight="loose" style="h5">
-        {formatTimeStampToDateWithHyphen(date)}
+        {date}
       </Typography>
     ),
   },
@@ -82,3 +79,14 @@ export const ArticleVisitsColumnData = [
     ),
   },
 ];
+
+export const buildRowData = datesAndVisits => {
+  const allKeysOfDatesAndVisits = Object.keys(datesAndVisits);
+  const rowData = allKeysOfDatesAndVisits.map((date, idx) => ({
+    id: idx + 1,
+    date,
+    visits: datesAndVisits[date],
+  }));
+
+  return rowData;
+};

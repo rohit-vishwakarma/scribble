@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_123656) do
+ActiveRecord::Schema.define(version: 2022_11_10_161424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 2022_11_10_123656) do
     t.integer "category_id", null: false
     t.integer "user_id", default: 1, null: false
     t.string "slug"
-    t.integer "visits", default: 0
     t.boolean "version_status", default: false
     t.datetime "restored_at"
   end
@@ -77,9 +76,17 @@ ActiveRecord::Schema.define(version: 2022_11_10_123656) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  create_table "visits", force: :cascade do |t|
+    t.integer "visit", default: 0
+    t.integer "article_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "articles", "categories", on_delete: :cascade
   add_foreign_key "articles", "users"
   add_foreign_key "categories", "users", on_delete: :cascade
   add_foreign_key "redirections", "organizations", on_delete: :cascade
   add_foreign_key "users", "organizations", on_delete: :cascade
+  add_foreign_key "visits", "articles", on_delete: :cascade
 end

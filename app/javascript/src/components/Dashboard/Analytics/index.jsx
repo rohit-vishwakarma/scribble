@@ -4,7 +4,11 @@ import { Table, PageLoader, Pagination } from "neetoui";
 
 import { articlesApi } from "apis/admin";
 
-import { ArticleColumnsData, ArticleVisitsColumnData } from "./utils";
+import {
+  ArticleColumnsData,
+  ArticleVisitsColumnData,
+  buildRowData,
+} from "./utils";
 
 const Analytics = () => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
@@ -44,12 +48,12 @@ const Analytics = () => {
         columnData={ArticleColumnsData}
         rowData={articles}
         expandable={{
-          expandedRowRender: record => (
+          expandedRowRender: article => (
             <div className="m-0 w-64 pl-8">
               <Table
                 allowRowClick={false}
                 columnData={ArticleVisitsColumnData}
-                rowData={[record]}
+                rowData={buildRowData(article.dates_and_visits)}
               />
             </div>
           ),
