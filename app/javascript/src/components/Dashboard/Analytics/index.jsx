@@ -57,12 +57,12 @@ const Analytics = () => {
       />
       <Pagination
         className="pt-4"
-        navigate={e => setCurrentPageNumber(e)}
+        navigate={pageNumber => setCurrentPageNumber(pageNumber)}
         pageNo={currentPageNumber}
         pageSize={10}
         count={
           articles.length !== 10
-            ? currentPageNumber * 10 - 1
+            ? currentPageNumber * 10
             : currentPageNumber * 10 + 1
         }
       />

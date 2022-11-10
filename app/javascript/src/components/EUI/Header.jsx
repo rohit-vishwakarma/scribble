@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Typography, PageLoader } from "neetoui";
+import { Search } from "neetoicons";
+import { Typography, PageLoader, Kbd } from "neetoui";
 
 import { organizationsApi } from "apis/admin";
 
@@ -39,12 +40,17 @@ const Header = ({ isEUI, setShowSearchBar }) => {
       {isEUI && (
         <div className="mt-2 ml-8 h-10 w-3/12">
           <div
-            className="border cursor-pointer rounded-sm border-gray-500"
+            className="border flex cursor-text justify-between rounded-sm"
             onClick={() => setShowSearchBar(true)}
           >
-            <Typography className="m-1 text-gray-400">
+            <Typography className="m-1 flex text-gray-400">
+              <Search />
               Search for articles here.
             </Typography>
+            <div className="mt-1 flex gap-x-1">
+              <Kbd keyName="⌘" />
+              <Kbd className="mr-1" keyName="K" />
+            </div>
           </div>
         </div>
       )}
