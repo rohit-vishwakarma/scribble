@@ -41,7 +41,7 @@ const NavBar = () => {
   }
 
   return (
-    <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b-2 px-6">
+    <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b-2 bg-white px-6">
       <div className="flex">
         <Typography style="h4">Scribble</Typography>
         <NavLink

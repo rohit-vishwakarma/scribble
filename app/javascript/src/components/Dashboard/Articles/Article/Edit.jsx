@@ -39,7 +39,8 @@ const Edit = () => {
           article: version.object,
           category: version.category,
         }))
-        .splice(1);
+        .splice(1)
+        .reverse();
       setArticleVersions(versions);
     } catch (error) {
       logger.error(error);
@@ -59,7 +60,11 @@ const Edit = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       resetForm();
-      const articleData = { ...values, version_status: article.status };
+      const articleData = {
+        ...values,
+        version_status: false,
+        restored_at: null,
+      };
       articleData.category_id = values.category.value;
       await articlesApi.update(article.id, articleData);
       history.push("/");
