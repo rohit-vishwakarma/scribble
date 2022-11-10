@@ -4,6 +4,7 @@ class Article < ApplicationRecord
   MAX_TITLE_LENGTH = 50
   MAX_PAGE_SIZE = 10
 
+  has_many :visits
   belongs_to :category
   belongs_to :user
 
