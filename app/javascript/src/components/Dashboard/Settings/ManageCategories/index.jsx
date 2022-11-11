@@ -37,26 +37,30 @@ const Manage = () => {
   }
 
   return (
-    <div className="mx-auto mt-8 w-5/12">
-      <Typography className="h-10" style="h2">
-        Manage Categories
-      </Typography>
-      <Typography className="text-gray-500" style="body1">
-        Create and configure the categories inside your scribble.
-      </Typography>
-      <div className="mt-8">
-        <Add
+    <div className="mx-auto h-screen w-5/12 overflow-y-auto">
+      <div className="fixed top-0 z-40 w-5/12 bg-white pt-24">
+        <Typography className="h-10" style="h2">
+          Manage Categories
+        </Typography>
+        <Typography className="text-gray-500" style="body1">
+          Create and configure the categories inside your scribble.
+        </Typography>
+        <div className="mt-8">
+          <Add
+            refetch={fetchCategories}
+            setShowAdd={setShowAdd}
+            showAdd={showAdd}
+          />
+        </div>
+      </div>
+      <div className="mt-48 mb-4">
+        <List
+          categories={categories}
           refetch={fetchCategories}
+          setCategories={setCategories}
           setShowAdd={setShowAdd}
-          showAdd={showAdd}
         />
       </div>
-      <List
-        categories={categories}
-        refetch={fetchCategories}
-        setCategories={setCategories}
-        setShowAdd={setShowAdd}
-      />
     </div>
   );
 };

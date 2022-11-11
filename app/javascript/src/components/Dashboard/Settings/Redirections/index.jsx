@@ -43,16 +43,18 @@ const Redirection = () => {
   }
 
   return (
-    <div className="mx-auto mt-8 w-6/12">
-      <Typography className="h-10" style="h2">
-        Redirections
-      </Typography>
-      <Typography className="text-gray-500" style="body1">
-        Create and configure redirection rules to send users from old links to
-        new links. All redirections are performed with 301 status codes to be
-        SEO friendly.
-      </Typography>
-      <div className="mx-auto mt-2 w-full bg-indigo-100 p-6">
+    <div className="mx-auto mt-8 w-1/2 overflow-y-auto">
+      <div className="fixed top-0 z-40 w-1/2 bg-white pb-4 pt-24">
+        <Typography className="h-10" style="h2">
+          Redirections
+        </Typography>
+        <Typography className="text-gray-500" style="body1">
+          Create and configure redirection rules to send users from old links to
+          new links. All redirections are performed with 301 status codes to be
+          SEO friendly.
+        </Typography>
+      </div>
+      <div className="mx-auto mb-4 mt-24 w-full bg-indigo-100 p-6">
         <Header />
         {redirectionList.map((redirection, idx) => (
           <div
