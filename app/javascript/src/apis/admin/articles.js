@@ -24,7 +24,7 @@ const versions = id => axios.get(`/api/admin/articles/${id}/versions`);
 
 const fetchPublished = payload =>
   axios.get(
-    `/api/admin/articles/published_list/?page_no=${payload.pageNumber}`
+    `/api/admin/articles/published_list/?page_number=${payload.pageNumber}`
   );
 
 const count = payload =>
