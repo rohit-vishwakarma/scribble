@@ -23,8 +23,10 @@ const NavBar = () => {
     try {
       setLoading(true);
       const id = pathname.split("/")[2];
-      const { data: article } = await articlesApi.show(id);
-      setArticleStatus(article.status);
+      if (isNaN(id) === false) {
+        const { data: article } = await articlesApi.show(id);
+        setArticleStatus(article.status);
+      }
     } catch (error) {
       logger.error(error);
     } finally {
