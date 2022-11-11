@@ -37,7 +37,7 @@ const Articles = () => {
   const fetchArticlesStatusCount = async () => {
     try {
       const { data } = await articlesApi.count({
-        category_ids: filterOptions.categoryIds,
+        categoryIds: filterOptions.categoryIds,
       });
       setArticlesStatusCount(data);
     } catch (error) {
@@ -48,8 +48,8 @@ const Articles = () => {
   const fetchArticles = async () => {
     const payload = {
       status: filterOptions.activeStatus,
-      category_ids: filterOptions.categoryIds,
-      search_term: filterOptions.searchTerm,
+      categoryIds: filterOptions.categoryIds,
+      searchTerm: filterOptions.searchTerm,
     };
     try {
       const {

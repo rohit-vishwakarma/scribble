@@ -20,7 +20,7 @@ const Analytics = () => {
       setLoading(true);
       const {
         data: { articles },
-      } = await articlesApi.fetchPublished({ page_no: currentPageNumber });
+      } = await articlesApi.fetchPublished({ pageNumber: currentPageNumber });
       setArticles(articles);
     } catch (error) {
       logger.error(error);

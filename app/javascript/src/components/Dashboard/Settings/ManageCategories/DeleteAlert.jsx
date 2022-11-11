@@ -46,7 +46,7 @@ const DeleteAlert = ({
     try {
       await categoriesApi.destroy({
         id: selectedDeleteCategory.id,
-        new_category_id: moveToCategory?.value,
+        newCategoryId: moveToCategory?.value,
       });
       setSelectedDeleteCategory({});
       refetch();

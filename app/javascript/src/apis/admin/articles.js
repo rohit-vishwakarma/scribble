@@ -2,8 +2,8 @@ import axios from "axios";
 
 const fetch = payload =>
   axios.get(
-    `/api/admin/articles/?search_term=${payload.search_term}&category_ids=
-    ${payload.category_ids}&status=${payload.status}`
+    `/api/admin/articles/?search_term=${payload.searchTerm}&category_ids=
+    ${payload.categoryIds}&status=${payload.status}`
   );
 
 const show = id => axios.get(`/api/admin/articles/${id}`);
@@ -23,10 +23,12 @@ const update = async (id, payload) => {
 const versions = id => axios.get(`/api/admin/articles/${id}/versions`);
 
 const fetchPublished = payload =>
-  axios.get(`/api/admin/articles/published_list/?page_no=${payload.page_no}`);
+  axios.get(
+    `/api/admin/articles/published_list/?page_no=${payload.pageNumber}`
+  );
 
 const count = payload =>
-  axios.get(`/api/admin/articles/count/?category_ids=${payload.category_ids}`);
+  axios.get(`/api/admin/articles/count/?category_ids=${payload.categoryIds}`);
 
 const articlesApi = {
   fetch,

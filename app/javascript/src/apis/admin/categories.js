@@ -12,7 +12,7 @@ const update = async (id, payload) => {
 
 const destroy = async payload => {
   await axios.delete(
-    `/api/admin/categories/${payload.id}?new_category_id=${payload.new_category_id}`
+    `/api/admin/categories/${payload.id}?new_category_id=${payload.newCategoryId}`
   );
 };
 
