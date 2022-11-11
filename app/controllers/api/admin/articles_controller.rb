@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class Api::Admin::ArticlesController < ApplicationController
-  before_action :current_user!, except: %i[new edit]
   before_action :load_article!, only: %i[destroy update show versions]
 
   def index
-    @articles = @_current_user.articles.order("updated_at DESC")
+    @articles = current_user!.articles.order("updated_at DESC")
     @articles = ArticlesFilterService.new(
       @articles, params[:status],
       params[:category_ids], params[:search_term]).process
@@ -13,7 +12,7 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def count
-    @articles = @_current_user.articles
+    @articles = current_user!.articles
     if params[:category_ids].present?
       @articles = @articles.where(category_id: params[:category_ids].split(",").map(&:to_i))
     end
@@ -21,12 +20,12 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def published_list
-    @articles = @_current_user.articles.where(status: "Published").order("updated_at DESC").page(params[:page_no])
+    @articles = current_user!.articles.where(status: "Published").order("updated_at DESC").page(params[:page_no])
     render
   end
 
   def create
-    article = @_current_user.articles.create! article_params
+    article = current_user!.articles.create! article_params
     respond_with_success(t("successfully_created", entity: "Article"))
   end
 
@@ -56,6 +55,6 @@ class Api::Admin::ArticlesController < ApplicationController
     end
 
     def load_article!
-      @article = @_current_user.articles.find(params[:id])
+      @article = current_user!.articles.find(params[:id])
     end
 end

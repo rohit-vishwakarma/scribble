@@ -44,9 +44,7 @@ const Modal = ({ version, showModal, setShowModal }) => {
       onClose={() => setShowModal(false)}
     >
       <NeetoUIModal.Header description="Version history of Setting up an account in Scribble.">
-        <Typography id="dialog1Title" style="h2">
-          Version History
-        </Typography>
+        <Typography style="h2">Version History</Typography>
       </NeetoUIModal.Header>
       <NeetoUIModal.Body className="space-y-2">
         <div className="my-5 flex gap-x-4">
@@ -70,28 +68,35 @@ const Modal = ({ version, showModal, setShowModal }) => {
           value={version.article.body}
         />
       </NeetoUIModal.Body>
-      <NeetoUIModal.Footer className="flex space-x-2">
-        <Tooltip
-          disabled={!version.category || isRestored}
-          followCursor="horizontal"
-          position="top"
-          content={
-            isRestored
-              ? "Already restored article can't be restore."
-              : "Category doesn't exists, unable to restore."
-          }
-        >
-          <Button
+      <NeetoUIModal.Footer>
+        <div className="flex space-x-2">
+          <Tooltip
             disabled={!version.category || isRestored}
-            label="Restore version"
-            onClick={handleRestore}
+            followCursor="horizontal"
+            position="top"
+            content={
+              isRestored
+                ? "Already restored article can't be restore."
+                : "Category doesn't exists, unable to restore."
+            }
+          >
+            <Button
+              disabled={!version.category || isRestored}
+              label="Restore version"
+              onClick={handleRestore}
+            />
+          </Tooltip>
+          <Button
+            label="Cancel"
+            style="text"
+            onClick={() => setShowModal(false)}
           />
-        </Tooltip>
-        <Button
-          label="Cancel"
-          style="text"
-          onClick={() => setShowModal(false)}
-        />
+        </div>
+        {version.category && !isRestored && (
+          <Typography className="mt-2" style="body3">
+            Note: After restoring, the article will be drafted by default.
+          </Typography>
+        )}
       </NeetoUIModal.Footer>
     </NeetoUIModal>
   );
