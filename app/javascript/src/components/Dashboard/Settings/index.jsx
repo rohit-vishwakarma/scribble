@@ -24,6 +24,7 @@ const Settings = () => {
   return (
     <div className="flex">
       <Sidebar currentActiveTab={currentTab} />
+      <div className="w-1/4" />
       {renderCurrentTab()}
     </div>
   );
