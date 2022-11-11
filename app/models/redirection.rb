@@ -22,8 +22,8 @@ class Redirection < ApplicationRecord
       current_to = self.to
 
       while self.from != current_to
-        if Redirection.where(from: current_to).present?
-          current_to = Redirection.find_by!(from: current_to).to
+        if current_organization!.redirections.where(from: current_to).present?
+          current_to = current_organization!.redirections.find_by!(from: current_to).to
         else
           is_cycle_present = false
           break
@@ -31,5 +31,9 @@ class Redirection < ApplicationRecord
       end
 
       is_cycle_present
+    end
+
+    def current_organization!
+      @_current_organization ||= Organization.first
     end
 end

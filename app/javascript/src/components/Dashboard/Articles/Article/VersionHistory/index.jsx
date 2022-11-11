@@ -15,16 +15,20 @@ const VersionHistory = ({ article, articleVersions }) => {
     <div className="border-l h-screen w-1/4 overflow-y-auto">
       <div className="sticky top-0 z-40 ml-4 mt-8 bg-white">
         <Typography style="h3">Version History</Typography>
-        <Typography className="mt-1 text-gray-600" style="body1">
+        <Typography className="mt-1 mb-4 text-gray-600" style="body1">
           Version history of {article.title} in Scribble.
         </Typography>
-        <div className="border mr-4 mt-4 mb-2 flex justify-between rounded-md bg-indigo-100 p-4">
-          <div>
+        <div className="border mr-4 mb-2 flex justify-between rounded-md bg-indigo-100 p-4">
+          <div className="mr-4">
             <Typography className="text-gray-500" style="body2">
               {formatTimeStampToTimeAndDate(article.updated_at)}
             </Typography>
             <Typography className="text-gray-500" style="body2">
-              Current Version
+              Current Version <br />
+              {article.version_status &&
+                `Restored from (${formatTimeStampToTimeAndDate(
+                  article.restored_at
+                )})`}
             </Typography>
           </div>
           <Typography className="my-auto" style="h4">
