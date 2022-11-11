@@ -4,12 +4,12 @@ class Api::Admin::RedirectionsController < ApplicationController
   before_action :load_redirection!, only: %i[destroy update]
 
   def index
-    @redirections = current_organization!.redirections
+    @redirections = current_organization.redirections
     render
   end
 
   def create
-    redirection = current_organization!.redirections.create! redirection_params
+    redirection = current_organization.redirections.create! redirection_params
     respond_with_success(t("successfully_created", entity: "Redirection"))
   end
 
@@ -30,6 +30,6 @@ class Api::Admin::RedirectionsController < ApplicationController
     end
 
     def load_redirection!
-      @redirection = current_organization!.redirections.find(params[:id])
+      @redirection = current_organization.redirections.find(params[:id])
     end
 end

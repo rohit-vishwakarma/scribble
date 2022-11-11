@@ -4,7 +4,7 @@ class Api::Public::ArticlesController < ApplicationController
   before_action :create_visit!, only: :show
 
   def index
-    @articles = current_user!.articles.where(status: "Published").order("updated_at DESC")
+    @articles = current_user.articles.where(status: "Published").order("updated_at DESC")
     render
   end
 
@@ -15,7 +15,7 @@ class Api::Public::ArticlesController < ApplicationController
   private
 
     def create_visit!
-      @article = current_user!.articles.find_by!(slug: params[:slug])
+      @article = current_user.articles.find_by!(slug: params[:slug])
       visit = @article.visits.create!(visit: 1)
     end
 end
