@@ -34,10 +34,12 @@ const List = ({ categories, setCategories, refetch, setShowAdd }) => {
       endPosition.destination.index
     );
     setCategories(reorderedCategories);
-    const categoryIds = reorderedCategories.map(category => category.id);
+    const categoryId = endPosition.draggableId;
+    const newPosition = endPosition.destination.index + 1;
     try {
       await categoriesApi.positionUpdate({
-        category_ids: categoryIds,
+        id: categoryId,
+        new_position: newPosition,
       });
     } catch (error) {
       logger.error(error);

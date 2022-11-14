@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::Admin::CategoriesController < ApplicationController
-  before_action :load_category!, only: :update
+  before_action :load_category!, only: %i[update position_update]
 
   def index
     @categories = current_user.categories.order("position ASC")
@@ -9,7 +9,7 @@ class Api::Admin::CategoriesController < ApplicationController
   end
 
   def create
-    category = current_user.categories.create! category_params
+    current_user.categories.create! category_params
     respond_with_success(t("successfully_created", entity: "Category"))
   end
 
@@ -24,13 +24,7 @@ class Api::Admin::CategoriesController < ApplicationController
   end
 
   def position_update
-    position = 1
-    category_id_list = params[:category_ids]
-    category_id_list.each do | id |
-      category = current_user.categories.find(id)
-      category.update!(position: position)
-      position = position + 1
-    end
+    @category.insert_at(params[:new_position].to_i)
     respond_with_success(t("position_updated", entity: "Category"))
   end
 

@@ -25,7 +25,7 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def create
-    article = current_user.articles.create! article_params
+    current_user.articles.create! article_params
     respond_with_success(t("successfully_created", entity: "Article"))
   end
 

@@ -42,9 +42,8 @@ class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
     second_category = create(:category, user: @user)
     third_category = create(:category, user: @user)
 
-    category_ids = [third_category.id, first_category.id, second_category.id]
-    last_position = @category.position
-    put position_update_api_admin_categories_path, params: { category_ids: category_ids }
+    put position_update_api_admin_categories_path,
+      params: { id: first_category.id, new_position: third_category.position }
     assert_response :success
 
     response_json = response.parsed_body
