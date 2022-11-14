@@ -16,6 +16,6 @@ class Api::Public::ArticlesController < ApplicationController
 
     def create_visit!
       @article = current_user.articles.find_by!(slug: params[:slug])
-      visit = @article.visits.create!(visit: 1)
+      @article.visits.create!(visit: 1)
     end
 end

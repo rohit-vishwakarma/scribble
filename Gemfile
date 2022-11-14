@@ -68,3 +68,5 @@ gem "paper_trail"
 gem "simplecov", require: false, group: :test
 
 gem "kaminari"
+
+gem "acts_as_list"
