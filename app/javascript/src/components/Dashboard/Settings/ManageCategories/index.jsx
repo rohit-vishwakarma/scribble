@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import { Typography, PageLoader } from "neetoui";
+import { Plus } from "neetoicons";
+import { Typography, PageLoader, Button } from "neetoui";
 
 import { categoriesApi } from "apis/admin";
 
-import Add from "./Add";
 import List from "./List";
+import NewCategoryPane from "./Pane/Create";
 
 const Manage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAdd, setShowAdd] = useState(false);
+  const [showAddPane, setShowAddPane] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -37,28 +38,25 @@ const Manage = () => {
   }
 
   return (
-    <div className="mx-auto h-screen w-5/12 overflow-y-auto">
-      <div className="fixed top-0 z-40 w-5/12 bg-white pt-24">
+    <div className="mx-auto h-screen w-1/4 overflow-y-auto">
+      <div className="fixed top-0 z-40 flex w-1/4 justify-between bg-white pt-24">
         <Typography className="h-10" style="h2">
           Manage Categories
         </Typography>
-        <Typography className="text-gray-500" style="body1">
-          Create and configure the categories inside your scribble.
-        </Typography>
-        <div className="mt-8">
-          <Add
-            refetch={fetchCategories}
-            setShowAdd={setShowAdd}
-            showAdd={showAdd}
-          />
+        <div className="my-auto">
+          <Button icon={Plus} size={15} onClick={() => setShowAddPane(true)} />
         </div>
       </div>
-      <div className="mt-48 mb-4">
+      <NewCategoryPane
+        refetch={fetchCategories}
+        setShowPane={setShowAddPane}
+        showPane={showAddPane}
+      />
+      <div className="mt-32 mb-4">
         <List
           categories={categories}
           refetch={fetchCategories}
           setCategories={setCategories}
-          setShowAdd={setShowAdd}
         />
       </div>
     </div>
