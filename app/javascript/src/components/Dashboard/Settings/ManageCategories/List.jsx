@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { categoriesApi } from "apis/admin";
 
+import EditCategoryPane from "./Pane/Edit";
 import Row from "./Row";
 
-const List = ({ categories, setCategories, refetch, setShowAdd }) => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-
-  useEffect(() => {
-    window.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        setSelectedCategoryId(null);
-      }
-    });
-  }, []);
+const List = ({ categories, setCategories, refetch }) => {
+  const [showEditPane, setShowEditPane] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState({});
 
   const reorderList = (categoryList, startIndex, endIndex) => {
     const shuffledCategories = Array.from(categoryList);
@@ -47,28 +41,33 @@ const List = ({ categories, setCategories, refetch, setShowAdd }) => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="droppable-categories">
-        {provided => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {categories.map((category, idx) => (
-              <div className="w-full" key={category.id}>
-                <hr />
+    <>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="droppable-categories">
+          {provided => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {categories.map((category, idx) => (
                 <Row
                   category={category}
                   index={idx}
+                  key={category.id}
                   refetch={refetch}
-                  selectedCategoryId={selectedCategoryId}
-                  setSelectedCategoryId={setSelectedCategoryId}
-                  setShowAdd={setShowAdd}
+                  setSelectedCategory={setSelectedCategory}
+                  setShowEditPane={setShowEditPane}
                 />
-              </div>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <EditCategoryPane
+        category={selectedCategory}
+        refetch={refetch}
+        setShowPane={setShowEditPane}
+        showPane={showEditPane}
+      />
+    </>
   );
 };
 
