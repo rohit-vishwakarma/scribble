@@ -5,3 +5,8 @@ export const formatTimeStampToDate = dateTime =>
 
 export const formatTimeStampToTimeAndDate = dateTime =>
   dayjs(dateTime).format("hh:mm A, DD/MM/YYYY");
+
+export const calculateCreatedAgo = dateTime => dayjs(dateTime).fromNow();
+
+export const formatTimeStampToDayDateAndTime = dateTime =>
+  dayjs(dateTime).format("dddd MMMM DD, YYYY hh:mm A");
