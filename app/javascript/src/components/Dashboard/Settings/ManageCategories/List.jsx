@@ -7,9 +7,15 @@ import { categoriesApi } from "apis/admin";
 import EditCategoryPane from "./Pane/Edit";
 import Row from "./Row";
 
-const List = ({ categories, setCategories, refetch }) => {
+const List = ({
+  categories,
+  setCategories,
+  refetch,
+  selectedCategory,
+  setSelectedCategory,
+}) => {
   const [showEditPane, setShowEditPane] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState({});
+  const [selectedEditCategory, setSelectedEditCategory] = useState({});
 
   const reorderList = (categoryList, startIndex, endIndex) => {
     const shuffledCategories = Array.from(categoryList);
@@ -47,14 +53,19 @@ const List = ({ categories, setCategories, refetch }) => {
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {categories.map((category, idx) => (
-                <Row
-                  category={category}
-                  index={idx}
+                <div
                   key={category.id}
-                  refetch={refetch}
-                  setSelectedCategory={setSelectedCategory}
-                  setShowEditPane={setShowEditPane}
-                />
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  <Row
+                    category={category}
+                    index={idx}
+                    isSelectedCategory={selectedCategory.id === category.id}
+                    refetch={refetch}
+                    setSelectedEditCategory={setSelectedEditCategory}
+                    setShowEditPane={setShowEditPane}
+                  />
+                </div>
               ))}
               {provided.placeholder}
             </div>
@@ -62,7 +73,7 @@ const List = ({ categories, setCategories, refetch }) => {
         </Droppable>
       </DragDropContext>
       <EditCategoryPane
-        category={selectedCategory}
+        category={selectedEditCategory}
         refetch={refetch}
         setShowPane={setShowEditPane}
         showPane={showEditPane}

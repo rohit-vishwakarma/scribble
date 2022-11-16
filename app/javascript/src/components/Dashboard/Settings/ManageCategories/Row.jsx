@@ -11,9 +11,10 @@ const { Menu, MenuItem } = Dropdown;
 const Row = ({
   category,
   index,
+  isSelectedCategory,
   refetch,
-  setSelectedCategory,
   setShowEditPane,
+  setSelectedEditCategory,
 }) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedDeleteCategory, setSelectedDeleteCategory] = useState({});
@@ -36,7 +37,11 @@ const Row = ({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <div className="flex h-16 justify-between p-2">
+            <div
+              className={`flex h-16 justify-between p-2 ${
+                isSelectedCategory && "rounded-lg bg-indigo-200"
+              }`}
+            >
               <Typography className="my-auto ml-1 text-gray-700" style="h4">
                 {category.name}
               </Typography>
@@ -45,7 +50,7 @@ const Row = ({
                   <Menu>
                     <MenuItem.Button
                       onClick={() => {
-                        setSelectedCategory(category);
+                        setSelectedEditCategory(category);
                         setShowEditPane(true);
                       }}
                     >

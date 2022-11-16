@@ -5,6 +5,7 @@ import { Typography, PageLoader, Button } from "neetoui";
 
 import { categoriesApi } from "apis/admin";
 
+import Articles from "./Articles";
 import List from "./List";
 import NewCategoryPane from "./Pane/Create";
 
@@ -12,6 +13,7 @@ const Manage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddPane, setShowAddPane] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState({});
 
   useEffect(() => {
     fetchCategories();
@@ -20,8 +22,11 @@ const Manage = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const fetchedCategories = await categoriesApi.fetch();
-      setCategories(fetchedCategories.data);
+      const { data } = await categoriesApi.fetch();
+      setCategories(data);
+      if (data.length > 0) {
+        setSelectedCategory(data[0]);
+      }
     } catch (error) {
       logger.error(error);
     } finally {
@@ -38,26 +43,37 @@ const Manage = () => {
   }
 
   return (
-    <div className="mx-auto h-screen w-1/4 overflow-y-auto">
-      <div className="fixed top-0 z-40 flex w-1/4 justify-between bg-white pt-24">
-        <Typography className="h-10" style="h2">
-          Manage Categories
-        </Typography>
-        <div className="my-auto">
-          <Button icon={Plus} size={15} onClick={() => setShowAddPane(true)} />
+    <div className="flex w-3/4">
+      <div className="border-r h-screen w-1/3 overflow-y-auto bg-white">
+        <div className="fixed top-0 z-40 ml-8 flex w-1/5 bg-white pt-24">
+          <Typography className="h-10" style="h2">
+            Manage categories
+          </Typography>
+          <div className="my-auto w-1/5 pl-12">
+            <Button
+              icon={Plus}
+              size={15}
+              onClick={() => setShowAddPane(true)}
+            />
+          </div>
+        </div>
+        <NewCategoryPane
+          refetch={fetchCategories}
+          setShowPane={setShowAddPane}
+          showPane={showAddPane}
+        />
+        <div className="mt-24 mb-4 p-10">
+          <List
+            categories={categories}
+            refetch={fetchCategories}
+            selectedCategory={selectedCategory}
+            setCategories={setCategories}
+            setSelectedCategory={setSelectedCategory}
+          />
         </div>
       </div>
-      <NewCategoryPane
-        refetch={fetchCategories}
-        setShowPane={setShowAddPane}
-        showPane={showAddPane}
-      />
-      <div className="mt-32 mb-4">
-        <List
-          categories={categories}
-          refetch={fetchCategories}
-          setCategories={setCategories}
-        />
+      <div className="w-2/3">
+        <Articles categories={categories} selectedCategory={selectedCategory} />
       </div>
     </div>
   );
