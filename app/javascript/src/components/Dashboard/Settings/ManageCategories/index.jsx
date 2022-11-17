@@ -17,9 +17,11 @@ const Manage = () => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    if (selectedCategory === null) {
-      fetchCategories();
-    } else {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategory !== null) {
       fetchArticlesThroughCategory();
     }
   }, [selectedCategory]);
@@ -30,6 +32,8 @@ const Manage = () => {
         data: { articles },
       } = await categoriesApi.show(selectedCategory.id);
       setArticles(articles);
+      const { data } = await categoriesApi.fetch();
+      setCategories(data);
     } catch (error) {
       logger.error(error);
     }
@@ -91,6 +95,7 @@ const Manage = () => {
         <Articles
           articles={articles}
           categories={categories}
+          refetch={fetchArticlesThroughCategory}
           selectedCategory={selectedCategory}
           setArticles={setArticles}
         />

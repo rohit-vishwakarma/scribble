@@ -57,7 +57,7 @@ const Form = ({ isEdit, refetch, category, setShowPane }) => {
             <Button
               label="Cancel"
               style="text"
-              type="cancel"
+              type="reset"
               onClick={() => setShowPane(false)}
             />
           </Pane.Footer>

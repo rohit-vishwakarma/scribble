@@ -37,8 +37,7 @@ const List = ({
     const categoryId = endPosition.draggableId;
     const newPosition = endPosition.destination.index + 1;
     try {
-      await categoriesApi.positionUpdate({
-        id: categoryId,
+      await categoriesApi.positionUpdate(categoryId, {
         new_position: newPosition,
       });
     } catch (error) {

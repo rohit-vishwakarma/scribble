@@ -109,16 +109,31 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :internal_server_error
   end
 
-  def test_should_update_articles_positions
+  def test_should_update_article_position
     first_article = create(:article, category: @category, user: @user)
     second_article = create(:article, category: @category, user: @user)
     third_article = create(:article, category: @category, user: @user)
 
-    put position_update_api_admin_articles_path,
-      params: { id: first_article.id, new_position: third_article.position }
+    put position_update_api_admin_article_path(first_article.id),
+      params: { new_position: third_article.position }
     assert_response :success
 
     response_json = response.parsed_body
     assert_equal t("position_updated", entity: "Article"), response_json["notice"]
+  end
+
+  def test_should_move_articles_to_selected_category
+    test_category = create(:category, user: @user)
+    first_article = create(:article, category: @category, user: @user)
+    second_article = create(:article, category: @category, user: @user)
+
+    test_category_articles_count = test_category.articles.count
+    put move_api_admin_articles_path,
+      params: { article_ids: [first_article.id, second_article.id], category_id: test_category.id }
+    assert_response :success
+
+    response_json = response.parsed_body
+    assert_equal t("moved", entity: "Articles"), response_json["notice"]
+    assert_not_equal test_category_articles_count, test_category.articles.count
   end
 end

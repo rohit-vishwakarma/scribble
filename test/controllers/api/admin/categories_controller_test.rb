@@ -37,13 +37,13 @@ class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal t("successfully_deleted", entity: "Category"), response_json["notice"]
   end
 
-  def test_should_update_categories_positions
+  def test_should_update_category_position
     first_category = create(:category, user: @user)
     second_category = create(:category, user: @user)
     third_category = create(:category, user: @user)
 
-    put position_update_api_admin_categories_path,
-      params: { id: first_category.id, new_position: third_category.position }
+    put position_update_api_admin_category_path(first_category.id),
+      params: { new_position: third_category.position }
     assert_response :success
 
     response_json = response.parsed_body

@@ -3,6 +3,7 @@ en:
   successfully_created: "%{entity} was successfully created!"
   successfully_updated: "%{entity} was successfully updated!"
   successfully_deleted: "%{entity} was successfully deleted!"
+  moved: "%{entity} were moved successfully."
   unprocessable_entity: "%{entity} is already exist!"
   position_updated: "%{entity} position is updated!"
   organization:

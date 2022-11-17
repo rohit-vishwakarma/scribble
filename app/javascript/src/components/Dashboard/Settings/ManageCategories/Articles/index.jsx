@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Typography, Select, Alert } from "neetoui";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -8,10 +8,20 @@ import Tooltip from "components/Common/Tooltip";
 
 import Article from "./Article";
 
-const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
+const Articles = ({
+  categories,
+  selectedCategory,
+  articles,
+  setArticles,
+  refetch,
+}) => {
   const [selectedArticleIds, setSelectedArticleIds] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState({});
   const [isMoveToCategory, setIsMoveToCategory] = useState(false);
+
+  useEffect(() => {
+    setSelectedArticleIds([]);
+  }, [selectedCategory]);
 
   const CATEGORY_OPTIONS = categories
     .filter(category => category.id !== selectedCategory.id)
@@ -20,9 +30,22 @@ const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
       value: category.id,
     }));
 
-  const handleSubmit = category => {
+  const handleSelect = category => {
     setIsMoveToCategory(true);
     setMoveToCategory(category);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await articlesApi.move({
+        article_ids: selectedArticleIds,
+        category_id: moveToCategory.value,
+      });
+      setIsMoveToCategory(false);
+      refetch();
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   const reorderList = (articleList, startIndex, endIndex) => {
@@ -46,8 +69,7 @@ const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
     const articleId = endPosition.draggableId;
     const newPosition = endPosition.destination.index + 1;
     try {
-      await articlesApi.positionUpdate({
-        id: articleId,
+      await articlesApi.positionUpdate(articleId, {
         new_position: newPosition,
       });
     } catch (error) {
@@ -73,12 +95,14 @@ const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
         >
           <Select
             isSearchable
-            isDisabled={selectedArticleIds.length === 0}
             label="Move to category:"
             options={CATEGORY_OPTIONS}
             placeholder="Search or select a category here"
             size="large"
-            onChange={category => handleSubmit(category)}
+            isDisabled={
+              selectedArticleIds.length === 0 || categories.length === 1
+            }
+            onChange={category => handleSelect(category)}
           />
         </Tooltip>
       </div>
@@ -108,7 +132,7 @@ const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
           message={`Are you sure you want to continue moving these articles to category "${moveToCategory.label}"? This cannot be undone.`}
           title={`Moving ${selectedArticleIds.length} articles to "${moveToCategory.label}"`}
           onClose={() => setIsMoveToCategory(false)}
-          onSubmit={() => setIsMoveToCategory(false)}
+          onSubmit={handleSubmit}
         />
       )}
     </div>
