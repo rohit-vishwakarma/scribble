@@ -53,6 +53,12 @@ class Api::Admin::ArticlesController < ApplicationController
     respond_with_success(t("position_updated", entity: "Article"))
   end
 
+  def move
+    articles = current_user.articles.where(id: params[:article_ids])
+    articles.update(category_id: params[:category_id])
+    respond_with_success(t("moved", entity: "Articles"))
+  end
+
   private
 
     def article_params
