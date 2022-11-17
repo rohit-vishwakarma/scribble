@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_161424) do
+ActiveRecord::Schema.define(version: 2022_11_17_092915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_161424) do
     t.string "slug"
     t.boolean "version_status", default: false
     t.datetime "restored_at"
+    t.integer "position"
   end
 
   create_table "categories", force: :cascade do |t|

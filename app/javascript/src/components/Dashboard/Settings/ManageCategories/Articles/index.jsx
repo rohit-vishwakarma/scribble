@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
 import { Typography, Select, Alert } from "neetoui";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
+import { articlesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
 import Article from "./Article";
 
-const Articles = ({ categories, selectedCategory }) => {
+const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
   const [selectedArticleIds, setSelectedArticleIds] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState({});
   const [isMoveToCategory, setIsMoveToCategory] = useState(false);
@@ -21,6 +23,36 @@ const Articles = ({ categories, selectedCategory }) => {
   const handleSubmit = category => {
     setIsMoveToCategory(true);
     setMoveToCategory(category);
+  };
+
+  const reorderList = (articleList, startIndex, endIndex) => {
+    const shuffledArticles = Array.from(articleList);
+    const [removed] = shuffledArticles.splice(startIndex, 1);
+    shuffledArticles.splice(endIndex, 0, removed);
+
+    return shuffledArticles;
+  };
+
+  const handleDragEnd = async endPosition => {
+    if (!endPosition.destination) return;
+
+    const reorderedArticles = reorderList(
+      articles,
+      endPosition.source.index,
+      endPosition.destination.index
+    );
+    setArticles(reorderedArticles);
+
+    const articleId = endPosition.draggableId;
+    const newPosition = endPosition.destination.index + 1;
+    try {
+      await articlesApi.positionUpdate({
+        id: articleId,
+        new_position: newPosition,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   return (
@@ -51,14 +83,24 @@ const Articles = ({ categories, selectedCategory }) => {
         </Tooltip>
       </div>
       <div className="mt-16 mb-4 p-2">
-        {selectedCategory.articles.map(article => (
-          <Article
-            article={article}
-            key={article.id}
-            selectedArticleIds={selectedArticleIds}
-            setSelectedArticleIds={setSelectedArticleIds}
-          />
-        ))}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="droppable-articles">
+            {provided => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {articles.map((article, index) => (
+                  <Article
+                    article={article}
+                    index={index}
+                    key={article.id}
+                    selectedArticleIds={selectedArticleIds}
+                    setSelectedArticleIds={setSelectedArticleIds}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
       {isMoveToCategory && (
         <Alert

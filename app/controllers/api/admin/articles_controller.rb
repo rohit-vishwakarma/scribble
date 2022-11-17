@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::Admin::ArticlesController < ApplicationController
-  before_action :load_article!, only: %i[destroy update show versions]
+  before_action :load_article!, only: %i[destroy update show versions position_update]
 
   def index
     @articles = current_user.articles.order("updated_at DESC")
@@ -46,6 +46,11 @@ class Api::Admin::ArticlesController < ApplicationController
   def versions
     @article_versions = @article.versions
     render
+  end
+
+  def position_update
+    @article.insert_at(params[:new_position].to_i)
+    respond_with_success(t("position_updated", entity: "Article"))
   end
 
   private

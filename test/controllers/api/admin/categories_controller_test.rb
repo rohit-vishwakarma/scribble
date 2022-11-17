@@ -58,4 +58,13 @@ class Api::Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
     all_categories = @user.categories.count
     assert_equal all_categories, response_json.count
   end
+
+  def test_should_show_articles_of_given_category
+    get api_admin_category_path(@category.id)
+    assert_response :success
+
+    response_json = response.parsed_body
+    all_articles_count_of_category = @category.articles.count
+    assert_equal all_articles_count_of_category, response_json["articles"].count
+  end
 end

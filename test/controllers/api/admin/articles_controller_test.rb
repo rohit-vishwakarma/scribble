@@ -108,4 +108,17 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     put api_admin_article_path(@article.id), params: article_params
     assert_response :internal_server_error
   end
+
+  def test_should_update_articles_positions
+    first_article = create(:article, category: @category, user: @user)
+    second_article = create(:article, category: @category, user: @user)
+    third_article = create(:article, category: @category, user: @user)
+
+    put position_update_api_admin_articles_path,
+      params: { id: first_article.id, new_position: third_article.position }
+    assert_response :success
+
+    response_json = response.parsed_body
+    assert_equal t("position_updated", entity: "Article"), response_json["notice"]
+  end
 end

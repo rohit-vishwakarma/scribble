@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::Admin::CategoriesController < ApplicationController
-  before_action :load_category!, only: %i[update position_update]
+  before_action :load_category!, only: %i[update position_update show]
 
   def index
     @categories = current_user.categories.order("position ASC")
@@ -21,6 +21,10 @@ class Api::Admin::CategoriesController < ApplicationController
   def destroy
     CategoryDeletionService.new(params[:id], params[:new_category_id], current_user).process
     respond_with_success(t("successfully_deleted", entity: "Category"))
+  end
+
+  def show
+    render
   end
 
   def position_update
