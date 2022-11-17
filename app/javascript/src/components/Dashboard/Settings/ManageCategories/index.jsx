@@ -14,6 +14,7 @@ const Manage = () => {
   const [loading, setLoading] = useState(true);
   const [showAddPane, setShowAddPane] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState({});
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     fetchCategories();
@@ -26,6 +27,7 @@ const Manage = () => {
       setCategories(data);
       if (data.length > 0) {
         setSelectedCategory(data[0]);
+        setArticles(data[0].articles);
       }
     } catch (error) {
       logger.error(error);
@@ -67,13 +69,19 @@ const Manage = () => {
             categories={categories}
             refetch={fetchCategories}
             selectedCategory={selectedCategory}
+            setArticles={setArticles}
             setCategories={setCategories}
             setSelectedCategory={setSelectedCategory}
           />
         </div>
       </div>
       <div className="w-2/3">
-        <Articles categories={categories} selectedCategory={selectedCategory} />
+        <Articles
+          articles={articles}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setArticles={setArticles}
+        />
       </div>
     </div>
   );
