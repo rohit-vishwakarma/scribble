@@ -16,6 +16,8 @@ const destroy = async payload => {
   );
 };
 
+const show = id => axios.get(`/api/admin/categories/${id}`);
+
 const positionUpdate = async payload => {
   await axios.put("/api/admin/categories/position_update", payload);
 };
@@ -25,6 +27,7 @@ const categoriesApi = {
   create,
   update,
   destroy,
+  show,
   positionUpdate,
 };
 

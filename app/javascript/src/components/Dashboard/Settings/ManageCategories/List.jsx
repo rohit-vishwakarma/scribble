@@ -13,7 +13,6 @@ const List = ({
   refetch,
   selectedCategory,
   setSelectedCategory,
-  setArticles,
 }) => {
   const [showEditPane, setShowEditPane] = useState(false);
   const [selectedEditCategory, setSelectedEditCategory] = useState({});
@@ -56,10 +55,7 @@ const List = ({
               {categories.map((category, idx) => (
                 <div
                   key={category.id}
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setArticles(category.articles);
-                  }}
+                  onClick={() => setSelectedCategory(category)}
                 >
                   <Row
                     category={category}

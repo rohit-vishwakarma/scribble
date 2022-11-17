@@ -30,6 +30,10 @@ const fetchPublished = payload =>
 const count = payload =>
   axios.get(`/api/admin/articles/count/?category_ids=${payload.categoryIds}`);
 
+const positionUpdate = async payload => {
+  await axios.put("/api/admin/articles/position_update", payload);
+};
+
 const articlesApi = {
   fetch,
   show,
@@ -39,6 +43,7 @@ const articlesApi = {
   versions,
   fetchPublished,
   count,
+  positionUpdate,
 };
 
 export default articlesApi;

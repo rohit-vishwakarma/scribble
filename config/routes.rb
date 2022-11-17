@@ -8,10 +8,11 @@ Rails.application.routes.draw do
           collection do
             get "count"
             get "published_list"
+            put "position_update"
           end
           get "versions", on: :member
         end
-        resources :categories, except: %i[new edit show] do
+        resources :categories, except: %i[new edit] do
           put "position_update", on: :collection
         end
         resource :organization, only: %i[show update create]

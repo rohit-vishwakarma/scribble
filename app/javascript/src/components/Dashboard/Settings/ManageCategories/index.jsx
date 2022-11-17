@@ -13,21 +13,34 @@ const Manage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddPane, setShowAddPane] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    if (selectedCategory === null) {
+      fetchCategories();
+    } else {
+      fetchArticlesThroughCategory();
+    }
+  }, [selectedCategory]);
+
+  const fetchArticlesThroughCategory = async () => {
+    try {
+      const {
+        data: { articles },
+      } = await categoriesApi.show(selectedCategory.id);
+      setArticles(articles);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
-      setLoading(true);
       const { data } = await categoriesApi.fetch();
       setCategories(data);
       if (data.length > 0) {
         setSelectedCategory(data[0]);
-        setArticles(data[0].articles);
       }
     } catch (error) {
       logger.error(error);
@@ -69,7 +82,6 @@ const Manage = () => {
             categories={categories}
             refetch={fetchCategories}
             selectedCategory={selectedCategory}
-            setArticles={setArticles}
             setCategories={setCategories}
             setSelectedCategory={setSelectedCategory}
           />

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Typography, Select, Alert } from "neetoui";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
+import { articlesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
 import Article from "./Article";
@@ -41,6 +42,17 @@ const Articles = ({ categories, selectedCategory, articles, setArticles }) => {
       endPosition.destination.index
     );
     setArticles(reorderedArticles);
+
+    const articleId = endPosition.draggableId;
+    const newPosition = endPosition.destination.index + 1;
+    try {
+      await articlesApi.positionUpdate({
+        id: articleId,
+        new_position: newPosition,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   return (

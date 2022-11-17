@@ -4,6 +4,8 @@ class Article < ApplicationRecord
   MAX_TITLE_LENGTH = 50
   MAX_PAGE_SIZE = 10
 
+  acts_as_list scope: :category
+
   has_many :visits
   belongs_to :category
   belongs_to :user
@@ -15,30 +17,26 @@ class Article < ApplicationRecord
   paginates_per MAX_PAGE_SIZE
   has_paper_trail only: [:title, :body, :status, :category_id]
 
-  before_create :set_slug
-  before_update :set_slug
+  before_create :set_slug, if: -> { status == "Published" }
+  before_update :set_slug, if: -> { slug.nil? && status == "Published" }
 
   private
 
     def set_slug
-      if status == "Published" && slug == nil
-        title_slug = title.parameterize
-        latest_article_slug = Article.where(
-          "slug LIKE ? or slug LIKE ?",
-          "#{title_slug}",
-          "#{title_slug}-%"
-        ).order("LENGTH(slug) DESC", slug: :desc).first&.slug
-        slug_count = 0
-        if latest_article_slug.present?
-          slug_count = latest_article_slug.split("-").last.to_i
-          only_one_slug_exists = slug_count == 0
-          slug_count = 1 if only_one_slug_exists
-        end
-        slug_candidate = slug_count.positive? ? "#{title_slug}-#{slug_count + 1}" : title_slug
-        self.slug = slug_candidate
-      elsif status == "Draft" && slug == nil
-        self.slug = nil
+      title_slug = title.parameterize
+      latest_article_slug = Article.where(
+        "slug LIKE ? or slug LIKE ?",
+        "#{title_slug}",
+        "#{title_slug}-%"
+      ).order("LENGTH(slug) DESC", slug: :desc).first&.slug
+      slug_count = 0
+      if latest_article_slug.present?
+        slug_count = latest_article_slug.split("-").last.to_i
+        only_one_slug_exists = slug_count == 0
+        slug_count = 1 if only_one_slug_exists
       end
+      slug_candidate = slug_count.positive? ? "#{title_slug}-#{slug_count + 1}" : title_slug
+      self.slug = slug_candidate
     end
 
     def slug_not_changed
