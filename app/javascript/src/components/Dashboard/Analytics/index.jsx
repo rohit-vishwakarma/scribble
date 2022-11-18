@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Table, PageLoader, Pagination } from "neetoui";
+import { Table, PageLoader, Pagination, Typography } from "neetoui";
 
 import { articlesApi } from "apis/admin";
 
@@ -14,14 +14,16 @@ const Analytics = () => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [loading, setLoading] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   const fetchArticles = async () => {
     try {
       setLoading(true);
       const {
-        data: { articles },
+        data: { articles, count },
       } = await articlesApi.fetchPublished({ pageNumber: currentPageNumber });
       setArticles(articles);
+      setTotalCount(count);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -59,17 +61,21 @@ const Analytics = () => {
           ),
         }}
       />
-      <Pagination
-        className="pt-4"
-        navigate={pageNumber => setCurrentPageNumber(pageNumber)}
-        pageNo={currentPageNumber}
-        pageSize={10}
-        count={
-          articles.length !== 10
+      <div className="flex justify-between pt-4">
+        <Typography className="ml-4" style="h4">
+          {(currentPageNumber - 1) * 10 + 1} -&nbsp;
+          {currentPageNumber * 10 < totalCount
             ? currentPageNumber * 10
-            : currentPageNumber * 10 + 1
-        }
-      />
+            : totalCount}
+          &nbsp;of {totalCount}
+        </Typography>
+        <Pagination
+          count={totalCount}
+          navigate={pageNumber => setCurrentPageNumber(pageNumber)}
+          pageNo={currentPageNumber}
+          pageSize={10}
+        />
+      </div>
     </div>
   );
 };

@@ -78,7 +78,7 @@ class Api::Admin::ArticlesControllerTest < ActionDispatch::IntegrationTest
     second_article = create(:article, status: "Published", category: @category, user: @user)
     third_article = create(:article, category: test_category, user: @user)
 
-    get count_api_admin_articles_path(category_ids: "#{@category.id},#{test_category.id}")
+    get count_api_admin_articles_path(category_ids: [@category.id, test_category.id])
     assert_response :success
 
     response_json = response.parsed_body

@@ -15,10 +15,10 @@ class ArticlesFilterService
       @articles = articles.where({ status: status })
     end
     if category_ids.present?
-      @articles = articles.where(category_id: category_ids.split(",").map(&:to_i))
+      @articles = articles.where(category_id: category_ids)
     end
     if search_term != nil
-      @articles = articles.where("lower(title) LIKE ?", "%#{search_term.downcase}%")
+      @articles = articles.where("lower(title) LIKE ?", "%#{search_term.strip.downcase}%")
     end
 
     @articles

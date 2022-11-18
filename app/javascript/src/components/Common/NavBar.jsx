@@ -14,23 +14,23 @@ const NavBar = () => {
   const isEditArticlePath = pathname.includes("edit");
 
   useEffect(() => {
-    if (isEditArticlePath) {
-      fetchArticle();
-    }
+    fetchArticle();
   }, [isEditArticlePath]);
 
   const fetchArticle = async () => {
-    try {
-      setLoading(true);
-      const id = pathname.split("/")[2];
-      if (isNaN(id) === false) {
-        const { data: article } = await articlesApi.show(id);
-        setArticleStatus(article.status);
+    if (isEditArticlePath) {
+      try {
+        setLoading(true);
+        const id = pathname.split("/")[2];
+        if (isNaN(id) === false) {
+          const { data: article } = await articlesApi.show(id);
+          setArticleStatus(article.status);
+        }
+      } catch (error) {
+        logger.error(error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 

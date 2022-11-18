@@ -1,10 +1,13 @@
 import axios from "axios";
 
 const fetch = payload =>
-  axios.get(
-    `/api/admin/articles/?search_term=${payload.searchTerm}&category_ids=
-    ${payload.categoryIds}&status=${payload.status}`
-  );
+  axios.get("/api/admin/articles", {
+    params: {
+      search_term: payload.searchTerm,
+      category_ids: payload.categoryIds,
+      status: payload.status,
+    },
+  });
 
 const show = id => axios.get(`/api/admin/articles/${id}`);
 
@@ -23,12 +26,14 @@ const update = async (id, payload) => {
 const versions = id => axios.get(`/api/admin/articles/${id}/versions`);
 
 const fetchPublished = payload =>
-  axios.get(
-    `/api/admin/articles/published_list/?page_number=${payload.pageNumber}`
-  );
+  axios.get("/api/admin/articles/published_list", {
+    params: { page_number: payload.pageNumber },
+  });
 
 const count = payload =>
-  axios.get(`/api/admin/articles/count/?category_ids=${payload.categoryIds}`);
+  axios.get("/api/admin/articles/count", {
+    params: { category_ids: payload.categoryIds },
+  });
 
 const positionUpdate = async (id, payload) => {
   await axios.put(`/api/admin/articles/${id}/position_update`, payload);
