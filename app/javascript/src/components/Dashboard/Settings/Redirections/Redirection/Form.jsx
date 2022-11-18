@@ -11,7 +11,7 @@ import Tooltip from "components/Common/Tooltip";
 import { REDIRECTION_FORM_VALIDATION_SCHEMA } from "./constants";
 
 const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
-  useEffect(() => {
+  const closeOnEscape = () => {
     window.addEventListener("keydown", event => {
       if (event.key === "Escape") {
         if (isEdit) {
@@ -21,6 +21,10 @@ const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
         }
       }
     });
+  };
+
+  useEffect(() => {
+    closeOnEscape();
   }, []);
 
   const handleSubmit = async values => {

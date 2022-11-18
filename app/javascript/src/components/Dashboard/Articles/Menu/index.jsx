@@ -41,13 +41,17 @@ const Menu = ({
     },
   ];
 
-  useEffect(() => {
+  const closeOnEscape = () => {
     window.addEventListener("keydown", event => {
       if (event.key === "Escape") {
         setIsCollapsed({ add: true, search: true });
         setSearchValue("");
       }
     });
+  };
+
+  useEffect(() => {
+    closeOnEscape();
   }, []);
 
   const handleSubmit = async values => {

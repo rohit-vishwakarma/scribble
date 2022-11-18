@@ -8,7 +8,7 @@ const EUI = () => {
 
   const keysPressed = {};
 
-  useEffect(() => {
+  const showSearchOnButtonPressed = () => {
     window.addEventListener("keydown", event => {
       keysPressed[event.key] = true;
       if (
@@ -20,6 +20,10 @@ const EUI = () => {
         setShowSearchBar(false);
       }
     });
+  };
+
+  useEffect(() => {
+    showSearchOnButtonPressed();
   }, []);
 
   return (

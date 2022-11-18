@@ -21,21 +21,21 @@ const Manage = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory !== null) {
-      fetchArticlesThroughCategory();
-    }
+    fetchArticlesThroughCategory();
   }, [selectedCategory]);
 
   const fetchArticlesThroughCategory = async () => {
-    try {
-      const {
-        data: { articles },
-      } = await categoriesApi.show(selectedCategory.id);
-      setArticles(articles);
-      const { data } = await categoriesApi.fetch();
-      setCategories(data);
-    } catch (error) {
-      logger.error(error);
+    if (selectedCategory !== null) {
+      try {
+        const {
+          data: { articles },
+        } = await categoriesApi.show(selectedCategory.id);
+        setArticles(articles);
+        const { data } = await categoriesApi.fetch();
+        setCategories(data);
+      } catch (error) {
+        logger.error(error);
+      }
     }
   };
 

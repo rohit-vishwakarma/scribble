@@ -5,7 +5,6 @@ json.extract! @article,
   :title,
   :body,
   :slug,
-  :updated_at,
-  :visits
+  :updated_at
 
 json.category @article.category, :id, :name
