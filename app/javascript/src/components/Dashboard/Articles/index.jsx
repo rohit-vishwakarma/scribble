@@ -23,6 +23,7 @@ const Articles = () => {
   const [filterOptions, setFilterOptions] = useState(FilterOptionItems);
   const [articlesStatusCount, setArticlesStatusCount] =
     useState(StatusCountItems);
+  const [articlesCount, setArticlesCount] = useState(0);
 
   const handleCheckedColumns = selectedIdx => {
     const items = ColumnListItems;
@@ -47,12 +48,14 @@ const Articles = () => {
       status: filterOptions.activeStatus,
       categoryIds: filterOptions.categoryIds,
       searchTerm: filterOptions.searchTerm,
+      pageNumber: filterOptions.pageNumber,
     };
     try {
       const {
-        data: { articles },
+        data: { articles, count },
       } = await articlesApi.fetch(payload);
       setArticles(articles);
+      setArticlesCount(count);
     } catch (error) {
       logger.error(error);
     }
@@ -105,11 +108,14 @@ const Articles = () => {
           handleCheckedColumns={handleCheckedColumns}
           setFilterOptions={setFilterOptions}
         />
-        {articles.length ? (
+        {articlesCount > 0 ? (
           <div className="flex w-full flex-col">
             <Table
               articles={articles}
+              articlesCount={articlesCount}
+              filterOptions={filterOptions}
               refetch={fetchArticlesCategoriesAndStatusCount}
+              setFilterOptions={setFilterOptions}
             />
           </div>
         ) : (

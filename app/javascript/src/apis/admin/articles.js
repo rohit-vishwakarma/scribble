@@ -6,6 +6,7 @@ const fetch = payload =>
       search_term: payload.searchTerm,
       category_ids: payload.categoryIds,
       status: payload.status,
+      page_number: payload.pageNumber,
     },
   });
 

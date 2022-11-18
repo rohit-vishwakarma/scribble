@@ -4,10 +4,11 @@ class Api::Admin::ArticlesController < ApplicationController
   before_action :load_article!, only: %i[destroy update show versions position_update]
 
   def index
-    @articles = current_user.articles.order("updated_at DESC")
     @articles = ArticlesFilterService.new(
-      @articles, params[:status],
+      current_user.articles, params[:status],
       params[:category_ids], params[:search_term]).process
+    @count = @articles.count
+    @articles = @articles.order("updated_at DESC").page(params[:page_number])
     render
   end
 
