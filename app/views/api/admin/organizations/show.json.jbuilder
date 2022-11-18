@@ -3,4 +3,5 @@
 json.organization @_current_organization,
   :id,
   :name,
-  :is_password_protected
+  :is_password_protected,
+  :authentication_token

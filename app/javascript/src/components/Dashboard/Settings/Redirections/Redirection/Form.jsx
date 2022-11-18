@@ -37,7 +37,7 @@ const Form = ({ setShowRedirection, initialValues, isEdit, refetch }) => {
       }
       refetch();
     } catch (error) {
-      logger.info(error);
+      logger.error(error);
     }
   };
 

@@ -30,7 +30,7 @@ const App = () => {
         data: { organization },
       } = await organizationsApi.fetch();
       setIsAuthorized(
-        (authToken && authToken.token !== null) ||
+        (authToken && authToken.token === organization.authentication_token) ||
           !organization.is_password_protected
       );
     } catch (error) {

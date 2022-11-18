@@ -38,12 +38,12 @@ const Login = ({ setIsAuthorized }) => {
 
   const handleSubmit = async values => {
     try {
-      const response = await organizationsApi.login({
+      const { data } = await organizationsApi.login({
         password: values.password,
       });
       localStorage.setItem(
         "authToken",
-        JSON.stringify({ token: response.data.authentication_token })
+        JSON.stringify({ token: data.authentication_token })
       );
       setIsAuthorized(true);
       setAuthHeaders();
