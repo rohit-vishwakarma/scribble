@@ -13,7 +13,9 @@ import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 const Form = ({ isEdit, selectedArticle, handleSubmit }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState("Save draft");
+  const [status, setStatus] = useState(
+    selectedArticle.status === "Published" ? "Published" : "Save draft"
+  );
   const [categories, setCategories] = useState([]);
 
   const history = useHistory();
@@ -22,9 +24,6 @@ const Form = ({ isEdit, selectedArticle, handleSubmit }) => {
 
   useEffect(() => {
     fetchCategories();
-    if (selectedArticle.status === "Published") {
-      setStatus("Published");
-    }
   }, []);
 
   const fetchCategories = async () => {
