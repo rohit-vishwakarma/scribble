@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import { formatTimeStampToDate } from "components/utils";
 
-import { ColumnsListItems } from "../constants";
+import { ColumnListItems } from "../constants";
 
 export const buildArticleTableColumnData = handleDelete => {
   const ArticleColumnsData = [
@@ -101,12 +101,12 @@ export const buildArticleTableColumnData = handleDelete => {
     ),
   };
 
-  const checkedColumnsList = ColumnsListItems.filter(
+  const checkedColumnList = ColumnListItems.filter(
     ele => ele.checked === true
   ).map(ele => ele.dataIndex);
 
   const filteredColumnData = ArticleColumnsData.filter(ele =>
-    checkedColumnsList.includes(ele.dataIndex)
+    checkedColumnList.includes(ele.dataIndex)
   );
 
   if (filteredColumnData.length > 0) {

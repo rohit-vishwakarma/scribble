@@ -18,7 +18,7 @@ const Article = ({
 }) => {
   const articleCreatedAgo = calculateCreatedAgo(article.created_at);
   const articleDayDateAndTime = formatTimeStampToDayDateAndTime(
-    article.create_at
+    article.created_at
   );
 
   const handleSelect = () => {

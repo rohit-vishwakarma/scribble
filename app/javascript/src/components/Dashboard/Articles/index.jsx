@@ -5,7 +5,11 @@ import { Container } from "neetoui/layouts";
 
 import { articlesApi, categoriesApi } from "apis/admin";
 
-import { ColumnsListItems } from "./constants";
+import {
+  ColumnListItems,
+  FilterOptionItems,
+  StatusCountItems,
+} from "./constants";
 import EmptyState from "./EmptyState";
 import Header from "./Header";
 import MenuBar from "./Menu";
@@ -14,24 +18,17 @@ import Table from "./Table";
 const Articles = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [columnsList, setColumnsList] = useState(ColumnsListItems);
+  const [columnList, setColumnList] = useState(ColumnListItems);
   const [articles, setArticles] = useState([]);
-  const [filterOptions, setFilterOptions] = useState({
-    searchTerm: "",
-    categoryIds: [],
-    activeStatus: "All",
-  });
-  const [articlesStatusCount, setArticlesStatusCount] = useState({
-    all: 0,
-    draft: 0,
-    published: 0,
-  });
+  const [filterOptions, setFilterOptions] = useState(FilterOptionItems);
+  const [articlesStatusCount, setArticlesStatusCount] =
+    useState(StatusCountItems);
 
   const handleCheckedColumns = selectedIdx => {
-    const items = ColumnsListItems;
+    const items = ColumnListItems;
     const selectedItem = items[selectedIdx];
     selectedItem.checked = !selectedItem.checked;
-    setColumnsList([...items]);
+    setColumnList([...items]);
   };
 
   const fetchArticlesStatusCount = async () => {
@@ -102,7 +99,7 @@ const Articles = () => {
       />
       <Container>
         <Header
-          columnsList={columnsList}
+          columnList={columnList}
           disabled={categories.length === 0}
           filterOptions={filterOptions}
           handleCheckedColumns={handleCheckedColumns}

@@ -10,7 +10,7 @@ const { Menu, MenuItem } = ActionDropdown;
 
 const ArticleHeader = ({
   disabled,
-  columnsList,
+  columnList,
   filterOptions,
   setFilterOptions,
   handleCheckedColumns,
@@ -27,7 +27,7 @@ const ArticleHeader = ({
             <Typography className="pt-2.5 pl-3" style="h5">
               Columns
             </Typography>
-            {columnsList.map((item, idx) => (
+            {columnList.map((item, idx) => (
               <MenuItem.Button
                 key={idx}
                 prefix={

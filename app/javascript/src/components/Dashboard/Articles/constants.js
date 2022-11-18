@@ -33,7 +33,7 @@ export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
       .required("Category is required."),
   });
 
-export const ColumnsListItems = [
+export const ColumnListItems = [
   {
     name: "Title",
     dataIndex: "title",
@@ -72,3 +72,15 @@ export const ADD_CATEGORY_FORM_VALIDATION_SCHEMA = yup.object().shape({
     .matches(/\w*[aA-zZ]\w*/, "Must contain at least one letter.")
     .required("Name is required. Please enter the name."),
 });
+
+export const FilterOptionItems = {
+  searchTerm: "",
+  categoryIds: [],
+  activeStatus: "All",
+};
+
+export const StatusCountItems = {
+  all: 0,
+  draft: 0,
+  published: 0,
+};
