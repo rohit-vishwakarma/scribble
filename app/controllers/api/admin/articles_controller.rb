@@ -12,15 +12,14 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def count
-    @articles = current_user.articles
-    if params[:category_ids].present?
-      @articles = @articles.where(category_id: params[:category_ids].split(",").map(&:to_i))
-    end
+    @articles_count = ArticlesCountService.new(current_user.articles, params[:category_ids]).process
     render
   end
 
   def published_list
-    @articles = current_user.articles.where(status: "Published").order("updated_at DESC").page(params[:page_number])
+    @articles = current_user.articles.where(status: "Published").order("updated_at DESC")
+    @count = @articles.count
+    @articles = @articles.page(params[:page_number])
     render
   end
 
