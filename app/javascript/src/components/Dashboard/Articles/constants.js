@@ -77,6 +77,7 @@ export const FilterOptionItems = {
   searchTerm: "",
   categoryIds: [],
   activeStatus: "All",
+  pageNumber: 1,
 };
 
 export const StatusCountItems = {
