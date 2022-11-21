@@ -9,11 +9,11 @@ import Tooltip from "components/Common/Tooltip";
 import Article from "./Article";
 
 const Articles = ({
-  categories,
-  selectedCategory,
   articles,
-  setArticles,
+  categories,
   refetch,
+  selectedCategory,
+  setArticles,
 }) => {
   const [selectedArticleIds, setSelectedArticleIds] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState({});
@@ -37,11 +37,11 @@ const Articles = ({
 
   const handleSubmit = async () => {
     try {
+      setIsMoveToCategory(false);
       await articlesApi.move({
         article_ids: selectedArticleIds,
         category_id: moveToCategory.value,
       });
-      setIsMoveToCategory(false);
       refetch();
     } catch (error) {
       logger.error(error);

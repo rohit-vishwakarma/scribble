@@ -13,16 +13,11 @@ const Row = ({
   index,
   isSelectedCategory,
   refetch,
+  selectedCategory,
+  setSelectedCategory,
   setShowEditPane,
-  setSelectedEditCategory,
 }) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [selectedDeleteCategory, setSelectedDeleteCategory] = useState({});
-
-  const handleDelete = selectedCategory => {
-    setSelectedDeleteCategory(selectedCategory);
-    setShowDeleteAlert(prevState => !prevState);
-  };
 
   return (
     <>
@@ -48,17 +43,14 @@ const Row = ({
               <div className="my-auto flex items-end">
                 <Dropdown buttonStyle="text" icon={MenuVertical}>
                   <Menu>
-                    <MenuItem.Button
-                      onClick={() => {
-                        setSelectedEditCategory(category);
-                        setShowEditPane(true);
-                      }}
-                    >
+                    <MenuItem.Button onClick={() => setShowEditPane(true)}>
                       Edit
                     </MenuItem.Button>
                     <MenuItem.Button
                       style="danger"
-                      onClick={() => handleDelete(category)}
+                      onClick={() =>
+                        setShowDeleteAlert(prevState => !prevState)
+                      }
                     >
                       Delete
                     </MenuItem.Button>
@@ -72,8 +64,8 @@ const Row = ({
       {showDeleteAlert && (
         <DeleteAlert
           refetch={refetch}
-          selectedDeleteCategory={selectedDeleteCategory}
-          setSelectedDeleteCategory={setSelectedDeleteCategory}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
           onClose={() => setShowDeleteAlert(false)}
         />
       )}

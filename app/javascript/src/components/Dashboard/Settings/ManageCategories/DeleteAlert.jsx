@@ -14,17 +14,17 @@ import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
 const DeleteAlert = ({
-  onClose,
   refetch,
-  selectedDeleteCategory,
-  setSelectedDeleteCategory,
+  selectedCategory,
+  setSelectedCategory,
+  onClose,
 }) => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState(null);
 
   const isOnlyGeneral =
-    categories.length === 1 && selectedDeleteCategory.name === "General";
+    categories.length === 1 && selectedCategory.name === "General";
 
   useEffect(() => {
     fetchCategories();
@@ -45,15 +45,15 @@ const DeleteAlert = ({
   const handleDelete = async () => {
     try {
       await categoriesApi.destroy({
-        id: selectedDeleteCategory.id,
+        id: selectedCategory.id,
         newCategoryId: moveToCategory?.value,
       });
-      setSelectedDeleteCategory({});
+      setSelectedCategory({ isDeleted: true });
       refetch();
+      onClose();
     } catch (error) {
       logger.error(error);
     }
-    onClose();
   };
 
   const CATEGORY_OPTIONS = categories
@@ -61,7 +61,7 @@ const DeleteAlert = ({
       label: category.name,
       value: category.id,
     }))
-    .filter(category => category.value !== selectedDeleteCategory.id);
+    .filter(category => category.value !== selectedCategory.id);
 
   if (loading) {
     return (
@@ -81,35 +81,35 @@ const DeleteAlert = ({
       <Modal.Body className="space-y-2">
         {isOnlyGeneral ? (
           <Callout className="mb-3" icon={Info} style="info">
-            Category "{selectedDeleteCategory.name}" has&nbsp;
-            {selectedDeleteCategory.count === 0
-              ? "no article."
-              : `${selectedDeleteCategory.count} articles. `}
+            Category "{selectedCategory.name}" has&nbsp;
+            {selectedCategory.count === 0
+              ? "no article. "
+              : `${selectedCategory.count} articles. `}
             Last category "General" cannot be delete.
           </Callout>
         ) : (
           <>
             <Typography className="mb-3" style="h5">
-              You are permanently deleting the "{selectedDeleteCategory.name}"
+              You are permanently deleting the "{selectedCategory.name}"
               category. This action cannot be undone. Are you sure you wish to
               continue?
             </Typography>
-            {selectedDeleteCategory.count > 0 ? (
+            {selectedCategory.count > 0 ? (
               <>
                 {categories.length === 1 ? (
                   <Callout className="mb-3" icon={Info} style="info">
-                    Category "{selectedDeleteCategory.name}" has&nbsp;
-                    {selectedDeleteCategory.count === 0
+                    Category "{selectedCategory.name}" has&nbsp;
+                    {selectedCategory.count === 0
                       ? "no article."
-                      : `${selectedDeleteCategory.count} articles.
+                      : `${selectedCategory.count} articles.
                       This will be moved to category "General". Click proceed to continue.`}
                   </Callout>
                 ) : (
                   <Callout className="mb-3" icon={Warning} style="danger">
-                    Category "{selectedDeleteCategory.name}" has&nbsp;
-                    {selectedDeleteCategory.count} articles. Before this
-                    category can be deleted, these articles needs to be moved to
-                    another category. Select category to move all articles.
+                    Category "{selectedCategory.name}" has&nbsp;
+                    {selectedCategory.count} articles. Before this category can
+                    be deleted, these articles needs to be moved to another
+                    category. Select category to move all articles.
                   </Callout>
                 )}
                 {CATEGORY_OPTIONS.length > 0 && (
@@ -120,45 +120,55 @@ const DeleteAlert = ({
                     name="category_id"
                     options={CATEGORY_OPTIONS}
                     placeholder="Select Category"
-                    onChange={e => setMoveToCategory(e)}
+                    onChange={category => setMoveToCategory(category)}
                   />
                 )}
               </>
             ) : (
               <Callout className="mt-3" icon={Info} style="info">
-                Category "{selectedDeleteCategory.name}" has no articles. Click
+                Category "{selectedCategory.name}" has no articles. Click
                 proceed to delete this category.
               </Callout>
             )}
           </>
         )}
       </Modal.Body>
-      <Modal.Footer className="flex space-x-2">
-        <Tooltip
-          content="Unable to proceed."
-          followCursor="horizontal"
-          position="bottom"
-          disabled={
-            (selectedDeleteCategory.count > 0 &&
-              !moveToCategory &&
-              CATEGORY_OPTIONS.length > 0) ||
-            isOnlyGeneral
-          }
-        >
-          <Button
-            label="Proceed"
-            style="danger"
-            type="submit"
+      <Modal.Footer>
+        <div className="flex space-x-2">
+          <Tooltip
+            content="Unable to proceed."
+            followCursor="horizontal"
+            position="bottom"
             disabled={
-              (selectedDeleteCategory.count > 0 &&
+              (selectedCategory.count > 0 &&
                 !moveToCategory &&
                 CATEGORY_OPTIONS.length > 0) ||
               isOnlyGeneral
             }
-            onClick={handleDelete}
-          />
-        </Tooltip>
-        <Button label="Cancel" style="text" type="cancel" onClick={onClose} />
+          >
+            <Button
+              label="Proceed"
+              style="danger"
+              type="submit"
+              disabled={
+                (selectedCategory.count > 0 &&
+                  !moveToCategory &&
+                  CATEGORY_OPTIONS.length > 0) ||
+                isOnlyGeneral
+              }
+              onClick={handleDelete}
+            />
+          </Tooltip>
+          <Button label="Cancel" style="text" type="cancel" onClick={onClose} />
+        </div>
+        {categories.length === 1 &&
+          selectedCategory.name !== "General" &&
+          selectedCategory.count === 0 && (
+            <Typography className="mt-2" style="body3">
+              <strong>Note: </strong>After deleting this last category a
+              "General" category will be created.
+            </Typography>
+          )}
       </Modal.Footer>
     </Modal>
   );
