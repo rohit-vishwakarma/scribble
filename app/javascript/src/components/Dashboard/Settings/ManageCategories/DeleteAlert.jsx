@@ -24,7 +24,9 @@ const DeleteAlert = ({
   const [moveToCategory, setMoveToCategory] = useState(null);
 
   const isOnlyGeneral =
-    categories.length === 1 && selectedCategory.name === "General";
+    categories.length === 1 &&
+    selectedCategory.name === "General" &&
+    selectedCategory.count > 0;
 
   useEffect(() => {
     fetchCategories();
@@ -133,42 +135,32 @@ const DeleteAlert = ({
           </>
         )}
       </Modal.Body>
-      <Modal.Footer>
-        <div className="flex space-x-2">
-          <Tooltip
-            content="Unable to proceed."
-            followCursor="horizontal"
-            position="bottom"
+      <Modal.Footer className="flex space-x-2">
+        <Tooltip
+          content="Unable to proceed."
+          followCursor="horizontal"
+          position="bottom"
+          disabled={
+            (selectedCategory.count > 0 &&
+              !moveToCategory &&
+              CATEGORY_OPTIONS.length > 0) ||
+            isOnlyGeneral
+          }
+        >
+          <Button
+            label="Proceed"
+            style="danger"
+            type="submit"
             disabled={
               (selectedCategory.count > 0 &&
                 !moveToCategory &&
                 CATEGORY_OPTIONS.length > 0) ||
               isOnlyGeneral
             }
-          >
-            <Button
-              label="Proceed"
-              style="danger"
-              type="submit"
-              disabled={
-                (selectedCategory.count > 0 &&
-                  !moveToCategory &&
-                  CATEGORY_OPTIONS.length > 0) ||
-                isOnlyGeneral
-              }
-              onClick={handleDelete}
-            />
-          </Tooltip>
-          <Button label="Cancel" style="text" type="cancel" onClick={onClose} />
-        </div>
-        {categories.length === 1 &&
-          selectedCategory.name !== "General" &&
-          selectedCategory.count === 0 && (
-            <Typography className="mt-2" style="body3">
-              <strong>Note: </strong>After deleting this last category a
-              "General" category will be created.
-            </Typography>
-          )}
+            onClick={handleDelete}
+          />
+        </Tooltip>
+        <Button label="Cancel" style="text" type="cancel" onClick={onClose} />
       </Modal.Footer>
     </Modal>
   );
