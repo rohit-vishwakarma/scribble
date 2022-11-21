@@ -37,9 +37,13 @@ const Row = ({
                 isSelectedCategory && "rounded-lg bg-indigo-200"
               }`}
             >
-              <Typography className="my-auto ml-1 text-gray-700" style="h4">
-                {category.name}
-              </Typography>
+              <div className="my-auto ml-1 text-gray-700">
+                <Typography style="h4">{category.name}</Typography>
+                <Typography className="ml-1 pt-2" style="body2">
+                  {category.count}
+                  {category.count > 1 ? " articles" : " article"}
+                </Typography>
+              </div>
               <div className="my-auto flex items-end">
                 <Dropdown buttonStyle="text" icon={MenuVertical}>
                   <Menu>
