@@ -45,4 +45,40 @@ class UserTest < ActiveSupport::TestCase
     @organization.destroy!
     assert_equal 0, @organization.users.count
   end
+
+  def test_user_name_should_contain_at_least_one_alphabet
+    @user.name = "/--1"
+    assert_not @user.valid?
+    assert_includes @user.errors_to_sentence, "Name must contain at least one letter."
+
+    @user.name = "U"
+    assert @user.valid?
+  end
+
+  def test_validation_should_accept_valid_addresses
+    valid_emails = %w[user@example.com USER@example.COM US-ER@example.org
+      first.last@example.in user+one@example.ac.in]
+
+    valid_emails.each do |email|
+      @user.email = email
+      assert @user.valid?
+    end
+  end
+
+  def test_validation_should_reject_invalid_addresses
+    invalid_emails = %w[user@example,com user_at_example.org user.name@example.
+      @sam-sam.com sam@sam+exam.com fishy+#.com]
+
+    invalid_emails.each do |email|
+      @user.email = email
+      assert @user.invalid?
+    end
+  end
+
+  def test_email_should_be_saved_in_lowercase
+    uppercase_email = "SAM@EMAIL.COM"
+    @user.email = uppercase_email
+    @user.save!
+    assert_equal uppercase_email.downcase, @user.email
+  end
 end

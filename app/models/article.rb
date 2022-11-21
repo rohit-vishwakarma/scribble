@@ -3,6 +3,7 @@
 class Article < ApplicationRecord
   MAX_TITLE_LENGTH = 50
   MAX_PAGE_SIZE = 10
+  VALID_NAME_REGEX = /\w*[aA-zZ0-9]\w*/
 
   acts_as_list scope: :category
 
@@ -10,7 +11,10 @@ class Article < ApplicationRecord
   belongs_to :category
   belongs_to :user
 
-  validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
+  validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }, format: {
+    with: VALID_NAME_REGEX,
+    message: "must contain at least one letter or number."
+  }
   validates :status, :body, presence: true
   validate :slug_not_changed
 
