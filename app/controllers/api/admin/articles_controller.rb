@@ -35,6 +35,7 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def destroy
+    @article.remove_from_list
     @article.destroy!
     respond_with_success(t("successfully_deleted", entity: "Article"))
   end
@@ -54,8 +55,7 @@ class Api::Admin::ArticlesController < ApplicationController
   end
 
   def move
-    articles = current_user.articles.where(id: params[:article_ids])
-    articles.update(category_id: params[:category_id])
+    MoveArticlesService.new(current_user, params[:article_ids], params[:category_id]).process
     respond_with_success(t("moved", entity: "Articles"))
   end
 

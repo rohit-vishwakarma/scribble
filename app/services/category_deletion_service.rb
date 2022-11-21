@@ -25,11 +25,14 @@ class CategoryDeletionService
 
   def update_articles_category_id
     articles = current_user.articles.where(category_id: id)
-    articles.update(category_id: @new_category_id)
+    article_ids = articles.map { |article| article.id }
+
+    MoveArticlesService.new(current_user, article_ids, @new_category_id).process
   end
 
   def destroy_category
     category = current_user.categories.find(id)
+    category.remove_from_list
     category.destroy!
   end
 end
