@@ -13,26 +13,25 @@ const Manage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddPane, setShowAddPane] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState({ isDeleted: true });
   const [articles, setArticles] = useState([]);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const fetchCategoriesAndArticles = async () => {
+    await Promise.all([fetchCategories(), fetchArticlesThroughCategory()]);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    fetchArticlesThroughCategory();
+    fetchCategoriesAndArticles();
   }, [selectedCategory]);
 
   const fetchArticlesThroughCategory = async () => {
-    if (selectedCategory !== null) {
+    if (selectedCategory.isDeleted === false) {
       try {
         const {
           data: { articles },
         } = await categoriesApi.show(selectedCategory.id);
         setArticles(articles);
-        const { data } = await categoriesApi.fetch();
-        setCategories(data);
       } catch (error) {
         logger.error(error);
       }
@@ -43,13 +42,11 @@ const Manage = () => {
     try {
       const { data } = await categoriesApi.fetch();
       setCategories(data);
-      if (data.length > 0) {
-        setSelectedCategory(data[0]);
+      if (data.length > 0 && selectedCategory.isDeleted === true) {
+        setSelectedCategory({ ...data[0], isDeleted: false });
       }
     } catch (error) {
       logger.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -95,7 +92,7 @@ const Manage = () => {
         <Articles
           articles={articles}
           categories={categories}
-          refetch={fetchArticlesThroughCategory}
+          refetch={fetchCategoriesAndArticles}
           selectedCategory={selectedCategory}
           setArticles={setArticles}
         />

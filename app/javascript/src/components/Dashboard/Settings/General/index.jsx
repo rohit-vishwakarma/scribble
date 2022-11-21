@@ -48,7 +48,10 @@ const General = () => {
         Configure general attributes of scribble.
       </Typography>
       <div className="mt-8">
-        <Form organizationData={organizationData} />
+        <Form
+          organizationData={organizationData}
+          refetch={fetchOrganizationDetails}
+        />
       </div>
     </div>
   );

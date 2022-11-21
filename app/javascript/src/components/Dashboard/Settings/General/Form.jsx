@@ -9,7 +9,7 @@ import Tooltip from "components/Common/Tooltip";
 
 import { GENERAL_SETTINGS_FORM_VALIDATION_SCHEMA } from "../constants";
 
-const Form = ({ organizationData }) => {
+const Form = ({ organizationData, refetch }) => {
   const [showPassword, setShowPassword] = useState(
     organizationData.isPasswordProtected
   );
@@ -31,7 +31,7 @@ const Form = ({ organizationData }) => {
             : values.isChecked,
       });
       localStorage.setItem("authToken", JSON.stringify({ token: null }));
-      setTimeout(() => window.location.reload(), 300);
+      refetch();
     } catch (error) {
       logger.error(error);
     }
@@ -155,11 +155,8 @@ const Form = ({ organizationData }) => {
           isOpen
           message="Are you sure you want to continue?"
           title="This will disable password protection in Organization."
+          onClose={() => refetch()}
           onSubmit={handleAlert}
-          onClose={() => {
-            window.location.reload();
-            setShowAlert(false);
-          }}
         />
       )}
     </>

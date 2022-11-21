@@ -9,13 +9,12 @@ import Row from "./Row";
 
 const List = ({
   categories,
-  setCategories,
   refetch,
   selectedCategory,
+  setCategories,
   setSelectedCategory,
 }) => {
   const [showEditPane, setShowEditPane] = useState(false);
-  const [selectedEditCategory, setSelectedEditCategory] = useState({});
 
   const reorderList = (categoryList, startIndex, endIndex) => {
     const shuffledCategories = Array.from(categoryList);
@@ -34,6 +33,7 @@ const List = ({
       endPosition.destination.index
     );
     setCategories(reorderedCategories);
+
     const categoryId = endPosition.draggableId;
     const newPosition = endPosition.destination.index + 1;
     try {
@@ -54,14 +54,17 @@ const List = ({
               {categories.map((category, idx) => (
                 <div
                   key={category.id}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() =>
+                    setSelectedCategory({ ...category, isDeleted: false })
+                  }
                 >
                   <Row
                     category={category}
                     index={idx}
                     isSelectedCategory={selectedCategory.id === category.id}
                     refetch={refetch}
-                    setSelectedEditCategory={setSelectedEditCategory}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
                     setShowEditPane={setShowEditPane}
                   />
                 </div>
@@ -72,7 +75,7 @@ const List = ({
         </Droppable>
       </DragDropContext>
       <EditCategoryPane
-        category={selectedEditCategory}
+        category={selectedCategory}
         refetch={refetch}
         setShowPane={setShowEditPane}
         showPane={showEditPane}
