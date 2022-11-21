@@ -46,4 +46,13 @@ class CategoryDeletionServiceTest < ActionDispatch::IntegrationTest
     assert_equal categories_count, @user.categories.count
     assert_equal "General", @user.categories.first.name
   end
+
+  def test_should_delete_last_category_with_no_articles
+    @article.destroy!
+    categories_count = @user.categories.count
+
+    CategoryDeletionService.new(@category.id, nil, @user).process
+
+    assert_not_equal categories_count, @user.categories.count
+  end
 end

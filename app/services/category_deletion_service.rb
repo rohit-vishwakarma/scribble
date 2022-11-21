@@ -10,7 +10,15 @@ class CategoryDeletionService
   end
 
   def process
-    if current_user.categories.count == 1 && current_user.categories.find(id).name == "General"
+    @category = current_user.categories.find(id)
+
+    if @category.articles.count == 0
+      destroy_category
+
+      return
+    end
+
+    if current_user.categories.count == 1 && @category.name == "General"
       return
     end
 
@@ -31,8 +39,7 @@ class CategoryDeletionService
   end
 
   def destroy_category
-    category = current_user.categories.find(id)
-    category.remove_from_list
-    category.destroy!
+    @category.remove_from_list
+    @category.destroy!
   end
 end
