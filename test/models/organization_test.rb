@@ -47,4 +47,13 @@ class OrganizationTest < ActiveSupport::TestCase
     assert @organization.invalid?
     assert_includes @organization.errors_to_sentence, "Password requires 1 letter and 1 number"
   end
+
+  def test_organization_name_should_contain_at_least_one_alphabet
+    @organization.name = "/--1"
+    assert_not @organization.valid?
+    assert_includes @organization.errors_to_sentence, "Name must contain at least one letter."
+
+    @organization.name = "O"
+    assert @organization.valid?
+  end
 end

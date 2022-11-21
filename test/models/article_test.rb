@@ -185,4 +185,13 @@ class ArticleTest < ActiveSupport::TestCase
     @category.destroy!
     assert_equal 0, @category.articles.count
   end
+
+  def test_article_should_contain_at_least_one_alpha_numeric_character
+    @article.title = "/--*&"
+    assert_not @article.valid?
+    assert_includes @article.errors_to_sentence, "Title must contain at least one letter or number."
+
+    @article.title = "A"
+    assert @article.valid?
+  end
 end

@@ -41,4 +41,13 @@ class CategoryTest < ActiveSupport::TestCase
     @user.destroy!
     assert_equal 0, @user.categories.count
   end
+
+  def test_category_name_should_contain_at_least_one_alphabet
+    @category.name = "/--1"
+    assert_not @category.valid?
+    assert_includes @category.errors_to_sentence, "Name must contain at least one letter."
+
+    @category.name = "C"
+    assert @category.valid?
+  end
 end
