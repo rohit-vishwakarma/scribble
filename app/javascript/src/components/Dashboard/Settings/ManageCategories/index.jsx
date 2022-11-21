@@ -4,6 +4,8 @@ import { Plus } from "neetoicons";
 import { Typography, PageLoader, Button } from "neetoui";
 
 import { categoriesApi } from "apis/admin";
+import NotFound from "components/Common/NotFound";
+import EmptyList from "images/EmptyList";
 
 import Articles from "./Articles";
 import List from "./List";
@@ -79,23 +81,34 @@ const Manage = () => {
           showPane={showAddPane}
         />
         <div className="mt-24 mb-4 p-10">
-          <List
-            categories={categories}
-            refetch={fetchCategories}
-            selectedCategory={selectedCategory}
-            setCategories={setCategories}
-            setSelectedCategory={setSelectedCategory}
-          />
+          {categories.length > 0 ? (
+            <List
+              categories={categories}
+              refetch={fetchCategories}
+              selectedCategory={selectedCategory}
+              setCategories={setCategories}
+              setSelectedCategory={setSelectedCategory}
+            />
+          ) : (
+            <NotFound message="No category is available. Add a category to manage articles." />
+          )}
         </div>
       </div>
       <div className="w-2/3">
-        <Articles
-          articles={articles}
-          categories={categories}
-          refetch={fetchCategoriesAndArticles}
-          selectedCategory={selectedCategory}
-          setArticles={setArticles}
-        />
+        {articles.length > 0 ? (
+          <Articles
+            articles={articles}
+            categories={categories}
+            refetch={fetchCategoriesAndArticles}
+            selectedCategory={selectedCategory}
+            setArticles={setArticles}
+          />
+        ) : (
+          <div className="justify-center">
+            <NotFound message="No article available." />
+            <img className="mx-auto w-3/4 " src={EmptyList} />
+          </div>
+        )}
       </div>
     </div>
   );

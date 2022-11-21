@@ -7,6 +7,7 @@ import { articlesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
 import Article from "./Article";
+import Banner from "./Banner";
 
 const Articles = ({
   articles,
@@ -18,6 +19,20 @@ const Articles = ({
   const [selectedArticleIds, setSelectedArticleIds] = useState([]);
   const [moveToCategory, setMoveToCategory] = useState({});
   const [isMoveToCategory, setIsMoveToCategory] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
+
+  const getIsShowBannerFromLocalStorage = () => {
+    const isShowBanner = JSON.parse(localStorage.getItem("isShowBanner"));
+    if (isShowBanner === false) {
+      setShowBanner(false);
+    } else {
+      setShowBanner(true);
+    }
+  };
+
+  useEffect(() => {
+    getIsShowBannerFromLocalStorage();
+  }, []);
 
   useEffect(() => {
     setSelectedArticleIds([]);
@@ -107,6 +122,7 @@ const Articles = ({
         </Tooltip>
       </div>
       <div className="mt-16 mb-4 p-2">
+        {showBanner && <Banner setShowBanner={setShowBanner} />}
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="droppable-articles">
             {provided => (

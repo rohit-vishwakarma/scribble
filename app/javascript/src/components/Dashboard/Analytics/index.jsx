@@ -62,13 +62,15 @@ const Analytics = () => {
         }}
       />
       <div className="flex justify-between pt-4">
-        <Typography className="ml-4" style="h4">
-          {(currentPageNumber - 1) * 10 + 1} -&nbsp;
-          {currentPageNumber * 10 < totalCount
-            ? currentPageNumber * 10
-            : totalCount}
-          &nbsp;of {totalCount}
-        </Typography>
+        {totalCount > 0 && (
+          <Typography className="ml-4" style="h4">
+            {(currentPageNumber - 1) * 10 + 1} -&nbsp;
+            {currentPageNumber * 10 < totalCount
+              ? currentPageNumber * 10
+              : totalCount}
+            &nbsp;of {totalCount}
+          </Typography>
+        )}
         <Pagination
           count={totalCount}
           navigate={pageNumber => setCurrentPageNumber(pageNumber)}
