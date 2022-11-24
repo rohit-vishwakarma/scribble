@@ -27,7 +27,7 @@ export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
           .string()
           .oneOf(CATEGORY_OPTIONS.map(category => category.label)),
         value: yup
-          .number()
+          .string()
           .oneOf(CATEGORY_OPTIONS.map(category => category.value)),
       })
       .required("Category is required."),

@@ -24,19 +24,21 @@ end
 
 def create_sample_user_data!
   puts "Seeding with sample user..."
+  organization = Organization.first
   User.create!(
     name: 'Oliver Smith',
     email: 'oliver@example.com',
-    organization_id: 1
+    organization_id: organization.id,
   )
   puts "Done! user is created successfully."
 end
 
 def create_sample_categories_data!
-  puts "Seeding with sample category..."
+  puts "Seeding with sample categories..."
   categories = YAML.load_file("lib/seeds/categories.yml")
+  user = User.first
   for category in categories
-    Category.create!(category)
+    user.categories.create!(category)
   end
   puts "Done! category is created successfully"
 end
@@ -44,8 +46,13 @@ end
 def create_sample_articles_data!
   puts "Seeding with sample articles..."
   articles = YAML.load_file("lib/seeds/articles.yml")
+  user = User.first
+  categories = user.categories
   for article in articles
-    Article.create!(article)
+    for category in categories
+      article["category_id"] = category.id
+      user.articles.create!(article)
+    end
   end
   puts "Done! article is created successfully."
 end

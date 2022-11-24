@@ -12,35 +12,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_17_092915) do
+ActiveRecord::Schema.define(version: 2022_11_24_114454) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "articles", force: :cascade do |t|
+  create_table "articles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
     t.string "status", default: "Draft", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "category_id", null: false
-    t.integer "user_id", default: 1, null: false
     t.string "slug"
     t.boolean "version_status", default: false
     t.datetime "restored_at"
     t.integer "position"
+    t.uuid "user_id"
+    t.uuid "category_id"
   end
 
-  create_table "categories", force: :cascade do |t|
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "position"
-    t.integer "user_id", default: 1, null: false
+    t.uuid "user_id"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
-  create_table "organizations", force: :cascade do |t|
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
@@ -49,27 +50,27 @@ ActiveRecord::Schema.define(version: 2022_11_17_092915) do
     t.boolean "is_password_protected", default: false
   end
 
-  create_table "redirections", force: :cascade do |t|
+  create_table "redirections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "from", null: false
     t.text "to", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "organization_id", null: false
+    t.uuid "organization_id"
     t.index ["from"], name: "index_redirections_on_from", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "organization_id", null: false
+    t.uuid "organization_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
-    t.bigint "item_id", null: false
+    t.uuid "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
     t.json "object"
@@ -77,11 +78,11 @@ ActiveRecord::Schema.define(version: 2022_11_17_092915) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "visits", force: :cascade do |t|
+  create_table "visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "visit", default: 0
-    t.integer "article_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "article_id"
   end
 
   add_foreign_key "articles", "categories", on_delete: :cascade
