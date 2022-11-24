@@ -1,9 +1,5 @@
 ---
 - name: "Getting Started"
-  user_id: 1
 - name: "Misc"
-  user_id: 1
 - name: "Apps & Integration"
-  user_id: 1
 - name: "Security & Privacy"
-  user_id: 1
