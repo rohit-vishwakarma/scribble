@@ -10,7 +10,7 @@ import Tooltip from "components/Common/Tooltip";
 
 import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 
-const Form = ({ isEdit, selectedArticle, handleSubmit }) => {
+const Form = ({ isEdit, selectedArticle, handleSubmit, articleStatusList }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(
@@ -20,7 +20,6 @@ const Form = ({ isEdit, selectedArticle, handleSubmit }) => {
 
   const history = useHistory();
   const { Menu, MenuItem } = Dropdown;
-  const statusListItems = ["Save draft", "Publish"];
 
   useEffect(() => {
     fetchCategories();
@@ -109,18 +108,15 @@ const Form = ({ isEdit, selectedArticle, handleSubmit }) => {
               </Tooltip>
               <Dropdown>
                 <Menu>
-                  {statusListItems.map((item, idx) => (
+                  {articleStatusList.map((status, idx) => (
                     <MenuItem.Button
                       key={idx}
                       onClick={() => {
-                        setFieldValue(
-                          "status",
-                          item !== "Save draft" ? "Published" : "Draft"
-                        );
-                        setStatus(item);
+                        setFieldValue("status", status);
+                        setStatus(status);
                       }}
                     >
-                      {item}
+                      {status}
                     </MenuItem.Button>
                   ))}
                 </Menu>

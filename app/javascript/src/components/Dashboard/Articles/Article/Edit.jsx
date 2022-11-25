@@ -5,6 +5,11 @@ import { useHistory, useParams } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
 
+import {
+  StatusListForDraftedArticle,
+  StatusListForPublishedArticle,
+} from "./constants";
+import DatePicker from "./DatePicker";
 import Form from "./Form";
 import VersionHistory from "./VersionHistory";
 
@@ -14,6 +19,11 @@ const Edit = () => {
   const [article, setArticle] = useState({});
   const [loading, setLoading] = useState(true);
   const [articleVersions, setArticleVersions] = useState([]);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [formValues, setFormValues] = useState({});
+  const [articleStatusList, setArticleStatusList] = useState(
+    StatusListForDraftedArticle
+  );
 
   const { id } = useParams();
   const history = useHistory();
@@ -50,8 +60,11 @@ const Edit = () => {
   const fetchArticle = async () => {
     try {
       setLoading(true);
-      const fetchedArticle = await articlesApi.show(id);
-      setArticle(fetchedArticle.data);
+      const { data } = await articlesApi.show(id);
+      setArticle(data);
+      if (data.status === "Published") {
+        setArticleStatusList(StatusListForPublishedArticle);
+      }
     } catch (error) {
       logger.error(error);
     }
@@ -66,8 +79,16 @@ const Edit = () => {
         restored_at: null,
       };
       articleData.category_id = values.category.value;
-      await articlesApi.update(article.id, articleData);
-      history.push("/");
+      const status = values.status;
+
+      if (status !== "Save draft" && status !== "Publish") {
+        setFormValues(articleData);
+        setShowDatePicker(true);
+      } else {
+        articleData.status = status === "Publish" ? "Published" : "Draft";
+        await articlesApi.update(article.id, articleData);
+        history.push("/");
+      }
     } catch (error) {
       logger.error(error);
     }
@@ -85,10 +106,20 @@ const Edit = () => {
     <div className="flex">
       <Form
         isEdit
+        articleStatusList={articleStatusList}
         handleSubmit={handleSubmit}
         selectedArticle={convertArticleToFormFormat(article)}
       />
       <VersionHistory article={article} articleVersions={articleVersions} />
+      {showDatePicker && (
+        <DatePicker
+          isEdit
+          formValues={formValues}
+          selectedArticle={article}
+          setShowDatePicker={setShowDatePicker}
+          showDatePicker={showDatePicker}
+        />
+      )}
     </div>
   );
 };

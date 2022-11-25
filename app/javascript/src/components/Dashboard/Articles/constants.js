@@ -1,12 +1,5 @@
 import * as yup from "yup";
 
-export const ARTICLES_FORM_INITIAL_VALUES = {
-  title: "",
-  body: "",
-  category: null,
-  status: "Draft",
-};
-
 export const ARTICLES_FORM_VALIDATION_SCHEMA = CATEGORY_OPTIONS =>
   yup.object().shape({
     title: yup
