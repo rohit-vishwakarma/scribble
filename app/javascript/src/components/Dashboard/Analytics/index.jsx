@@ -18,7 +18,6 @@ const Analytics = () => {
 
   const fetchArticles = async () => {
     try {
-      setLoading(true);
       const {
         data: { articles, count },
       } = await articlesApi.fetchPublished({ pageNumber: currentPageNumber });
