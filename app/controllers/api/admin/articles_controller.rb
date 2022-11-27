@@ -62,7 +62,9 @@ class Api::Admin::ArticlesController < ApplicationController
   private
 
     def article_params
-      params.require(:article).permit(:title, :body, :category_id, :status, :version_status, :restored_at)
+      params.require(:article).permit(
+        :title, :body, :category_id, :status, :version_status, :restored_at,
+        :scheduled_publish, :scheduled_unpublish)
     end
 
     def load_article!

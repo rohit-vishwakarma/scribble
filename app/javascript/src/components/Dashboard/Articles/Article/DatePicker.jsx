@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { DatePicker as ANTDDatePicker } from "antd";
+import dayjs from "dayjs";
 import { Typography, Modal, Button } from "neetoui";
 import { useHistory } from "react-router-dom";
 
@@ -19,16 +20,21 @@ const DatePicker = ({
   const history = useHistory();
 
   const handleChange = (_, dateAndTime) => {
-    setDateAndTime(dateAndTime);
+    setDateAndTime(dateAndTime.concat(":00 +0530"));
   };
 
   const handleSubmit = async () => {
     try {
-      formValues.status = "Draft";
       setShowDatePicker(false);
       if (isEdit) {
+        formValues.status === "Publish later"
+          ? (formValues.scheduled_publish = dateAndTime)
+          : (formValues.scheduled_unpublish = dateAndTime);
+        formValues.status = selectedArticle.status;
         await articlesApi.update(selectedArticle.id, formValues);
       } else {
+        formValues.status = "Draft";
+        formValues.scheduled_publish = dateAndTime;
         await articlesApi.create(formValues);
       }
       history.push("/");
@@ -50,9 +56,11 @@ const DatePicker = ({
         <ANTDDatePicker
           showTime
           className="w-full"
-          format="YYYY-MM-DD HH"
-          getPopupContainer={triggerNode => triggerNode.parentNode}
+          format="YYYY-MM-DD HH:mm"
           placeholder="Select date and time"
+          disabledDate={currentDate =>
+            currentDate && currentDate < dayjs().startOf("day")
+          }
           onChange={handleChange}
         />
         <div className="mt-2 flex space-x-2">
