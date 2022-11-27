@@ -72,7 +72,6 @@ const Edit = () => {
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
-      resetForm();
       const articleData = {
         ...values,
         version_status: false,
@@ -85,6 +84,7 @@ const Edit = () => {
         setFormValues(articleData);
         setShowDatePicker(true);
       } else {
+        resetForm();
         articleData.status = status === "Publish" ? "Published" : "Draft";
         await articlesApi.update(article.id, articleData);
         history.push("/");

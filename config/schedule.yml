@@ -1,0 +1,20 @@
+default: &default
+  article_schedule_status_later_worker:
+    cron: "0 * * * *"
+    class: "ArticleScheduleStatusLaterWorker"
+    queue: "default"
+
+development:
+  article_schedule_status_later_worker:
+    cron: "* * * * *"
+    class: "ArticleScheduleStatusLaterWorker"
+    queue: "default"
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default
