@@ -1,20 +1,18 @@
-export const StatusListForDraftedArticle = [
+export const StatusListForDraftedOrUnpublishScheduledArticle = [
   "Save draft",
   "Publish",
   "Publish later",
 ];
 
-export const StatusListForPublishedArticle = [
+export const StatusListForPublishedOrPublishScheduledArticle = [
   "Save draft",
   "Publish",
   "Unpublish later",
 ];
 
-export const StatusListForScheduledArticle = [
+export const StatusListForUnpublishAndPublishScheduledArticle = [
   "Save draft",
   "Publish",
-  "Publish later",
-  "Unpublish later",
 ];
 
 export const ARTICLES_FORM_INITIAL_VALUES = {
