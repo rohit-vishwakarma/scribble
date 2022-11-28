@@ -70,13 +70,10 @@ const DatePicker = ({
             Draft.
           </Callout>
         )}
-        {isEdit && formValues.status === "Publish later" ? (
+        {isEdit && (
           <Callout className="my-2" icon={Info} style="info">
-            After proceeding with this, the article will be of status Draft.
-          </Callout>
-        ) : (
-          <Callout className="my-2" icon={Info} style="info">
-            After proceeding with this, the article will be of status Published.
+            After proceeding with this, the article will be of status&nbsp;
+            {formValues.status === "Publish later" ? "Draft" : "Published"}.
           </Callout>
         )}
         <div className="mt-2 flex space-x-2">

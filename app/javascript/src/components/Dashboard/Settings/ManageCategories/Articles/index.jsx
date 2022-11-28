@@ -57,6 +57,7 @@ const Articles = ({
         article_ids: selectedArticleIds,
         category_id: moveToCategory.value,
       });
+      setSelectedArticleIds([]);
       refetch();
     } catch (error) {
       logger.error(error);

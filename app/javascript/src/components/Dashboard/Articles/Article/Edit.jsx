@@ -8,6 +8,7 @@ import { articlesApi } from "apis/admin";
 import {
   StatusListForDraftedArticle,
   StatusListForPublishedArticle,
+  StatusListForScheduledArticle,
 } from "./constants";
 import DatePicker from "./DatePicker";
 import Form from "./Form";
@@ -59,10 +60,14 @@ const Edit = () => {
 
   const fetchArticle = async () => {
     try {
-      setLoading(true);
       const { data } = await articlesApi.show(id);
       setArticle(data);
-      if (data.status === "Published" || data.scheduled_publish !== null) {
+      if (
+        data.scheduled_unpublish !== null ||
+        data.scheduled_publish !== null
+      ) {
+        setArticleStatusList(StatusListForScheduledArticle);
+      } else if (data.status === "Published") {
         setArticleStatusList(StatusListForPublishedArticle);
       }
     } catch (error) {
@@ -86,6 +91,8 @@ const Edit = () => {
       } else {
         resetForm();
         articleData.status = status === "Publish" ? "Published" : "Draft";
+        articleData.scheduled_unpublish = null;
+        articleData.scheduled_publish = null;
         await articlesApi.update(article.id, articleData);
         history.push("/");
       }
@@ -108,6 +115,7 @@ const Edit = () => {
         isEdit
         articleStatusList={articleStatusList}
         handleSubmit={handleSubmit}
+        refetch={fetchArticle}
         selectedArticle={convertArticleToFormFormat(article)}
       />
       <VersionHistory article={article} articleVersions={articleVersions} />

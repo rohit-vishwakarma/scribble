@@ -6,13 +6,19 @@ import { Dropdown, Button, PageLoader, Callout } from "neetoui";
 import { Select, Input, Textarea } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
 
-import { categoriesApi } from "apis/admin";
+import { categoriesApi, articlesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 import { formatTimeStampToTimeAndDate } from "components/utils";
 
 import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 
-const Form = ({ isEdit, selectedArticle, handleSubmit, articleStatusList }) => {
+const Form = ({
+  isEdit,
+  refetch,
+  selectedArticle,
+  handleSubmit,
+  articleStatusList,
+}) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(
@@ -36,6 +42,23 @@ const Form = ({ isEdit, selectedArticle, handleSubmit, articleStatusList }) => {
       logger.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCancelScheduled = async status => {
+    try {
+      if (status === "Publish later") {
+        await articlesApi.update(selectedArticle.id, {
+          scheduled_publish: null,
+        });
+      } else {
+        await articlesApi.update(selectedArticle.id, {
+          scheduled_unpublish: null,
+        });
+      }
+      refetch();
+    } catch (error) {
+      logger.error(error);
     }
   };
 
@@ -64,15 +87,34 @@ const Form = ({ isEdit, selectedArticle, handleSubmit, articleStatusList }) => {
         <FormikForm className="mx-auto mt-8 w-6/12">
           {selectedArticle.scheduledPublish !== null && (
             <Callout className="my-2" icon={Info} style="info">
-              This article is scheduled to be published at&nbsp;
-              {formatTimeStampToTimeAndDate(selectedArticle.scheduledPublish)}.
+              <div>
+                This article is scheduled to be published at&nbsp;
+                {formatTimeStampToTimeAndDate(selectedArticle.scheduledPublish)}
+                .&nbsp;
+                <span
+                  className="cursor-pointer underline"
+                  onClick={() => handleCancelScheduled("Publish later")}
+                >
+                  Click here to cancel publish scheduled.
+                </span>
+              </div>
             </Callout>
           )}
           {selectedArticle.scheduledUnpublish !== null && (
             <Callout className="my-2" icon={Info} style="info">
-              This article is scheduled to be Unpublished at&nbsp;
-              {formatTimeStampToTimeAndDate(selectedArticle.scheduledUnpublish)}
-              .
+              <div>
+                This article is scheduled to be Unpublished at&nbsp;
+                {formatTimeStampToTimeAndDate(
+                  selectedArticle.scheduledUnpublish
+                )}
+                .&nbsp;
+                <span
+                  className="cursor-pointer underline"
+                  onClick={() => handleCancelScheduled("Unpublish later")}
+                >
+                  Click here to cancel unpublish scheduled.
+                </span>
+              </div>
             </Callout>
           )}
           <div className="my-5 flex gap-x-4">
