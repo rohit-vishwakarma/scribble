@@ -6,7 +6,7 @@ import { articlesApi } from "apis/admin";
 
 import {
   ARTICLES_FORM_INITIAL_VALUES,
-  StatusListForDraftedArticle,
+  StatusListForDraftedOrUnpublishScheduledArticle,
 } from "./constants";
 import DatePicker from "./DatePicker";
 import Form from "./Form";
@@ -39,7 +39,7 @@ const Create = () => {
   return (
     <>
       <Form
-        articleStatusList={StatusListForDraftedArticle}
+        articleStatusList={StatusListForDraftedOrUnpublishScheduledArticle}
         handleSubmit={handleSubmit}
         selectedArticle={ARTICLES_FORM_INITIAL_VALUES}
       />

@@ -73,7 +73,7 @@ const DatePicker = ({
         {isEdit && (
           <Callout className="my-2" icon={Info} style="info">
             After proceeding with this, the article will be of status&nbsp;
-            {formValues.status === "Publish later" ? "Draft" : "Published"}.
+            {selectedArticle.status}.
           </Callout>
         )}
         <div className="mt-2 flex space-x-2">
