@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import { DatePicker as ANTDDatePicker } from "antd";
 import dayjs from "dayjs";
-import { Typography, Modal, Button } from "neetoui";
+import { Info } from "neetoicons";
+import { Typography, Modal, Button, Callout } from "neetoui";
 import { useHistory } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
@@ -63,6 +64,21 @@ const DatePicker = ({
           }
           onChange={handleChange}
         />
+        {!isEdit && (
+          <Callout className="my-2" icon={Info} style="info">
+            After proceeding with this, the article will be created with status
+            Draft.
+          </Callout>
+        )}
+        {isEdit && formValues.status === "Publish later" ? (
+          <Callout className="my-2" icon={Info} style="info">
+            After proceeding with this, the article will be of status Draft.
+          </Callout>
+        ) : (
+          <Callout className="my-2" icon={Info} style="info">
+            After proceeding with this, the article will be of status Published.
+          </Callout>
+        )}
         <div className="mt-2 flex space-x-2">
           <Tooltip
             content="Select date and time."

@@ -3,4 +3,6 @@ export const convertArticleToFormFormat = article => ({
   body: article.body,
   category: { label: article.category.name, value: article.category.id },
   status: article.status,
+  scheduledPublish: article.scheduled_publish,
+  scheduledUnpublish: article.scheduled_unpublish,
 });

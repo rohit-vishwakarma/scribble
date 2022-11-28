@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import { Formik, Form as FormikForm } from "formik";
-import { Dropdown, Button, PageLoader } from "neetoui";
-import { Select, Input, Textarea, BlockNavigation } from "neetoui/formik";
+import { Info } from "neetoicons";
+import { Dropdown, Button, PageLoader, Callout } from "neetoui";
+import { Select, Input, Textarea } from "neetoui/formik";
 import { useHistory } from "react-router-dom";
 
 import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
+import { formatTimeStampToTimeAndDate } from "components/utils";
 
 import { ARTICLES_FORM_VALIDATION_SCHEMA } from "../constants";
 
@@ -60,7 +62,19 @@ const Form = ({ isEdit, selectedArticle, handleSubmit, articleStatusList }) => {
     >
       {({ isSubmitting, setFieldValue, dirty }) => (
         <FormikForm className="mx-auto mt-8 w-6/12">
-          <BlockNavigation />
+          {selectedArticle.scheduledPublish !== null && (
+            <Callout className="my-2" icon={Info} style="info">
+              This article is scheduled to be published at&nbsp;
+              {formatTimeStampToTimeAndDate(selectedArticle.scheduledPublish)}.
+            </Callout>
+          )}
+          {selectedArticle.scheduledUnpublish !== null && (
+            <Callout className="my-2" icon={Info} style="info">
+              This article is scheduled to be Unpublished at&nbsp;
+              {formatTimeStampToTimeAndDate(selectedArticle.scheduledUnpublish)}
+              .
+            </Callout>
+          )}
           <div className="my-5 flex gap-x-4">
             <Input
               required
