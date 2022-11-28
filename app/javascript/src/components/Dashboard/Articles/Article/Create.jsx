@@ -17,7 +17,7 @@ const Create = () => {
 
   const history = useHistory();
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async values => {
     try {
       const articleData = { ...values };
       articleData.category_id = values.category.value;
@@ -26,7 +26,6 @@ const Create = () => {
         setFormValues(articleData);
         setShowDatePicker(true);
       } else {
-        resetForm();
         articleData.status = status === "Publish" ? "Published" : "Draft";
         await articlesApi.create(articleData);
         history.push("/");

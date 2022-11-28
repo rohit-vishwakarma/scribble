@@ -5,6 +5,7 @@ import { useHistory, useParams } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
 
+import Alert from "./Alert";
 import {
   StatusListForDraftedOrUnpublishScheduledArticle,
   StatusListForPublishedOrPublishScheduledArticle,
@@ -21,6 +22,7 @@ const Edit = () => {
   const [loading, setLoading] = useState(true);
   const [articleVersions, setArticleVersions] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [formValues, setFormValues] = useState({});
   const [articleStatusList, setArticleStatusList] = useState(
     StatusListForDraftedOrUnpublishScheduledArticle
@@ -80,7 +82,7 @@ const Edit = () => {
     }
   };
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async values => {
     try {
       const articleData = {
         ...values,
@@ -93,11 +95,15 @@ const Edit = () => {
       if (status !== "Save draft" && status !== "Publish") {
         setFormValues(articleData);
         setShowDatePicker(true);
-      } else {
-        resetForm();
+      } else if (
+        (article.scheduled_publish !== null && status === "Publish") ||
+        (article.scheduled_unpublish !== null && status === "Save draft")
+      ) {
         articleData.status = status === "Publish" ? "Published" : "Draft";
-        articleData.scheduled_unpublish = null;
-        articleData.scheduled_publish = null;
+        setFormValues(articleData);
+        setShowAlert(true);
+      } else {
+        articleData.status = status === "Publish" ? "Published" : "Draft";
         await articlesApi.update(article.id, articleData);
         history.push("/");
       }
@@ -131,6 +137,13 @@ const Edit = () => {
           selectedArticle={article}
           setShowDatePicker={setShowDatePicker}
           showDatePicker={showDatePicker}
+        />
+      )}
+      {showAlert && (
+        <Alert
+          article={article}
+          formValues={formValues}
+          onClose={() => setShowAlert(false)}
         />
       )}
     </div>
