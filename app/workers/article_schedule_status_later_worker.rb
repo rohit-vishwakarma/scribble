@@ -2,7 +2,6 @@
 
 class ArticleScheduleStatusLaterWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :default, retry: 10
 
   def perform
     articles = current_user.articles.select { |article|

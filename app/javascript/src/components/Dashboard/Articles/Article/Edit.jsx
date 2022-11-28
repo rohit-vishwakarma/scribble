@@ -62,7 +62,7 @@ const Edit = () => {
       setLoading(true);
       const { data } = await articlesApi.show(id);
       setArticle(data);
-      if (data.status === "Published") {
+      if (data.status === "Published" || data.scheduled_publish !== null) {
         setArticleStatusList(StatusListForPublishedArticle);
       }
     } catch (error) {
