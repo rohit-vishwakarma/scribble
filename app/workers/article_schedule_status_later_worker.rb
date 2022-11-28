@@ -5,8 +5,8 @@ class ArticleScheduleStatusLaterWorker
 
   def perform
     articles = current_user.articles.select { |article|
-      (article.scheduled_publish && article.scheduled_publish <= Time.zone.now) ||
-      (article.scheduled_unpublish && article.scheduled_unpublish <= Time.zone.now)
+      (article.scheduled_publish and article.scheduled_publish <= Time.zone.now) or
+      (article.scheduled_unpublish and article.scheduled_unpublish <= Time.zone.now)
     }
 
     articles.each do |article|
