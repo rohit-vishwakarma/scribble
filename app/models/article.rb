@@ -17,6 +17,9 @@ class Article < ApplicationRecord
   }
   validates :status, :body, presence: true
   validate :slug_not_changed
+  validate :article_scheduled_status_time, if: -> { scheduled_publish.present? or scheduled_unpublish.present? }
+  validate :article_publish_scheduled_time, if: -> { scheduled_publish.present? }
+  validate :article_unpublish_scheduled_time, if: -> { scheduled_unpublish.present? }
 
   paginates_per MAX_PAGE_SIZE
   has_paper_trail only: [:title, :body, :status, :category_id]
@@ -46,6 +49,27 @@ class Article < ApplicationRecord
     def slug_not_changed
       if slug_changed? && self.persisted?
         errors.add(:slug, t("article.slug.immutable"))
+      end
+    end
+
+    def article_scheduled_status_time
+      if scheduled_publish.present? && scheduled_publish < Time.zone.now
+        errors.add(:article, t("article.scheduled.invalid_time"))
+      end
+      if scheduled_unpublish.present? && scheduled_unpublish < Time.zone.now
+        errors.add(:article, t("article.scheduled.invalid_time"))
+      end
+    end
+
+    def article_publish_scheduled_time
+      if scheduled_unpublish.present? && status == "Published" && scheduled_publish <= scheduled_unpublish
+        errors.add(:article, t("article.scheduled.publish"))
+      end
+    end
+
+    def article_unpublish_scheduled_time
+      if scheduled_publish.present? && status == "Draft" && scheduled_unpublish <= scheduled_publish
+        errors.add(:article, t("article.scheduled.unpublish"))
       end
     end
 end
