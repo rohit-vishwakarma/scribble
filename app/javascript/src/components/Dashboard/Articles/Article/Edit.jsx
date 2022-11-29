@@ -6,16 +6,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { articlesApi } from "apis/admin";
 
 import Alert from "./Alert";
-import {
-  StatusListForDraftedOrUnpublishScheduledArticle,
-  StatusListForPublishedOrPublishScheduledArticle,
-  StatusListForUnpublishAndPublishScheduledArticle,
-} from "./constants";
 import DatePicker from "./DatePicker";
 import Form from "./Form";
+import { findArticleStatusList, convertArticleToFormFormat } from "./utils";
 import VersionHistory from "./VersionHistory";
-
-import { convertArticleToFormFormat } from "../utils";
 
 const Edit = () => {
   const [article, setArticle] = useState({});
@@ -24,9 +18,7 @@ const Edit = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [formValues, setFormValues] = useState({});
-  const [articleStatusList, setArticleStatusList] = useState(
-    StatusListForDraftedOrUnpublishScheduledArticle
-  );
+  const [articleStatusList, setArticleStatusList] = useState([]);
 
   const { id } = useParams();
   const history = useHistory();
@@ -64,19 +56,7 @@ const Edit = () => {
     try {
       const { data } = await articlesApi.show(id);
       setArticle(data);
-      if (
-        data.scheduled_unpublish !== null &&
-        data.scheduled_publish !== null
-      ) {
-        setArticleStatusList(StatusListForUnpublishAndPublishScheduledArticle);
-      } else if (data.scheduled_unpublish !== null) {
-        setArticleStatusList(StatusListForDraftedOrUnpublishScheduledArticle);
-      } else if (
-        data.scheduled_publish !== null ||
-        data.status === "Published"
-      ) {
-        setArticleStatusList(StatusListForPublishedOrPublishScheduledArticle);
-      }
+      findArticleStatusList(data, setArticleStatusList);
     } catch (error) {
       logger.error(error);
     }

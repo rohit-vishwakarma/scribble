@@ -10,7 +10,7 @@ const fetch = payload =>
     },
   });
 
-const show = id => axios.get(`/api/admin/articles/${id}`);
+const show = async id => await axios.get(`/api/admin/articles/${id}`);
 
 const create = async payload => {
   await axios.post("/api/admin/articles", payload);
