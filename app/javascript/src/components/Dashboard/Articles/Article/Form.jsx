@@ -22,7 +22,7 @@ const Form = ({
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(
-    selectedArticle.status === "Published" ? "Published" : "Save draft"
+    selectedArticle.status === "Published" ? "Publish" : "Save draft"
   );
   const [categories, setCategories] = useState([]);
 
@@ -159,7 +159,10 @@ const Form = ({
                   size="medium"
                   style="primary"
                   type="submit"
-                  onClick={() => setSubmitted(true)}
+                  onClick={() => {
+                    setFieldValue("status", status);
+                    setSubmitted(true);
+                  }}
                 />
               </Tooltip>
               <Dropdown>
