@@ -194,4 +194,58 @@ class ArticleTest < ActiveSupport::TestCase
     @article.title = "A"
     assert @article.valid?
   end
+
+  def test_should_not_create_scheduled_status_with_past_time
+    @article.scheduled_publish = Time.zone.now - 1.day
+    assert @article.invalid?
+    assert_includes @article.errors_to_sentence, t("article.scheduled.invalid_time")
+
+    @article.scheduled_publish = nil
+    assert @article.valid?
+
+    @article.scheduled_unpublish = Time.zone.now - 1.day
+    assert @article.invalid?
+    assert_includes @article.errors_to_sentence, t("article.scheduled.invalid_time")
+  end
+
+  def test_should_not_create_scheduled_publish_with_before_unpublish_time
+    @article.status = "Published"
+    @article.scheduled_unpublish = Time.zone.now + 2.day
+    assert @article.valid?
+
+    @article.scheduled_publish = Time.zone.now + 1.day
+    assert @article.invalid?
+    assert_includes @article.errors_to_sentence, t("article.scheduled.publish")
+  end
+
+  def test_should_not_create_scheduled_unpublish_with_before_publish_time
+    @article.scheduled_publish = Time.zone.now + 2.day
+    @article.scheduled_unpublish = Time.zone.now + 1.day
+    assert @article.invalid?
+    assert_includes @article.errors_to_sentence, t("article.scheduled.unpublish")
+  end
+
+  def test_should_create_scheduled_status_with_after_current_time
+    @article.scheduled_publish = Time.zone.now + 1.day
+    assert @article.valid?
+
+    @article.scheduled_publish = nil
+    assert @article.valid?
+
+    @article.scheduled_unpublish = Time.zone.now + 1.day
+    assert @article.valid?
+  end
+
+  def test_should_create_scheduled_unpublish_with_after_publish_time
+    @article.scheduled_publish = Time.zone.now + 1.day
+    @article.scheduled_unpublish = Time.zone.now + 2.day
+    assert @article.valid?
+  end
+
+  def test_should_create_scheduled_publish_with_after_unpublish_time
+    @article.status = "Published"
+    @article.scheduled_unpublish = Time.zone.now + 1.day
+    @article.scheduled_publish = Time.zone.now + 2.day
+    assert @article.valid?
+  end
 end
