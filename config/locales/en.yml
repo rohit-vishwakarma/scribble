@@ -11,6 +11,10 @@ en:
   article:
     slug:
       immutable: "is immutable!"
+    scheduled:
+      invalid_time: "scheduled time should be after current time."
+      publish: "publish scheduled time should be after unpublish scheduled time."
+      unpublish: "unpublish scheduled time should be after publish scheduled time."
   redirection:
     redirection_loop: "can't be added due to redirection loop."
     equal_path: "from & to path can't be same."
