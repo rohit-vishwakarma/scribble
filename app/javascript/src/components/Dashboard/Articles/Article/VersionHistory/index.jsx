@@ -43,6 +43,7 @@ const VersionHistory = ({ article, articleVersions }) => {
       />
       {showModal && (
         <Modal
+          article={article}
           setShowModal={setShowModal}
           showModal={showModal}
           version={version}
