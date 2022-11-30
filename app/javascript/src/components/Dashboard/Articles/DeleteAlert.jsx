@@ -12,6 +12,10 @@ const DeleteAlert = ({
 }) => {
   const [deleting, setDeleting] = useState(false);
 
+  const isScheduled =
+    selectedDeleteArticle.scheduledPublish !== null ||
+    selectedDeleteArticle.scheduledUnpublish !== null;
+
   const handleDelete = async () => {
     try {
       setDeleting(true);
@@ -29,8 +33,14 @@ const DeleteAlert = ({
     <Alert
       isOpen
       isSubmitting={deleting}
-      message={`Are you sure you want to continue deleting "${selectedDeleteArticle.title}" article? This cannot be undone.`}
       title="Delete Article"
+      message={`${
+        isScheduled
+          ? "This article is scheduled to be published or unpublished."
+          : ""
+      } Are you sure you want to continue deleting "${
+        selectedDeleteArticle.title
+      }" article? This cannot be undone.`}
       onClose={onClose}
       onSubmit={handleDelete}
     />

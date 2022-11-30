@@ -88,9 +88,9 @@ const Form = ({
           {selectedArticle.scheduledPublish !== null && (
             <Callout className="my-2" icon={Info} style="info">
               <div>
-                This article is scheduled to be published at&nbsp;
+                This article is scheduled to be published at "
                 {formatTimeStampToTimeAndDate(selectedArticle.scheduledPublish)}
-                .&nbsp;
+                ".&nbsp;
                 <span
                   className="cursor-pointer text-indigo-500"
                   onClick={() => handleCancelScheduled("Publish later")}
@@ -104,11 +104,11 @@ const Form = ({
           {selectedArticle.scheduledUnpublish !== null && (
             <Callout className="my-2" icon={Info} style="warning">
               <div>
-                This article is scheduled to be Unpublished at&nbsp;
+                This article is scheduled to be Unpublished at "
                 {formatTimeStampToTimeAndDate(
                   selectedArticle.scheduledUnpublish
                 )}
-                .&nbsp;
+                ".&nbsp;
                 <span
                   className="cursor-pointer text-indigo-500"
                   onClick={() => handleCancelScheduled("Unpublish later")}
