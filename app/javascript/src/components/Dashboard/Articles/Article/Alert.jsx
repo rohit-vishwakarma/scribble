@@ -4,6 +4,7 @@ import { Alert as NeetoUIAlert } from "neetoui";
 import { useHistory } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
+import { formatTimeStampToTimeAndDate } from "components/utils";
 
 const Alert = ({ article, formValues, onClose }) => {
   const history = useHistory();
@@ -11,7 +12,11 @@ const Alert = ({ article, formValues, onClose }) => {
   const scheduledStatus =
     formValues.status === "Published" && article.scheduled_publish !== null
       ? "Publish"
-      : "Unpublished";
+      : "Unpublish";
+  const scheduledTime =
+    scheduledStatus === "Publish"
+      ? formatTimeStampToTimeAndDate(article.scheduled_publish)
+      : formatTimeStampToTimeAndDate(article.scheduled_unpublish);
 
   const handleSubmit = async () => {
     try {
@@ -36,7 +41,7 @@ const Alert = ({ article, formValues, onClose }) => {
   return (
     <NeetoUIAlert
       isOpen
-      message={`Are you sure you want to continue? This will remove the scheduled ${scheduledStatus}.`}
+      message={`This article is scheduled to be ${scheduledStatus} at "${scheduledTime}". Are you sure you want to continue? This will remove the scheduled ${scheduledStatus}.`}
       title="Removing scheduled article"
       onClose={onClose}
       onSubmit={handleSubmit}
