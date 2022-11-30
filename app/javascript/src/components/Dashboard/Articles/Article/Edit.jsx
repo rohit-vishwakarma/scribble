@@ -109,7 +109,11 @@ const Edit = () => {
         refetch={fetchArticle}
         selectedArticle={convertArticleToFormFormat(article)}
       />
-      <VersionHistory article={article} articleVersions={articleVersions} />
+      <VersionHistory
+        article={article}
+        articleVersions={articleVersions}
+        refetch={fetchArticleAndVersions}
+      />
       {showDatePicker && (
         <DatePicker
           isEdit

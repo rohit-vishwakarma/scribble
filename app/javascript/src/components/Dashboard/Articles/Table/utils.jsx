@@ -1,10 +1,14 @@
 import React from "react";
 
 import { Delete, Edit } from "neetoicons";
-import { Typography, Button } from "neetoui";
+import { Typography, Button, Kbd } from "neetoui";
 import { Link } from "react-router-dom";
 
-import { formatTimeStampToDate } from "components/utils";
+import Tooltip from "components/Common/Tooltip";
+import {
+  formatTimeStampToDate,
+  formatTimeStampToTimeAndDate,
+} from "components/utils";
 
 import { ColumnListItems } from "../constants";
 
@@ -52,7 +56,7 @@ export const buildArticleTableColumnData = handleDelete => {
       title: "Author",
       dataIndex: "author",
       key: "author",
-      width: "20%",
+      width: "15%",
       render: author => (
         <Typography className="text-gray-600" style="h5">
           {author.name}
@@ -74,11 +78,43 @@ export const buildArticleTableColumnData = handleDelete => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      width: "15%",
-      render: status => (
-        <Typography className="text-gray-600" style="h5">
-          {status}
-        </Typography>
+      width: "20%",
+      render: (
+        status,
+        {
+          scheduled_publish: scheduledPublish,
+          scheduled_unpublish: scheduledUnpublish,
+        }
+      ) => (
+        <div className="flex space-x-2">
+          <Typography className="mt-1 text-gray-600" style="h5">
+            {status}
+          </Typography>
+          {scheduledPublish !== null && (
+            <Tooltip
+              disabled
+              followCursor="horizontal"
+              position="top"
+              content={`Publish scheduled at ${formatTimeStampToTimeAndDate(
+                scheduledPublish
+              )}`}
+            >
+              <Kbd className="h-4" keyName="P" />
+            </Tooltip>
+          )}
+          {scheduledUnpublish !== null && (
+            <Tooltip
+              disabled
+              followCursor="horizontal"
+              position="top"
+              content={`Unpublish scheduled at ${formatTimeStampToTimeAndDate(
+                scheduledUnpublish
+              )}`}
+            >
+              <Kbd className="h-4" keyName="UP" />
+            </Tooltip>
+          )}
+        </div>
       ),
     },
   ];
@@ -88,7 +124,15 @@ export const buildArticleTableColumnData = handleDelete => {
     dataIndex: "id",
     key: "option",
     width: "10%",
-    render: (_, { id, title, scheduled_publish, scheduled_unpublish }) => (
+    render: (
+      _,
+      {
+        id,
+        title,
+        scheduled_publish: scheduledPublish,
+        scheduled_unpublish: scheduledUnpublish,
+      }
+    ) => (
       <div className="flex items-end">
         <Button
           icon={Delete}
@@ -98,8 +142,8 @@ export const buildArticleTableColumnData = handleDelete => {
             handleDelete({
               title,
               id,
-              scheduledPublish: scheduled_publish,
-              scheduledUnpublish: scheduled_unpublish,
+              scheduledPublish,
+              scheduledUnpublish,
             })
           }
         />

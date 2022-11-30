@@ -41,8 +41,9 @@ const Alert = ({ article, formValues, onClose }) => {
   return (
     <NeetoUIAlert
       isOpen
-      message={`This article is scheduled to be ${scheduledStatus} at "${scheduledTime}". Are you sure you want to continue? This will remove the scheduled ${scheduledStatus}.`}
-      title="Removing scheduled article"
+      title="Confirm removal of article scheduled status"
+      message={`This article is scheduled to be ${scheduledStatus} at "${scheduledTime}".
+      Are you sure you want to continue? This will remove the scheduled ${scheduledStatus}.`}
       onClose={onClose}
       onSubmit={handleSubmit}
     />

@@ -9,14 +9,11 @@ import {
   Textarea,
   Callout,
 } from "neetoui";
-import { useHistory } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
 
-const Modal = ({ article, version, showModal, setShowModal }) => {
-  const history = useHistory();
-
+const Modal = ({ article, version, showModal, setShowModal, refetch }) => {
   const categoryValue = version.category
     ? version.category.name
     : "Category doesn't exists.";
@@ -35,7 +32,8 @@ const Modal = ({ article, version, showModal, setShowModal }) => {
         scheduled_unpublish: null,
       };
       await articlesApi.update(version.article.id, articleData);
-      history.go(0);
+      setShowModal(false);
+      refetch();
     } catch (error) {
       logger.error(error);
     }

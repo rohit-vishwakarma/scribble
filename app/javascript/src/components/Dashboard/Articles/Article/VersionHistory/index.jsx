@@ -7,7 +7,7 @@ import { formatTimeStampToTimeAndDate } from "components/utils";
 import Modal from "./Modal";
 import Versions from "./Versions";
 
-const VersionHistory = ({ article, articleVersions }) => {
+const VersionHistory = ({ article, articleVersions, refetch }) => {
   const [showModal, setShowModal] = useState(false);
   const [version, setVersion] = useState({});
 
@@ -44,6 +44,7 @@ const VersionHistory = ({ article, articleVersions }) => {
       {showModal && (
         <Modal
           article={article}
+          refetch={refetch}
           setShowModal={setShowModal}
           showModal={showModal}
           version={version}
