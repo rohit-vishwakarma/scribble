@@ -195,7 +195,7 @@ class ArticleTest < ActiveSupport::TestCase
     assert @article.valid?
   end
 
-  def test_should_not_create_scheduled_status_with_past_time
+  def test_article_should_not_be_valid_with_scheduled_status_before_current_time
     @article.scheduled_publish = Time.zone.now - 1.day
     assert @article.invalid?
     assert_includes @article.errors_to_sentence, t("article.scheduled.invalid_time")
@@ -208,7 +208,7 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes @article.errors_to_sentence, t("article.scheduled.invalid_time")
   end
 
-  def test_should_not_create_scheduled_publish_with_before_unpublish_time
+  def test_article_should_not_be_valid_with_scheduled_publish_before_unpublish_time
     @article.status = "Published"
     @article.scheduled_unpublish = Time.zone.now + 2.day
     assert @article.valid?
@@ -218,34 +218,56 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes @article.errors_to_sentence, t("article.scheduled.publish")
   end
 
-  def test_should_not_create_scheduled_unpublish_with_before_publish_time
+  def test_article_should_not_valid_with_scheduled_unpublish_before_publish_time
     @article.scheduled_publish = Time.zone.now + 2.day
     @article.scheduled_unpublish = Time.zone.now + 1.day
     assert @article.invalid?
     assert_includes @article.errors_to_sentence, t("article.scheduled.unpublish")
   end
 
-  def test_should_create_scheduled_status_with_after_current_time
+  def test_article_should_be_valid_with_scheduled_status_after_current_time
     @article.scheduled_publish = Time.zone.now + 1.day
     assert @article.valid?
 
     @article.scheduled_publish = nil
     assert @article.valid?
 
+    @article.status = "Published"
     @article.scheduled_unpublish = Time.zone.now + 1.day
     assert @article.valid?
   end
 
-  def test_should_create_scheduled_unpublish_with_after_publish_time
+  def test_article_should_be_valid_with_scheduled_unpublish_after_publish_time
     @article.scheduled_publish = Time.zone.now + 1.day
     @article.scheduled_unpublish = Time.zone.now + 2.day
     assert @article.valid?
   end
 
-  def test_should_create_scheduled_publish_with_after_unpublish_time
+  def test_article_should_be_valid_with_scheduled_publish_after_unpublish_time
     @article.status = "Published"
     @article.scheduled_unpublish = Time.zone.now + 1.day
     @article.scheduled_publish = Time.zone.now + 2.day
+    assert @article.valid?
+  end
+
+  def test_article_should_be_valid_with_scheduled_publish_if_article_is_draft
+    @article.status = "Published"
+    @article.scheduled_publish = Time.zone.now + 1.day
+    assert @article.invalid?
+    assert_includes @article.errors_to_sentence, t("article.scheduled.invalid_publish")
+
+    @article.status = "Draft"
+    @article.scheduled_publish = Time.zone.now + 1.day
+    assert @article.valid?
+  end
+
+  def test_article_should_be_valid_with_scheduled_unpublish_if_article_is_published
+    @article.scheduled_unpublish = Time.zone.now + 1.day
+    assert @article.invalid?
+    assert_includes @article.errors_to_sentence, t("article.scheduled.invalid_unpublish")
+
+    @article.status = "Published"
+    @article.scheduled_unpublish = Time.zone.now + 1.day
     assert @article.valid?
   end
 end

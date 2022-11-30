@@ -16,6 +16,13 @@ const Table = ({
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedDeleteArticle, setSelectedDeleteArticle] = useState({});
 
+  if (articlesCount === (filterOptions.pageNumber - 1) * 10) {
+    setFilterOptions({
+      ...filterOptions,
+      pageNumber: filterOptions.pageNumber - 1,
+    });
+  }
+
   const handleDelete = selectedArticle => {
     setSelectedDeleteArticle(selectedArticle);
     setShowDeleteAlert(prevState => !prevState);

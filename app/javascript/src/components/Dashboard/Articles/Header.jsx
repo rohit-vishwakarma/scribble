@@ -61,7 +61,11 @@ const ArticleHeader = ({
       placeholder: "Search article title",
       value: filterOptions.searchTerm,
       onChange: e =>
-        setFilterOptions({ ...filterOptions, searchTerm: e.target.value }),
+        setFilterOptions({
+          ...filterOptions,
+          searchTerm: e.target.value,
+          pageNumber: 1,
+        }),
     }}
   />
 );

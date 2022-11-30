@@ -15,6 +15,8 @@ en:
       invalid_time: "scheduled time should be after current time."
       publish: "publish scheduled time should be after unpublish scheduled time."
       unpublish: "unpublish scheduled time should be after publish scheduled time."
+      invalid_publish: "with Published status without unpublish scheduled is not allowed to publish later."
+      invalid_unpublish: "with Draft status without publish scheduled is not allowed to unpublish later."
   redirection:
     redirection_loop: "can't be added due to redirection loop."
     equal_path: "from & to path can't be same."
