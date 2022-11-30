@@ -11,11 +11,13 @@ export const filterArticlesAccordingToCategories = (
     setFilterOptions({
       ...filterOptions,
       categoryIds: filteredCategoryIds,
+      pageNumber: 1,
     });
   } else {
     setFilterOptions({
       ...filterOptions,
       categoryIds: [...filterOptions.categoryIds, category.id],
+      pageNumber: 1,
     });
   }
 };

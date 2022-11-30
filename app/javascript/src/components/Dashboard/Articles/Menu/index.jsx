@@ -84,6 +84,7 @@ const Menu = ({
             setFilterOptions({
               ...filterOptions,
               activeStatus: menuBarBlock.label,
+              pageNumber: 1,
             })
           }
         />

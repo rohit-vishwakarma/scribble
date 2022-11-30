@@ -92,16 +92,17 @@ const Form = ({
                 {formatTimeStampToTimeAndDate(selectedArticle.scheduledPublish)}
                 .&nbsp;
                 <span
-                  className="cursor-pointer underline"
+                  className="cursor-pointer text-indigo-500"
                   onClick={() => handleCancelScheduled("Publish later")}
                 >
-                  Click here to cancel publish scheduled.
+                  Click here&nbsp;
                 </span>
+                to cancel publish scheduled.
               </div>
             </Callout>
           )}
           {selectedArticle.scheduledUnpublish !== null && (
-            <Callout className="my-2" icon={Info} style="info">
+            <Callout className="my-2" icon={Info} style="warning">
               <div>
                 This article is scheduled to be Unpublished at&nbsp;
                 {formatTimeStampToTimeAndDate(
@@ -109,11 +110,12 @@ const Form = ({
                 )}
                 .&nbsp;
                 <span
-                  className="cursor-pointer underline"
+                  className="cursor-pointer text-indigo-500"
                   onClick={() => handleCancelScheduled("Unpublish later")}
                 >
-                  Click here to cancel unpublish scheduled.
+                  Click here&nbsp;
                 </span>
+                to cancel unpublish scheduled.
               </div>
             </Callout>
           )}

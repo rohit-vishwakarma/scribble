@@ -65,11 +65,17 @@ class Article < ApplicationRecord
       if scheduled_unpublish.present? && status == "Published" && scheduled_publish <= scheduled_unpublish
         errors.add(:article, t("article.scheduled.publish"))
       end
+      if scheduled_unpublish.nil? && status == "Published"
+        errors.add(:article, t("article.scheduled.invalid_publish"))
+      end
     end
 
     def article_unpublish_scheduled_time
       if scheduled_publish.present? && status == "Draft" && scheduled_unpublish <= scheduled_publish
         errors.add(:article, t("article.scheduled.unpublish"))
+      end
+      if scheduled_publish.nil? && status == "Draft"
+        errors.add(:article, t("article.scheduled.invalid_unpublish"))
       end
     end
 end
