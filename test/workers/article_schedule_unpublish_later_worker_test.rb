@@ -19,6 +19,6 @@ class ArticleScheduleUnpublishLaterWorkerTest < ActionDispatch::IntegrationTest
     ArticleScheduleUnpublishLaterWorker.perform_async
 
     assert_equal "Draft", test_article.reload.status
-    assert_nil test_article.scheduled_publish
+    assert_nil test_article.scheduled_unpublish
   end
 end
