@@ -9,6 +9,7 @@ import { organizationsApi } from "apis/admin";
 import { setAuthHeaders, registerIntercepts } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
+import { convertSnakeCaseKeysToCamelCase } from "components/utils";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -26,12 +27,11 @@ const App = () => {
   const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
-      const {
-        data: { organization },
-      } = await organizationsApi.fetch();
+      const { data } = await organizationsApi.fetch();
+      const organization = convertSnakeCaseKeysToCamelCase(data);
       setIsAuthorized(
-        authToken?.token === organization.authentication_token ||
-          !organization.is_password_protected
+        authToken?.token === organization.authenticationToken ||
+          !organization.isPasswordProtected
       );
     } catch (error) {
       logger.error(error);

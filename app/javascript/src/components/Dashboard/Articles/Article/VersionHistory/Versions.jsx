@@ -10,12 +10,12 @@ const Versions = ({ articleVersions, setVersion, setShowModal }) =>
       <div className="flex justify-between">
         <div>
           <Typography className="mr-4 text-gray-500" style="body2">
-            {formatTimeStampToTimeAndDate(version.article.updated_at)}
+            {formatTimeStampToTimeAndDate(version.article.updatedAt)}
           </Typography>
-          {version.article.version_status && (
+          {version.article.versionStatus && (
             <Typography className="mr-4 text-gray-500" style="body2">
               Restored from (
-              {formatTimeStampToTimeAndDate(version.article.restored_at)})
+              {formatTimeStampToTimeAndDate(version.article.restoredAt)})
             </Typography>
           )}
         </div>

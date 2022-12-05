@@ -17,7 +17,7 @@ const Modal = ({ article, version, showModal, setShowModal, refetch }) => {
   const categoryValue = version.category
     ? version.category.name
     : "Category doesn't exists.";
-  const isRestored = version.article.version_status;
+  const isRestored = version.article.versionStatus;
 
   const handleRestore = async () => {
     try {
@@ -25,9 +25,9 @@ const Modal = ({ article, version, showModal, setShowModal, refetch }) => {
         title: version.article.title,
         body: version.article.body,
         status: "Draft",
-        category_id: version.article.category_id,
+        category_id: version.article.categoryId,
         version_status: true,
-        restored_at: version.article.updated_at,
+        restored_at: version.article.updatedAt,
         scheduled_publish: null,
         scheduled_unpublish: null,
       };
@@ -49,7 +49,7 @@ const Modal = ({ article, version, showModal, setShowModal, refetch }) => {
         <Typography style="h2">Version History</Typography>
       </NeetoUIModal.Header>
       <NeetoUIModal.Body className="space-y-2">
-        {(article.scheduled_publish || article.scheduled_unpublish) && (
+        {(article.scheduledPublish || article.scheduledUnpublish) && (
           <Callout className="mb-4" icon={Warning} style="warning">
             This article is scheduled to be published or unpublished, If you
             restore this article version the scheduled status will be removed

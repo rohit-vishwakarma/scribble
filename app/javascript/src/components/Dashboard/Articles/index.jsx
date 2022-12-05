@@ -4,6 +4,7 @@ import { PageLoader } from "neetoui";
 import { Container } from "neetoui/layouts";
 
 import { articlesApi, categoriesApi } from "apis/admin";
+import { convertSnakeCaseKeysToCamelCase } from "components/utils";
 
 import {
   ColumnListItems,
@@ -54,7 +55,7 @@ const Articles = () => {
       const {
         data: { articles, count },
       } = await articlesApi.fetch(payload);
-      setArticles(articles);
+      setArticles(convertSnakeCaseKeysToCamelCase(articles));
       setArticlesCount(count);
     } catch (error) {
       logger.error(error);

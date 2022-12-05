@@ -35,8 +35,8 @@ const DeleteAlert = ({
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const fetchedCategories = await categoriesApi.fetch();
-      setCategories(fetchedCategories.data);
+      const { data } = await categoriesApi.fetch();
+      setCategories(data);
     } catch (error) {
       logger.error(error);
     } finally {

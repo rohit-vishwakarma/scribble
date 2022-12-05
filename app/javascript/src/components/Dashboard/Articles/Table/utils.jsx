@@ -38,17 +38,17 @@ export const buildArticleTableColumnData = handleDelete => {
     },
     {
       title: "Last Updated At",
-      dataIndex: "updated_at",
-      key: "updated_at",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
       width: "20%",
-      render: (updated_at, { status }) =>
+      render: (updatedAt, { status }) =>
         status === "Draft" ? (
           <Typography className="text-gray-500" style="h5">
             -
           </Typography>
         ) : (
           <Typography className="text-gray-800" style="h5">
-            {formatTimeStampToDate(updated_at)}
+            {formatTimeStampToDate(updatedAt)}
           </Typography>
         ),
     },
@@ -79,13 +79,7 @@ export const buildArticleTableColumnData = handleDelete => {
       dataIndex: "status",
       key: "status",
       width: "20%",
-      render: (
-        status,
-        {
-          scheduled_publish: scheduledPublish,
-          scheduled_unpublish: scheduledUnpublish,
-        }
-      ) => (
+      render: (status, { scheduledPublish, scheduledUnpublish }) => (
         <div className="flex space-x-2">
           <Typography className="mt-1 text-gray-600" style="h5">
             {status}
@@ -124,15 +118,7 @@ export const buildArticleTableColumnData = handleDelete => {
     dataIndex: "id",
     key: "option",
     width: "10%",
-    render: (
-      _,
-      {
-        id,
-        title,
-        scheduled_publish: scheduledPublish,
-        scheduled_unpublish: scheduledUnpublish,
-      }
-    ) => (
+    render: (_, { id, title, scheduledPublish, scheduledUnpublish }) => (
       <div className="flex items-end">
         <Button
           icon={Delete}

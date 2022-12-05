@@ -35,7 +35,7 @@ class Api::Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
     get api_admin_organization_path
     assert_response :success
 
-    response_json = response.parsed_body["organization"]
+    response_json = response.parsed_body
     assert_equal @organization.id, response_json["id"]
   end
 end

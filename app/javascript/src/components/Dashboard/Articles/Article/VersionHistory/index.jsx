@@ -21,13 +21,13 @@ const VersionHistory = ({ article, articleVersions, refetch }) => {
         <div className="border mr-4 mb-2 flex justify-between rounded-md bg-indigo-100 p-4">
           <div className="mr-4">
             <Typography className="text-gray-500" style="body2">
-              {formatTimeStampToTimeAndDate(article.updated_at)}
+              {formatTimeStampToTimeAndDate(article.updatedAt)}
             </Typography>
             <Typography className="text-gray-500" style="body2">
               Current Version <br />
-              {article.version_status &&
+              {article.versionStatus &&
                 `Restored from (${formatTimeStampToTimeAndDate(
-                  article.restored_at
+                  article.restoredAt
                 )})`}
             </Typography>
           </div>

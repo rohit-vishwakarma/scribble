@@ -35,7 +35,7 @@ export const ColumnListItems = [
   },
   {
     name: "Date",
-    dataIndex: "updated_at",
+    dataIndex: "updatedAt",
     checked: true,
     value: 1,
   },

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, PageLoader } from "neetoui";
 
 import { organizationsApi } from "apis/admin";
+import { convertSnakeCaseKeysToCamelCase } from "components/utils";
 
 import Form from "./Form";
 
@@ -17,12 +18,11 @@ const General = () => {
   const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
-      const {
-        data: { organization },
-      } = await organizationsApi.fetch();
+      const { data } = await organizationsApi.fetch();
+      const organization = convertSnakeCaseKeysToCamelCase(data);
       setOrganizationData({
         name: organization.name,
-        isPasswordProtected: organization.is_password_protected,
+        isPasswordProtected: organization.isPasswordProtected,
       });
     } catch (error) {
       logger.error(error);
