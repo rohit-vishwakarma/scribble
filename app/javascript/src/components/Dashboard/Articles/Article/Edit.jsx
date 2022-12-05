@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { PageLoader } from "neetoui";
+import { mergeLeft } from "ramda";
 import { useHistory, useParams } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
@@ -64,12 +65,14 @@ const Edit = () => {
 
   const handleSubmit = async values => {
     try {
-      const articleData = {
-        ...values,
-        version_status: false,
-        restored_at: null,
-      };
-      articleData.category_id = values.category.value;
+      const articleData = mergeLeft(
+        {
+          category_id: values.category.value,
+          version_status: false,
+          restored_at: null,
+        },
+        values
+      );
       const status = values.status;
 
       if (status !== "Save draft" && status !== "Publish") {

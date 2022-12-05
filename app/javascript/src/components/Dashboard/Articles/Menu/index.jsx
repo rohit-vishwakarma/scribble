@@ -5,6 +5,7 @@ import { Plus, Search, Close, Check } from "neetoicons";
 import { Typography, Button } from "neetoui";
 import { Input as FormikInput } from "neetoui/formik";
 import { MenuBar } from "neetoui/layouts";
+import { assoc, evolve } from "ramda";
 
 import { categoriesApi } from "apis/admin";
 import Tooltip from "components/Common/Tooltip";
@@ -56,7 +57,7 @@ const Menu = ({
 
   const handleSubmit = async values => {
     try {
-      setIsCollapsed({ ...isCollapsed, add: !isCollapsed.add });
+      setIsCollapsed(assoc("add", !isCollapsed.add));
       await categoriesApi.create({ name: values.name });
       refetch();
     } catch (error) {
@@ -81,11 +82,12 @@ const Menu = ({
           key={menuBarBlock.label}
           label={menuBarBlock.label}
           onClick={() =>
-            setFilterOptions({
-              ...filterOptions,
-              activeStatus: menuBarBlock.label,
-              pageNumber: 1,
-            })
+            setFilterOptions(
+              evolve({
+                activeStatus: () => menuBarBlock.label,
+                pageNumber: () => 1,
+              })
+            )
           }
         />
       ))}
@@ -121,7 +123,7 @@ const Menu = ({
         value={searchValue}
         onChange={e => setSearchValue(e.target.value)}
         onCollapse={() => {
-          setIsCollapsed({ ...isCollapsed, search: true });
+          setIsCollapsed(assoc("search", true));
           setSearchValue("");
         }}
       />

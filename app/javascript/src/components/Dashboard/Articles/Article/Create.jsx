@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { mergeLeft } from "ramda";
 import { useHistory } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
@@ -19,8 +20,10 @@ const Create = () => {
 
   const handleSubmit = async values => {
     try {
-      const articleData = { ...values };
-      articleData.category_id = values.category.value;
+      const articleData = mergeLeft(
+        { category_id: values.category.value },
+        values
+      );
       const status = values.status;
       if (status === "Publish later") {
         setFormValues(articleData);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Plus } from "neetoicons";
 import { Typography, PageLoader, Button } from "neetoui";
+import { mergeLeft } from "ramda";
 
 import { categoriesApi } from "apis/admin";
 import NotFound from "components/Common/NotFound";
@@ -45,7 +46,7 @@ const Manage = () => {
       const { data } = await categoriesApi.fetch();
       setCategories(data);
       if (data.length > 0 && selectedCategory.isDeleted === true) {
-        setSelectedCategory({ ...data[0], isDeleted: false });
+        setSelectedCategory(mergeLeft({ isDeleted: false }, data[0]));
       }
     } catch (error) {
       logger.error(error);

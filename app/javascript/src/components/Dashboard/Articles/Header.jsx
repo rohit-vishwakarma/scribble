@@ -2,6 +2,7 @@ import React from "react";
 
 import { Button, ActionDropdown, Checkbox, Typography } from "neetoui";
 import { Header } from "neetoui/layouts";
+import { evolve } from "ramda";
 
 import Tooltip from "components/Common/Tooltip";
 import { ARTICLE_CREATE_PATH } from "components/routeConstants";
@@ -61,11 +62,9 @@ const ArticleHeader = ({
       placeholder: "Search article title",
       value: filterOptions.searchTerm,
       onChange: e =>
-        setFilterOptions({
-          ...filterOptions,
-          searchTerm: e.target.value,
-          pageNumber: 1,
-        }),
+        setFilterOptions(
+          evolve({ searchTerm: () => e.target.value, pageNumber: () => 1 })
+        ),
     }}
   />
 );
