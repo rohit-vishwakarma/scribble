@@ -6,6 +6,7 @@ import { mergeLeft } from "ramda";
 
 import { categoriesApi } from "apis/admin";
 import NotFound from "components/Common/NotFound";
+import { convertSnakeCaseKeysToCamelCase } from "components/utils";
 import EmptyList from "images/EmptyList";
 
 import Articles from "./Articles";
@@ -34,7 +35,7 @@ const Manage = () => {
         const {
           data: { articles },
         } = await categoriesApi.show(selectedCategory.id);
-        setArticles(articles);
+        setArticles(convertSnakeCaseKeysToCamelCase(articles));
       } catch (error) {
         logger.error(error);
       }

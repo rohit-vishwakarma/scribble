@@ -16,9 +16,9 @@ const Article = ({
   setSelectedArticleIds,
   index,
 }) => {
-  const articleCreatedAgo = calculateCreatedAgo(article.created_at);
+  const articleCreatedAgo = calculateCreatedAgo(article.updatedAt);
   const articleDayDateAndTime = formatTimeStampToDayDateAndTime(
-    article.created_at
+    article.updatedAt
   );
 
   const handleSelect = () => {

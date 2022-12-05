@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Table, PageLoader, Pagination, Typography } from "neetoui";
 
 import { articlesApi } from "apis/admin";
+import { convertSnakeCaseKeysToCamelCase } from "components/utils";
 
 import {
   ArticleColumnsData,
@@ -21,7 +22,7 @@ const Analytics = () => {
       const {
         data: { articles, count },
       } = await articlesApi.fetchPublished({ pageNumber: currentPageNumber });
-      setArticles(articles);
+      setArticles(convertSnakeCaseKeysToCamelCase(articles));
       setTotalCount(count);
     } catch (error) {
       logger.error(error);
@@ -54,7 +55,7 @@ const Analytics = () => {
               <Table
                 allowRowClick={false}
                 columnData={ArticleVisitsColumnData}
-                rowData={buildRowData(article.dates_and_visits)}
+                rowData={buildRowData(article.datesAndVisits)}
               />
             </div>
           ),

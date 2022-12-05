@@ -21,12 +21,12 @@ export const ArticleColumnsData = [
   },
   {
     title: "Date",
-    dataIndex: "updated_at",
-    key: "updated_at",
+    dataIndex: "updatedAt",
+    key: "updatedAt",
     width: "25%",
-    render: updated_at => (
+    render: updatedAt => (
       <Typography className="text-gray-700" style="h5">
-        {formatTimeStampToDate(updated_at)}
+        {formatTimeStampToDate(updatedAt)}
       </Typography>
     ),
   },

@@ -5,6 +5,7 @@ import { mergeLeft } from "ramda";
 import { useHistory, useParams } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
+import { convertSnakeCaseKeysToCamelCase } from "components/utils";
 
 import Alert from "./Alert";
 import DatePicker from "./DatePicker";
@@ -47,7 +48,7 @@ const Edit = () => {
         }))
         .splice(1)
         .reverse();
-      setArticleVersions(versions);
+      setArticleVersions(convertSnakeCaseKeysToCamelCase(versions));
     } catch (error) {
       logger.error(error);
     }
@@ -56,8 +57,9 @@ const Edit = () => {
   const fetchArticle = async () => {
     try {
       const { data } = await articlesApi.show(id);
-      setArticle(data);
-      findArticleStatusList(data, setArticleStatusList);
+      const article = convertSnakeCaseKeysToCamelCase(data);
+      setArticle(article);
+      findArticleStatusList(article, setArticleStatusList);
     } catch (error) {
       logger.error(error);
     }
@@ -79,8 +81,8 @@ const Edit = () => {
         setFormValues(articleData);
         setShowDatePicker(true);
       } else if (
-        (article.scheduled_publish !== null && status === "Publish") ||
-        (article.scheduled_unpublish !== null && status === "Save draft")
+        (article.scheduledPublish !== null && status === "Publish") ||
+        (article.scheduledUnpublish !== null && status === "Save draft")
       ) {
         articleData.status = status === "Publish" ? "Published" : "Draft";
         setFormValues(articleData);

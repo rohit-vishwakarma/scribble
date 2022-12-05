@@ -6,17 +6,17 @@ import {
 
 export const findArticleStatusList = (article, setArticleStatusList) => {
   if (
-    article.scheduled_unpublish !== null &&
-    article.scheduled_publish !== null
+    article.scheduledUnpublish !== null &&
+    article.scheduledPublish !== null
   ) {
     setArticleStatusList(StatusListForUnpublishAndPublishScheduledArticle);
   } else if (
-    article.scheduled_publish !== null &&
+    article.scheduledPublish !== null &&
     article.status !== "Published"
   ) {
     setArticleStatusList(StatusListForPublishedOrPublishScheduledArticle);
   } else if (
-    article.scheduled_unpublish !== null &&
+    article.scheduledUnpublish !== null &&
     article.status === "Published"
   ) {
     setArticleStatusList(StatusListForDraftedOrUnpublishScheduledArticle);
@@ -33,6 +33,6 @@ export const convertArticleToFormFormat = article => ({
   body: article.body,
   category: { label: article.category.name, value: article.category.id },
   status: article.status,
-  scheduledPublish: article.scheduled_publish,
-  scheduledUnpublish: article.scheduled_unpublish,
+  scheduledPublish: article.scheduledPublish,
+  scheduledUnpublish: article.scheduledUnpublish,
 });

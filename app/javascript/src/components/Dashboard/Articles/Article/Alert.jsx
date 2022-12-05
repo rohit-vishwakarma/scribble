@@ -10,24 +10,24 @@ const Alert = ({ article, formValues, onClose }) => {
   const history = useHistory();
 
   const scheduledStatus =
-    formValues.status === "Published" && article.scheduled_publish !== null
+    formValues.status === "Published" && article.scheduledPublish !== null
       ? "Publish"
       : "Unpublish";
   const scheduledTime =
     scheduledStatus === "Publish"
-      ? formatTimeStampToTimeAndDate(article.scheduled_publish)
-      : formatTimeStampToTimeAndDate(article.scheduled_unpublish);
+      ? formatTimeStampToTimeAndDate(article.scheduledPublish)
+      : formatTimeStampToTimeAndDate(article.scheduledUnpublish);
 
   const handleSubmit = async () => {
     try {
       if (
         formValues.status === "Draft" &&
-        article.scheduled_unpublish !== null
+        article.scheduledUnpublish !== null
       ) {
         formValues.scheduled_unpublish = null;
       } else if (
         formValues.status === "Published" &&
-        article.scheduled_publish !== null
+        article.scheduledPublish !== null
       ) {
         formValues.scheduled_publish = null;
       }

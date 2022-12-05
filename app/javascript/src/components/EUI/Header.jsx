@@ -16,10 +16,8 @@ const Header = ({ isEUI, setShowSearchBar }) => {
   const fetchOrganizationDetails = async () => {
     try {
       setLoading(true);
-      const {
-        data: { organization },
-      } = await organizationsApi.fetch();
-      setOrganizationData(organization);
+      const { data } = await organizationsApi.fetch();
+      setOrganizationData(data);
     } catch (error) {
       logger.error(error);
     } finally {
