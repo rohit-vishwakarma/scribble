@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { Table as NeetoUITable, Typography, Pagination } from "neetoui";
+import { assoc } from "ramda";
 
 import { buildArticleTableColumnData } from "./utils";
 
@@ -9,18 +10,15 @@ import DeleteAlert from "../DeleteAlert";
 const Table = ({
   articles,
   articlesCount,
-  filterOptions,
+  pageNumber,
   refetch,
   setFilterOptions,
 }) => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedDeleteArticle, setSelectedDeleteArticle] = useState({});
 
-  if (articlesCount === (filterOptions.pageNumber - 1) * 10) {
-    setFilterOptions({
-      ...filterOptions,
-      pageNumber: filterOptions.pageNumber - 1,
-    });
+  if (articlesCount > 0 && articlesCount === (pageNumber - 1) * 10) {
+    setFilterOptions(assoc("pageNumber", pageNumber - 1));
   }
 
   const handleDelete = selectedArticle => {
@@ -42,21 +40,16 @@ const Table = ({
         />
         <div className="flex justify-between pt-4">
           <Typography className="ml-4" style="h4">
-            {(filterOptions.pageNumber - 1) * 10 + 1} -&nbsp;
-            {filterOptions.pageNumber * 10 < articlesCount
-              ? filterOptions.pageNumber * 10
-              : articlesCount}
+            {(pageNumber - 1) * 10 + 1} -&nbsp;
+            {pageNumber * 10 < articlesCount ? pageNumber * 10 : articlesCount}
             &nbsp;of {articlesCount}
           </Typography>
           <Pagination
             count={articlesCount}
-            pageNo={filterOptions.pageNumber}
+            pageNo={pageNumber}
             pageSize={10}
             navigate={currentPageNumber =>
-              setFilterOptions({
-                ...filterOptions,
-                pageNumber: currentPageNumber,
-              })
+              setFilterOptions(assoc("pageNumber", currentPageNumber))
             }
           />
         </div>

@@ -1,3 +1,5 @@
+import { evolve } from "ramda";
+
 export const filterArticlesAccordingToCategories = (
   filterOptions,
   setFilterOptions,
@@ -8,16 +10,18 @@ export const filterArticlesAccordingToCategories = (
       categoryId => categoryId !== category.id
     );
 
-    setFilterOptions({
-      ...filterOptions,
-      categoryIds: filteredCategoryIds,
-      pageNumber: 1,
-    });
+    setFilterOptions(
+      evolve({
+        categoryIds: () => filteredCategoryIds,
+        pageNumber: () => 1,
+      })
+    );
   } else {
-    setFilterOptions({
-      ...filterOptions,
-      categoryIds: [...filterOptions.categoryIds, category.id],
-      pageNumber: 1,
-    });
+    setFilterOptions(
+      evolve({
+        categoryIds: () => [...filterOptions.categoryIds, category.id],
+        pageNumber: () => 1,
+      })
+    );
   }
 };

@@ -113,7 +113,7 @@ const Articles = () => {
             <Table
               articles={articles}
               articlesCount={articlesCount}
-              filterOptions={filterOptions}
+              pageNumber={filterOptions.pageNumber}
               refetch={fetchArticlesCategoriesAndStatusCount}
               setFilterOptions={setFilterOptions}
             />

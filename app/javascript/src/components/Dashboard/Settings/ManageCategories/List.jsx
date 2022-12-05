@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { mergeLeft } from "ramda";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { categoriesApi } from "apis/admin";
@@ -55,7 +56,9 @@ const List = ({
                 <div
                   key={category.id}
                   onClick={() =>
-                    setSelectedCategory({ ...category, isDeleted: false })
+                    setSelectedCategory(
+                      mergeLeft({ isDeleted: false }, category)
+                    )
                   }
                 >
                   <Row
