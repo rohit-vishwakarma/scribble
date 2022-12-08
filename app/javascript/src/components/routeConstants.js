@@ -1,4 +1,5 @@
 import Analytics from "./Dashboard/Analytics";
+import DownloadReport from "./Dashboard/Analytics/DownloadReport";
 import Articles from "./Dashboard/Articles";
 import Create from "./Dashboard/Articles/Article/Create";
 import Edit from "./Dashboard/Articles/Article/Edit";
@@ -7,6 +8,7 @@ export const DASHBOARD_PATH = "/";
 export const ARTICLE_CREATE_PATH = "/article/create";
 export const ARTICLE_EDIT_PATH = "/article/:id/edit";
 export const ANALYTICS_PATH = "/analytics";
+export const ANALYTICS_REPORT_PATH = "/analytics/report";
 
 export const DASHBOARD_ROUTES = [
   {
@@ -24,5 +26,9 @@ export const DASHBOARD_ROUTES = [
   {
     path: ANALYTICS_PATH,
     component: Analytics,
+  },
+  {
+    path: ANALYTICS_REPORT_PATH,
+    component: DownloadReport,
   },
 ];
