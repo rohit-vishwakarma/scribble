@@ -9,6 +9,9 @@ Rails.application.routes.draw do
             get "count"
             get "published_list"
             put "move"
+            resource :report, only: %i[create], module: :articles do
+              get :download, on: :collection
+            end
           end
           member do
             get "versions"
