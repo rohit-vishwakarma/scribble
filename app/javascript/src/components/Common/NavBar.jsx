@@ -53,6 +53,7 @@ const NavBar = () => {
           <Typography style="h4">Articles</Typography>
         </NavLink>
         <NavLink
+          exact
           activeClassName="neeto-ui-text-primary-500"
           className="neeto-ui-text-gray-500"
           to="/settings?tab=general"
@@ -60,6 +61,7 @@ const NavBar = () => {
           <Typography style="h4">Settings</Typography>
         </NavLink>
         <NavLink
+          exact
           activeClassName="neeto-ui-text-primary-500"
           className="neeto-ui-text-gray-500 ml-6"
           to="/analytics"

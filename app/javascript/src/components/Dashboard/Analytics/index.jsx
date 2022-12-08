@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+import { FileDownload } from "neetoicons";
 import { Table, PageLoader, Pagination, Typography } from "neetoui";
+import { Link } from "react-router-dom";
 
 import { articlesApi } from "apis/admin";
 import { convertSnakeCaseKeysToCamelCase } from "components/utils";
@@ -45,6 +47,17 @@ const Analytics = () => {
 
   return (
     <div className="mx-64 mt-8">
+      {totalCount > 0 && (
+        <Link
+          to="/analytics/report"
+          className="mb-2 inline-flex items-center
+            text-sm font-semibold leading-5
+          text-indigo-500 hover:text-indigo-700"
+        >
+          <FileDownload />
+          Download Report
+        </Link>
+      )}
       <Table
         allowRowClick={false}
         columnData={ArticleColumnsData}
