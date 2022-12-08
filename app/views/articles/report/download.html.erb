@@ -1,0 +1,12 @@
+<div class="mb-4 font-bold">Your articles:</div>
+<div class="p-4 mb-8 bg-white neeto-ui-shadow-s rounded">
+  <% @articles.each do |article| %>
+  <div class="flexrow w-full mb-4">
+    <div class="ml-4">
+      <div class="mb-1">
+        <div class="text-gray-500">Title: <%= article.title %> visits: <%= article.visits.sum(:visit) %></div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>

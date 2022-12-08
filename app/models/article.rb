@@ -4,6 +4,7 @@ class Article < ApplicationRecord
   MAX_TITLE_LENGTH = 50
   MAX_PAGE_SIZE = 10
   VALID_NAME_REGEX = /\w*[aA-zZ0-9]\w*/
+  scope :accessible_to, ->(user_id) { where("user_id = ?", user_id) }
 
   acts_as_list scope: :category
 

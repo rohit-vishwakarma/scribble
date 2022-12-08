@@ -6,6 +6,7 @@ en:
   moved: "%{entity} were moved successfully."
   unprocessable_entity: "%{entity} is already exist!"
   position_updated: "%{entity} position is updated!"
+  not_found: "Couldn't find %{entity}"
   organization:
     incorrect_credentials: "Invalid Password"
   article:

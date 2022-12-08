@@ -44,6 +44,11 @@ const move = async payload => {
   await axios.put("api/admin/articles/move", payload);
 };
 
+const generatePdf = () => axios.post("api/admin/articles/report", {});
+
+const download = () =>
+  axios.get("api/admin/articles/report/download", { responseType: "blob" });
+
 const articlesApi = {
   fetch,
   show,
@@ -55,6 +60,8 @@ const articlesApi = {
   count,
   positionUpdate,
   move,
+  generatePdf,
+  download,
 };
 
 export default articlesApi;
