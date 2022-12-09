@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Api::Public::ArticlesController < ApplicationController
+  before_action :authenticate_user_using_x_auth_token
   before_action :create_visit!, only: :show
 
   def index

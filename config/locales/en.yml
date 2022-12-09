@@ -9,6 +9,7 @@ en:
   not_found: "Couldn't find %{entity}"
   organization:
     incorrect_credentials: "Invalid Password"
+    could_not_auth: "Could not authenticate with the provided credentials."
   article:
     slug:
       immutable: "is immutable!"

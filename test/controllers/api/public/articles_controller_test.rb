@@ -4,7 +4,7 @@ require "test_helper"
 
 class Api::Public::ArticlesControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @organization = create(:organization)
+    @organization = create(:organization, is_password_protected: false)
     @user = create(:user, organization: @organization)
     @category = create(:category, user: @user)
     @article = create(:article, category: @category, user: @user)
@@ -29,5 +29,15 @@ class Api::Public::ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
 
     assert_equal article_visits + 1, test_article.visits.sum(:visit)
+  end
+
+  def test_shouldnt_list_articles_if_user_is_unauthorized
+    @organization.is_password_protected = true
+    @organization.save!
+    get api_public_articles_path
+    assert_response :unauthorized
+
+    response_json = response.parsed_body
+    assert_equal t("organization.could_not_auth"), response_json["error"]
   end
 end

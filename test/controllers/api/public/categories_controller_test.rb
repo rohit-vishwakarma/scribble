@@ -2,7 +2,7 @@
 
 class Api::Public::CategoriesControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @organization = create(:organization)
+    @organization = create(:organization, is_password_protected: false)
     @user = create(:user, organization: @organization)
     @category = create(:category, user: @user)
   end

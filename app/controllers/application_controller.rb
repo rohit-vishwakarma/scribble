@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
   include ApiResponders
   include ApiRescuable
+  include Authenticable
 
   private
 
