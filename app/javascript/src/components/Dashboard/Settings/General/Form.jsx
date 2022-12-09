@@ -21,15 +21,16 @@ const Form = ({ organizationData, refetch }) => {
 
   const updateOrganizationDetails = async values => {
     try {
-      await organizationsApi.update({
+      const isPasswordNotChanged = values.isChecked && !changePassword;
+      let payload = {
         name: values.name,
-        password: values.password,
-        is_password_protected:
-          organizationData.isPasswordProtected === values.isChecked &&
-          !changePassword
-            ? null
-            : values.isChecked,
-      });
+        password: values.isChecked ? values.password : null,
+        is_password_protected: values.isChecked,
+      };
+      if (isPasswordNotChanged) {
+        payload = { name: values.name };
+      }
+      await organizationsApi.update(payload);
       localStorage.setItem("authToken", null);
       refetch();
     } catch (error) {
