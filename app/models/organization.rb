@@ -21,4 +21,12 @@ class Organization < ApplicationRecord
 
   has_secure_password validations: false
   has_secure_token :authentication_token
+
+  before_save :regenerate_authentication_token, if: -> { password_digest_changed? }
+
+  private
+
+    def regenerate_authentication_token
+      self.authentication_token = SecureRandom.hex(10)
+    end
 end

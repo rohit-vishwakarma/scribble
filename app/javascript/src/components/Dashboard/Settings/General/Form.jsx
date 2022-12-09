@@ -30,7 +30,7 @@ const Form = ({ organizationData, refetch }) => {
             ? null
             : values.isChecked,
       });
-      localStorage.setItem("authToken", JSON.stringify({ token: null }));
+      localStorage.setItem("authToken", null);
       refetch();
     } catch (error) {
       logger.error(error);

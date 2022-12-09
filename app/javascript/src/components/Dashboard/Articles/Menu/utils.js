@@ -1,27 +1,18 @@
-import { evolve } from "ramda";
+import { evolve, without, append } from "ramda";
 
 export const filterArticlesAccordingToCategories = (
   filterOptions,
   setFilterOptions,
   category
 ) => {
-  if (filterOptions.categoryIds.includes(category.id)) {
-    const filteredCategoryIds = filterOptions.categoryIds.filter(
-      categoryId => categoryId !== category.id
-    );
+  const filteredCategoryIds = filterOptions.categoryIds.includes(category.id)
+    ? without([category.id], filterOptions.categoryIds)
+    : append(category.id, filterOptions.categoryIds);
 
-    setFilterOptions(
-      evolve({
-        categoryIds: () => filteredCategoryIds,
-        pageNumber: () => 1,
-      })
-    );
-  } else {
-    setFilterOptions(
-      evolve({
-        categoryIds: () => [...filterOptions.categoryIds, category.id],
-        pageNumber: () => 1,
-      })
-    );
-  }
+  setFilterOptions(
+    evolve({
+      categoryIds: () => filteredCategoryIds,
+      pageNumber: () => 1,
+    })
+  );
 };

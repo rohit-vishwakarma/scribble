@@ -3,5 +3,4 @@
 json.extract! @_current_organization,
   :id,
   :name,
-  :is_password_protected,
-  :authentication_token
+  :is_password_protected

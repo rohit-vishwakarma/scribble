@@ -13,7 +13,7 @@ const setAuthHeaders = (setLoading = () => null) => {
       .querySelector('[name="csrf-token"]')
       .getAttribute("content"),
   };
-  const token = localStorage.getItem("authToken");
+  const token = JSON.parse(localStorage.getItem("authToken"));
   if (token) {
     axios.defaults.headers["X-Auth-Token"] = token;
   }
@@ -30,7 +30,7 @@ const handleSuccessResponse = response => {
 
 const handleErrorResponse = axiosErrorObject => {
   if (axiosErrorObject.response?.status === 401) {
-    localStorage.setItem("authToken", JSON.stringify({ token: null }));
+    localStorage.setItem("authToken", null);
   }
   Toastr.error(
     axiosErrorObject.response?.data?.error.split("and")[0] ||

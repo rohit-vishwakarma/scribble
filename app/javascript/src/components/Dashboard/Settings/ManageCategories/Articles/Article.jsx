@@ -2,6 +2,7 @@ import React from "react";
 
 import { Clock } from "neetoicons";
 import { Typography, Checkbox, Avatar } from "neetoui";
+import { without, append } from "ramda";
 import { Draggable } from "react-beautiful-dnd";
 
 import Tooltip from "components/Common/Tooltip";
@@ -22,14 +23,10 @@ const Article = ({
   );
 
   const handleSelect = () => {
-    if (selectedArticleIds.includes(article.id)) {
-      const filteredSelectedIds = selectedArticleIds.filter(
-        articleId => articleId !== article.id
-      );
-      setSelectedArticleIds(filteredSelectedIds);
-    } else {
-      setSelectedArticleIds(prevState => [...prevState, article.id]);
-    }
+    const updatedSelectedArticleIds = selectedArticleIds.includes(article.id)
+      ? without([article.id], selectedArticleIds)
+      : append(article.id, selectedArticleIds);
+    setSelectedArticleIds(updatedSelectedArticleIds);
   };
 
   return (

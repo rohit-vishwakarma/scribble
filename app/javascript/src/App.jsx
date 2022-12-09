@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import "lib/dayjs"; // eslint-disable-line
 import { PageLoader } from "neetoui";
+import { either, isEmpty, isNil } from "ramda";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -16,6 +17,7 @@ const App = () => {
   const [isAuthorized, setIsAuthorized] = useState(true);
 
   const authToken = JSON.parse(localStorage.getItem("authToken"));
+  const isLoggedIn = !either(isNil, isEmpty)(authToken);
 
   useEffect(() => {
     initializeLogger();
@@ -29,10 +31,7 @@ const App = () => {
       setLoading(true);
       const { data } = await organizationsApi.fetch();
       const organization = convertSnakeCaseKeysToCamelCase(data);
-      setIsAuthorized(
-        authToken?.token === organization.authenticationToken ||
-          !organization.isPasswordProtected
-      );
+      setIsAuthorized(!organization.isPasswordProtected || isLoggedIn);
     } catch (error) {
       logger.error(error);
     } finally {

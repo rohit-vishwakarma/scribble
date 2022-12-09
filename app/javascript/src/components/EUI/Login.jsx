@@ -41,7 +41,7 @@ const Login = ({ setIsAuthorized }) => {
       });
       localStorage.setItem(
         "authToken",
-        JSON.stringify({ token: data.authentication_token })
+        JSON.stringify(data.authentication_token)
       );
       setIsAuthorized(true);
       setAuthHeaders();
