@@ -14,12 +14,13 @@ class Api::Admin::OrganizationsController < ApplicationController
   end
 
   def update
-    current_organization.name = params[:name]
-    if params[:is_password_protected] != nil
-      current_organization.password = params[:password]
-      current_organization.is_password_protected = params[:is_password_protected]
-    end
-    current_organization.save!
+    current_organization.update!(organization_params)
     respond_with_success(t("successfully_updated", entity: "Organization"))
   end
+
+  private
+
+    def organization_params
+      params.require(:organization).permit(:name, :is_password_protected, :password)
+    end
 end

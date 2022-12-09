@@ -24,7 +24,8 @@ class Api::Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_update_organization_details
-    put api_admin_organization_path, params: { name: "Spin", password: "hello123", is_password_protected: true }
+    put api_admin_organization_path,
+      params: { organization: { name: "Spin", password: "hello123", is_password_protected: true } }
     assert_response :success
 
     response_json = response.parsed_body
