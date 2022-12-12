@@ -22,3 +22,7 @@ en:
   redirection:
     redirection_loop: "can't be added due to redirection loop."
     equal_path: "from & to path can't be same."
+  report:
+    render: "Rendering the report"
+    generate: "Generating the PDF report"
+    attach: "Attaching the report to the user"

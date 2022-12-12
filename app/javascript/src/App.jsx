@@ -6,7 +6,7 @@ import { either, isEmpty, isNil } from "ramda";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { organizationsApi } from "apis/admin";
+import { organizationsApi, usersApi } from "apis/admin";
 import { setAuthHeaders, registerIntercepts } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
@@ -23,8 +23,25 @@ const App = () => {
     initializeLogger();
     registerIntercepts();
     setAuthHeaders(setLoading);
-    fetchOrganizationDetails();
+    fetchOrganizationAndUserDetails();
   }, []);
+
+  const fetchOrganizationAndUserDetails = async () => {
+    await Promise.all([fetchOrganizationDetails(), fetchUserDetails()]);
+    setLoading(false);
+  };
+
+  const fetchUserDetails = async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { id },
+      } = await usersApi.login();
+      localStorage.setItem("authUserId", id);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const fetchOrganizationDetails = async () => {
     try {
