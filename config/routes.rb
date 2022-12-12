@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         resources :categories, except: %i[new edit] do
           put "position_update", on: :member
         end
+        resource :user, only: :show
         resource :organization, only: %i[show update create]
         resources :redirections, except: %i[new edit show]
       end

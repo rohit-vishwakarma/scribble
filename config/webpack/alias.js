@@ -6,6 +6,7 @@ module.exports = {
       apis: "src/apis",
       common: "src/common",
       components: "src/components",
+      channels: "src/channels",
       lib: "src/lib",
       neetoui: "@bigbinary/neetoui",
       neetoicons: "@bigbinary/neeto-icons",

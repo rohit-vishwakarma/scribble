@@ -1,8 +1,8 @@
 import Analytics from "./Dashboard/Analytics";
-import DownloadReport from "./Dashboard/Analytics/DownloadReport";
 import Articles from "./Dashboard/Articles";
 import Create from "./Dashboard/Articles/Article/Create";
 import Edit from "./Dashboard/Articles/Article/Edit";
+import DownloadReport from "./Dashboard/DownloadReport";
 
 export const DASHBOARD_PATH = "/";
 export const ARTICLE_CREATE_PATH = "/article/create";

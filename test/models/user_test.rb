@@ -3,9 +3,6 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @organization = create(:organization)
     @user = create(:user, organization: @organization)

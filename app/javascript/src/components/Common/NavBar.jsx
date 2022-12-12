@@ -68,6 +68,14 @@ const NavBar = () => {
         >
           <Typography style="h4">Analytics</Typography>
         </NavLink>
+        <NavLink
+          exact
+          activeClassName="neeto-ui-text-primary-500"
+          className="neeto-ui-text-gray-500 ml-6"
+          to="/analytics/report"
+        >
+          <Typography style="h4">Download Report</Typography>
+        </NavLink>
       </div>
       <div className="flex">
         {isEditArticlePath && (
