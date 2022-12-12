@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "lib/dayjs"; // eslint-disable-line
 import { PageLoader } from "neetoui";
 import { either, isEmpty, isNil } from "ramda";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -11,6 +12,8 @@ import { setAuthHeaders, registerIntercepts } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import { PrivateRoute, Dashboard, Eui, SiteLogin } from "components/index";
 import { convertSnakeCaseKeysToCamelCase } from "components/utils";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -65,24 +68,26 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <ToastContainer />
-      <Switch>
-        <PrivateRoute
-          component={() => <SiteLogin setIsAuthorized={setIsAuthorized} />}
-          condition={!isAuthorized}
-          path="/public/login"
-          redirectRoute="/public"
-        />
-        <PrivateRoute
-          component={() => <Eui />}
-          condition={isAuthorized}
-          path="/public"
-          redirectRoute="/public/login"
-        />
-        <Route component={Dashboard} path="/" />
-      </Switch>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <ToastContainer />
+        <Switch>
+          <PrivateRoute
+            component={() => <SiteLogin setIsAuthorized={setIsAuthorized} />}
+            condition={!isAuthorized}
+            path="/public/login"
+            redirectRoute="/public"
+          />
+          <PrivateRoute
+            component={() => <Eui />}
+            condition={isAuthorized}
+            path="/public"
+            redirectRoute="/public/login"
+          />
+          <Route component={Dashboard} path="/" />
+        </Switch>
+      </Router>
+    </QueryClientProvider>
   );
 };
 

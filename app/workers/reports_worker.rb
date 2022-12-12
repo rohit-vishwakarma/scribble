@@ -16,8 +16,10 @@ class ReportsWorker
       layout: "pdf"
     )
     ActionCable.server.broadcast(user_id, { message: t("report.generate"), progress: 50 })
+
     pdf_blob = WickedPdf.new.pdf_from_string content
     ActionCable.server.broadcast(user_id, { message: t("report.generate"), progress: 75 })
+
     File.open(report_path, "wb") do |f|
       f.write(pdf_blob)
     end

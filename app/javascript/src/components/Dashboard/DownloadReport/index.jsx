@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import FileSaver from "file-saver";
 import { Button } from "neetoui";
 
-import { articlesApi } from "apis/admin";
+import { useGeneratePdf, useDownloadPdf } from "apis/ReactQueryHooks/article";
 import createConsumer from "channels/consumer";
 import { subscribeToReportDownloadChannel } from "channels/reportDownloadChannel";
 import ProgressBar from "components/Common/ProgressBar";
@@ -13,24 +13,20 @@ const DownloadReport = () => {
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
 
+  const { mutate: generatePdf } = useGeneratePdf();
+  const { data: downloadPdfResponse, refetch: downloadPdf } = useDownloadPdf();
+
   const consumer = createConsumer();
 
-  const generatePdf = async () => {
+  const handleDownloadPdf = async () => {
     try {
-      await articlesApi.generatePdf();
+      await downloadPdf();
+      FileSaver.saveAs(
+        downloadPdfResponse.data,
+        "scribble_articles_report.pdf"
+      );
     } catch (error) {
       logger.error(error);
-    }
-  };
-
-  const downloadPdf = async () => {
-    try {
-      const { data } = await articlesApi.download();
-      FileSaver.saveAs(data, "scribble_articles_report.pdf");
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -62,7 +58,7 @@ const DownloadReport = () => {
         label={isLoading ? "Loading" : "Download"}
         loading={isLoading}
         size="medium"
-        onClick={downloadPdf}
+        onClick={handleDownloadPdf}
       />
     </div>
   );
