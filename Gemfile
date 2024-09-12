@@ -80,3 +80,5 @@ gem "database_cleaner"
 gem "wicked_pdf"
 
 gem "wkhtmltopdf-binary"
+
+gem "foreman", group: :development
