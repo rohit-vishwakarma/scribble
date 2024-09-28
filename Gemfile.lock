@@ -133,9 +133,9 @@ GEM
     minitest (5.16.3)
     msgpack (1.5.6)
     nio4r (2.5.8)
-    nokogiri (1.13.8-x86_64-darwin)
+    nokogiri (1.16.7-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     paper_trail (13.0.0)
       activerecord (>= 5.2)
@@ -302,7 +302,7 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.3.4p94
 
 BUNDLED WITH
    2.3.21
