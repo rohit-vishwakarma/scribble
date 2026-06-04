@@ -54,6 +54,7 @@
   "version": "0.1.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-transform-modules-systemjs": "^7.29.4",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
